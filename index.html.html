@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:    #0A1F3D;
+  --navy2:   #0D2547;
+  --pink:    #EE2B7B;
+  --pink2:   rgba(238,43,123,0.15);
+  --pink3:   rgba(238,43,123,0.08);
+  --white:   #FFFFFF;
+  --gray:    #94A3B8;
+  --light:   #CBD5E1;
+  --cyan:    #38BDF8;
+  --green:   #34D399;
+  --amber:   #FBBF24;
+  --border:  rgba(255,255,255,0.10);
+  --card:    rgba(255,255,255,0.05);
+}
+
+html, body {
+  background: var(--navy);
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { height: 4px; background: rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 10; }
+.progress-fill { height: 100%; background: var(--pink); transition: width 0.5s ease; width: 0%; }
+
+/* ── WELCOME ── */
+#welcome {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(238,43,123,0.18) 0%, transparent 65%), var(--navy);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.cesde-badge {
+  display: inline-block;
+  background: var(--pink);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+}
+
+.welcome-icon {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.welcome h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.12;
+  max-width: 520px;
+  margin: 0 auto 16px;
+  letter-spacing: -0.02em;
+}
+.welcome h1 span { color: var(--pink); }
+
+.welcome-sub {
+  font-size: clamp(14px, 2vw, 17px);
+  color: var(--gray);
+  max-width: 400px;
+  line-height: 1.7;
+  margin: 0 auto 32px;
+}
+.welcome-sub strong { color: var(--light); }
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.pill {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--light);
+}
+
+.btn-start {
+  background: var(--pink);
+  color: var(--white);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 44px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 32px rgba(238,43,123,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(238,43,123,0.45); }
+.btn-start:active { transform: translateY(0); }
+
+.no-data { font-size: 12px; color: var(--gray); margin-top: 14px; }
+
+/* ── QUIZ ── */
+#quiz { padding: 0; }
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 4px;
+  background: var(--navy);
+  z-index: 9;
+}
+.q-brand { color: var(--pink); font-weight: 700; font-size: 13px; letter-spacing: 0.06em; }
+.q-count { color: var(--gray); font-size: 13px; }
+
+.q-body {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.q-body.exit { opacity: 0; transform: translateX(-20px); }
+.q-body.enter { opacity: 0; transform: translateX(20px); }
+.q-body.visible { opacity: 1; transform: translateX(0); }
+
+.cat-badge {
+  display: inline-block;
+  background: var(--pink2);
+  border: 1px solid rgba(238,43,123,0.3);
+  border-radius: 100px;
+  padding: 5px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink);
+  margin-bottom: 20px;
+}
+
+.q-text {
+  font-size: clamp(17px, 3vw, 22px);
+  font-weight: 700;
+  line-height: 1.45;
+  margin-bottom: 24px;
+  color: var(--white);
+}
+
+.opts { display: flex; flex-direction: column; gap: 10px; }
+
+.opt-btn {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: var(--light);
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  line-height: 1.4;
+}
+.opt-btn:not(:disabled):hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.22); }
+.opt-btn:disabled { cursor: default; }
+.opt-btn.correct  { background: rgba(52,211,153,0.15); border-color: var(--green);  color: #ECFDF5; }
+.opt-btn.wrong    { background: rgba(239,68,68,0.15);  border-color: #EF4444;      color: #FEE2E2; }
+.opt-btn.selected { background: var(--pink2);           border-color: var(--pink);   color: var(--white); }
+.opt-btn.dim      { opacity: 0.42; }
+
+.opt-icon { font-size: 16px; flex-shrink: 0; }
+
+.tip-box {
+  margin-top: 18px;
+  background: rgba(255,255,255,0.05);
+  border-left: 4px solid var(--pink);
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--light);
+  line-height: 1.65;
+  display: none;
+}
+.tip-box.show { display: block; }
+
+.btn-next {
+  display: none;
+  width: 100%;
+  margin-top: 18px;
+  background: var(--pink);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s;
+}
+.btn-next:hover { opacity: 0.88; }
+.btn-next.show { display: block; }
+
+/* ── LOADING ── */
+#loading {
+  background: var(--navy);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+.loading-icon { font-size: 64px; margin-bottom: 24px; animation: spin-slow 3s linear infinite; }
+@keyframes spin-slow { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+.loading h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+.loading p  { color: var(--gray); font-size: 15px; }
+.dots { display: flex; gap: 8px; justify-content: center; margin-top: 24px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--pink); animation: blink 1.2s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,100%{opacity:0.25} 50%{opacity:1} }
+
+/* ── RESULT ── */
+#result {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(238,43,123,0.14) 0%, transparent 60%),
+    var(--navy);
+  padding: 0;
+}
+
+.result-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+}
+
+.result-top { text-align: center; margin-bottom: 28px; }
+.profile-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--pink);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.profile-emoji { font-size: 80px; line-height: 1; display: block; margin-bottom: 10px; animation: pop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
+@keyframes pop { 0%{transform:scale(0.4);opacity:0} 100%{transform:scale(1);opacity:1} }
+.profile-name  { font-size: clamp(28px, 5vw, 40px); font-weight: 900; margin-bottom: 10px; letter-spacing: -0.02em; }
+.profile-badge { font-size: 15px; color: var(--light); font-style: italic; max-width: 420px; margin: 0 auto; line-height: 1.55; }
+
+.score-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+}
+.score-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.score-label { font-size: 12px; color: var(--gray); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.score-val   { font-size: 22px; font-weight: 800; }
+.score-bar   { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.score-fill  { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); width: 0%; }
+
+.desc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: var(--light);
+  line-height: 1.7;
+}
+
+.promise-card {
+  background: var(--pink3);
+  border: 1px solid rgba(238,43,123,0.28);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+}
+.promise-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.promise-text { font-size: 15px; color: var(--white); font-weight: 600; line-height: 1.65; }
+
+.sessions-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.session-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.s-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.07);
+  color: var(--gray);
+}
+.s-num.active { background: var(--pink); color: var(--white); }
+.s-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.s-desc  { font-size: 13px; color: var(--light); margin-top: 1px; }
+.s-active .s-title { color: var(--pink); }
+.s-active .s-desc  { color: var(--white); }
+
+.result-footer { text-align: center; margin-top: 32px; }
+.cesde-chip {
+  display: inline-block;
+  background: var(--pink);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.tagline { font-size: 13px; color: var(--gray); }
+.tagline span { color: var(--pink); font-weight: 600; }
+
+.btn-restart {
+  margin-top: 20px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 28px;
+  color: var(--gray);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-restart:hover { border-color: var(--pink); color: var(--pink); }
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="welcome" class="screen active">
+  <span class="cesde-badge">CESDE · Herramientas para la Productividad con IA · 2026</span>
+  <span class="welcome-icon">🤖</span>
+  <h1 class="welcome h1">¿Qué tanto sabes de<br><span>Inteligencia Artificial?</span></h1>
+  <p class="welcome-sub">10 preguntas · ~10 minutos · Al final descubres tu <strong>perfil IA</strong> y lo que vas a lograr en este curso.</p>
+  <div class="pills">
+    <span class="pill">🧠 Mitos vs Realidades</span>
+    <span class="pill">🛠️ Las 9 herramientas</span>
+    <span class="pill">💼 Escenarios laborales</span>
+    <span class="pill">🎯 Tu perfil personalizado</span>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">¡Comenzar! →</button>
+  <p class="no-data">Sin registro · Sin datos guardados · Solo aprendizaje</p>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="progress-wrap"><div class="progress-fill" id="progress"></div></div>
+  <div class="quiz-header">
+    <span class="q-brand">CESDE · IA 2026</span>
+    <span class="q-count" id="q-count">1 / 10</span>
+  </div>
+  <div class="q-body visible" id="q-body">
+    <div class="cat-badge" id="q-cat"></div>
+    <p class="q-text" id="q-text"></p>
+    <div class="opts" id="q-opts"></div>
+    <div class="tip-box" id="tip-box"></div>
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Siguiente →</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="screen loading">
+  <div class="loading-icon">✨</div>
+  <h2>Calculando tu perfil...</h2>
+  <p>Analizando tus respuestas</p>
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="result-inner">
+    <div class="result-top">
+      <div class="profile-eyebrow">Tu perfil IA · CESDE 2026</div>
+      <span class="profile-emoji" id="p-emoji"></span>
+      <div class="profile-name" id="p-name"></div>
+      <p class="profile-badge" id="p-badge"></p>
+    </div>
+
+    <div class="score-card">
+      <div class="score-row">
+        <span class="score-label">Conocimiento en IA</span>
+        <span class="score-val" id="p-score-val"></span>
+      </div>
+      <div class="score-bar"><div class="score-fill" id="p-score-fill"></div></div>
+    </div>
+
+    <div class="desc-card" id="p-desc"></div>
+    <div class="promise-card">
+      <div class="promise-label">🎯 Lo que lograrás en este curso</div>
+      <div class="promise-text" id="p-promise"></div>
+    </div>
+
+    <div class="sessions-label">📅 Lo que viene en las 5 sesiones</div>
+    <div id="sessions-list"></div>
+
+    <div class="result-footer">
+      <div class="cesde-chip">CESDE · Educación Continua · Agosto 2026</div>
+      <p class="tagline">La IA ya piensa con nosotros. <span>No por nosotros.</span> 🚀</p>
+      <button class="btn-restart" onclick="restart()">↩ Reiniciar quiz</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    cat: "🧠 Mito o Realidad",
+    q: "La Inteligencia Artificial va a reemplazar completamente a los profesionales humanos en los próximos años.",
+    opts: ["Verdadero — nos reemplazará a todos", "Falso — amplifica al humano, no lo reemplaza", "Solo en trabajos muy repetitivos"],
+    correct: 1, pts: [0, 1, 0.5], knowledge: true,
+    tip: "💡 La IA amplifica tu criterio y velocidad. Las personas que saben usarla superan a quienes no. No te reemplaza — te hace más valioso."
+  },
+  {
+    cat: "🧠 Mito o Realidad",
+    q: "ChatGPT puede inventar información falsa y presentarla con total confianza, como si fuera verdad.",
+    opts: ["Verdadero — se llama 'alucinación'", "Falso — siempre da información precisa", "Solo cuando no tiene suficientes datos"],
+    correct: 0, pts: [1, 0, 0.5], knowledge: true,
+    tip: "💡 Exacto. Las 'alucinaciones' son reales. Por eso verificar siempre lo que genera la IA es una regla de oro del uso responsable."
+  },
+  {
+    cat: "🧠 Mito o Realidad",
+    q: "Para usar herramientas de IA como ChatGPT, Claude o Gemini necesitas saber programar.",
+    opts: ["Verdadero — es tecnología muy avanzada", "Falso — si escribes mensajes, puedes usar IA", "Depende de qué quieras hacer con ella"],
+    correct: 1, pts: [0, 1, 0.5], knowledge: true,
+    tip: "💡 ¡Gran mito! Las IAs de hoy hablan en lenguaje natural. Si puedes escribir un mensaje de WhatsApp, puedes usar IA. La clave es aprender a formular bien las instrucciones."
+  },
+  {
+    cat: "🛠️ ¿Qué herramienta usarías?",
+    q: "Tienes un PDF de 80 páginas y necesitas extraer los puntos clave en 5 minutos. ¿Cuál usas?",
+    opts: ["ChatGPT", "NotebookLM", "Gamma", "Canva IA"],
+    correct: 1, pts: [0.5, 1, 0, 0], knowledge: true,
+    tip: "💡 NotebookLM (Google) es ideal para analizar, resumir y hacerle preguntas a documentos extensos. ¡Lo veremos en este curso!"
+  },
+  {
+    cat: "🛠️ ¿Qué herramienta usarías?",
+    q: "Quieres crear una presentación profesional de 10 diapositivas a partir de un texto que ya tienes. ¿Cuál usas?",
+    opts: ["Claude", "HeyGen IA", "Gamma", "Napkin IA"],
+    correct: 2, pts: [0.5, 0, 1, 0.5], knowledge: true,
+    tip: "💡 Gamma convierte texto en presentaciones visuales profesionales en segundos. Sin diseñar nada, sin PowerPoint. Solo pegas el texto y listo."
+  },
+  {
+    cat: "🛠️ ¿Qué herramienta usarías?",
+    q: "Necesitas un video corporativo con un presentador, pero no quieres aparecer en cámara. ¿Cuál usas?",
+    opts: ["Gemini", "HeyGen IA", "Canva IA", "NotebookLM"],
+    correct: 1, pts: [0, 1, 0, 0], knowledge: true,
+    tip: "💡 HeyGen crea videos con avatares hiperrealistas que leen tu guión. Sin cámara, sin estudio, sin equipo de producción."
+  },
+  {
+    cat: "💼 Escenario laboral",
+    q: "Tu jefe necesita un informe urgente en 30 minutos. ¿Qué haces primero?",
+    opts: ["Lo escribo solo como siempre", "Le pido a la IA que lo escriba y lo entrego tal cual", "Uso la IA para estructurarlo y acelerar — yo reviso y personalizo", "Le digo que en ese tiempo es imposible"],
+    correct: 2, pts: [0, 0, 1, 0], knowledge: true,
+    tip: "💡 ¡Así se usa la IA! Como copiloto: tú decides y supervisas, ella acelera. Esto se llama Prompt Engineering aplicado. Lo veremos a fondo en la Sesión 2."
+  },
+  {
+    cat: "💡 La clave de la IA",
+    q: "¿Qué factor determina principalmente la CALIDAD de lo que genera una herramienta de IA?",
+    opts: ["La potencia del computador", "Tener la versión de pago premium", "La claridad y calidad de la instrucción que le das", "La velocidad del internet"],
+    correct: 2, pts: [0, 0.5, 1, 0], knowledge: true,
+    tip: "💡 El PROMPT lo es todo. Una instrucción bien construida con la versión gratuita supera un prompt vago con la versión premium. Eso es exactamente lo que aprenderás aquí."
+  },
+  {
+    cat: "🪞 Cuéntame de ti",
+    q: "¿Con qué frecuencia usas herramientas de IA actualmente?",
+    opts: ["🌱 Nunca — soy completamente nuevo en esto", "🔍 Alguna vez probé ChatGPT u otra herramienta", "⚡ La uso varios días a la semana", "🚀 Es parte de mi flujo de trabajo diario"],
+    correct: -1, pts: [1, 2, 3, 4], knowledge: false, selfKey: "freq",
+    tip: "💡 Sin importar desde dónde partes, en 5 semanas vas a transformar la forma en que trabajas. Ese es nuestro compromiso."
+  },
+  {
+    cat: "🎯 Tu propósito",
+    q: "¿Qué esperas lograr principalmente al terminar este curso?",
+    opts: ["⏱️ Ahorrar tiempo en tareas repetitivas", "🎨 Crear contenido profesional yo solo", "🧠 Entender la IA para no quedarme atrás", "🌟 Transformar completamente cómo trabajo"],
+    correct: -1, pts: [1, 2, 3, 4], knowledge: false, selfKey: "goal",
+    tip: "💡 Todos esos objetivos están en este curso. Ese es el poder de aprender IA: cada persona saca exactamente lo que necesita."
+  }
+];
+
+const PROFILES = [
+  {
+    emoji: "🌱", name: "Explorador Curioso", color: "#38BDF8",
+    badge: "\"El viaje acaba de comenzar — y eso es lo más emocionante.\"",
+    desc: "Llegas sin vicios, sin prejuicios y con la mejor actitud posible: la curiosidad. Tienes algo que muchos expertos perdieron: la mirada fresca. Eso es una ventaja enorme. En 5 semanas vas a pasar de no saber qué es un prompt a construir flujos de trabajo completos con IA.",
+    promise: "Al finalizar este curso, vas a hacer en minutos lo que hoy te tomaría horas. Y vas a sorprenderte a ti mismo."
+  },
+  {
+    emoji: "🔍", name: "Conector Digital", color: "#34D399",
+    badge: "\"Ya tocaste la IA — ahora vas a dominarla.\"",
+    desc: "Probaste algunas herramientas, pero sabes que hay mucho más por explorar. Estás exactamente donde necesitas estar: con suficiente curiosidad para aprender rápido y suficiente experiencia para entender el valor real de lo que viene.",
+    promise: "En 5 semanas vas a pasar de usar IA ocasionalmente a convertirla en tu ventaja competitiva real. Algo que muy pocos en tu entorno tienen."
+  },
+  {
+    emoji: "⚡", name: "Amplificador Creativo", color: "#FBBF24",
+    badge: "\"Sabes más de lo que crees. Ahora toca combinarlo todo.\"",
+    desc: "Tienes una base sólida y ya piensas en IA de forma natural. Este curso va a conectar los puntos: aprenderás a encadenar 9 herramientas en flujos de trabajo integrados y generar resultados que antes requerían un equipo completo.",
+    promise: "En 5 semanas vas a poder producir contenido, analizar datos y comunicar ideas a nivel profesional — tú solo. Eso cambia todo."
+  },
+  {
+    emoji: "🚀", name: "Arquitecto IA", color: "#EE2B7B",
+    badge: "\"Ya piensas en IA. Aquí vas a pensar CON ella.\"",
+    desc: "Eres de los pocos que ya integra la IA estratégicamente. Pero hay un siguiente nivel: combinar herramientas en cadena, usar criterio ético avanzado y liderar a otros hacia la productividad con IA. Eso es exactamente lo que viene.",
+    promise: "En 5 semanas vas a convertirte en el referente de tu equipo en el uso estratégico de la IA. El que todos van a preguntarle cómo lo hace."
+  }
+];
+
+const SESSIONS = [
+  { t: "Hoy · Sesión 1", d: "Fundamentos de IA · Primeras herramientas", active: true },
+  { t: "Sesión 2", d: "Prompt Engineering — la clave de todo", active: false },
+  { t: "Sesión 3", d: "Imágenes, Napkin IA y HeyGen", active: false },
+  { t: "Sesión 4", d: "Ética y uso responsable de la IA", active: false },
+  { t: "Sesión 5", d: "Proyecto Final + Certificado", active: false },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let qIdx = 0, score = 0, self = { freq: 0, goal: 0 };
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function getProfile() {
+  if (score <= 2.5) return PROFILES[0];
+  if (score <= 5)   return PROFILES[1];
+  if (score <= 7)   return PROFILES[2];
+  return PROFILES[3];
+}
+
+// ── QUIZ LOGIC ────────────────────────────────────────────────────────────────
+function startQuiz() {
+  qIdx = 0; score = 0; self = { freq: 0, goal: 0 };
+  show('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[qIdx];
+  const total = QUESTIONS.length;
+  const pct = (qIdx / total) * 100;
+
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('q-count').textContent = (qIdx + 1) + ' / ' + total;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('tip-box').textContent = q.tip;
+  document.getElementById('tip-box').classList.remove('show');
+  document.getElementById('btn-next').classList.remove('show');
+  document.getElementById('btn-next').textContent = qIdx < total - 1 ? 'Siguiente →' : 'Ver mi perfil →';
+
+  const optsEl = document.getElementById('q-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = '<span class="opt-icon" id="icon-' + i + '"></span>' + text;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+
+  // Animate in
+  const body = document.getElementById('q-body');
+  body.classList.remove('visible');
+  body.classList.add('enter');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      body.classList.remove('enter');
+      body.classList.add('visible');
+    });
+  });
+}
+
+function selectAnswer(chosen) {
+  const q = QUESTIONS[qIdx];
+  const btns = document.querySelectorAll('.opt-btn');
+
+  // Score
+  if (q.knowledge) {
+    score += (q.pts[chosen] || 0);
+  } else {
+    self[q.selfKey] = q.pts[chosen] || 1;
+  }
+
+  // Style buttons
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    const icon = btn.querySelector('.opt-icon');
+    if (q.correct >= 0) {
+      if (i === q.correct)    { btn.classList.add('correct'); icon.textContent = '✅'; }
+      else if (i === chosen)  { btn.classList.add('wrong');   icon.textContent = '❌'; }
+      else                    { btn.classList.add('dim'); }
+    } else {
+      if (i === chosen) { btn.classList.add('selected'); icon.textContent = '👈'; }
+      else              { btn.classList.add('dim'); }
+    }
+  });
+
+  document.getElementById('tip-box').classList.add('show');
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion() {
+  const body = document.getElementById('q-body');
+  body.classList.remove('visible');
+  body.classList.add('exit');
+
+  setTimeout(() => {
+    body.classList.remove('exit');
+    if (qIdx < QUESTIONS.length - 1) {
+      qIdx++;
+      renderQuestion();
+    } else {
+      showLoading();
+    }
+  }, 220);
+}
+
+// ── LOADING ───────────────────────────────────────────────────────────────────
+function showLoading() {
+  show('loading');
+  setTimeout(showResult, 2600);
+}
+
+// ── RESULT ────────────────────────────────────────────────────────────────────
+function showResult() {
+  const p = getProfile();
+  const pct = Math.round((score / 8) * 100);
+
+  document.getElementById('p-emoji').textContent  = p.emoji;
+  document.getElementById('p-name').textContent   = p.name;
+  document.getElementById('p-name').style.color   = p.color;
+  document.getElementById('p-badge').textContent  = p.badge;
+  document.getElementById('p-desc').textContent   = p.desc;
+  document.getElementById('p-promise').textContent = p.promise;
+  document.getElementById('p-score-val').textContent = pct + '%';
+  document.getElementById('p-score-val').style.color = p.color;
+  document.getElementById('p-score-fill').style.background = p.color;
+
+  // Build sessions list
+  const list = document.getElementById('sessions-list');
+  list.innerHTML = '';
+  SESSIONS.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'session-row' + (s.active ? ' s-active' : '');
+    row.innerHTML = `
+      <div class="s-num ${s.active ? 'active' : ''}">${i + 1}</div>
+      <div>
+        <div class="s-title">${s.t}</div>
+        <div class="s-desc">${s.d}</div>
+      </div>`;
+    list.appendChild(row);
+  });
+
+  show('result');
+
+  // Animate score bar after paint
+  setTimeout(() => {
+    document.getElementById('p-score-fill').style.width = pct + '%';
+  }, 200);
+}
+
+// ── RESTART ───────────────────────────────────────────────────────────────────
+function restart() {
+  qIdx = 0; score = 0; self = { freq: 0, goal: 0 };
+  show('welcome');
+}
+</script>
+</body>
+</html>
