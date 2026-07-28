@@ -1,0 +1,397 @@
+
+<h2 class="sr-only">Experiencia interactiva de IA — 3 actividades para descubrir tu perfil · CESDE 2026</h2>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+.xr{font-family:'Inter',sans-serif;--p:#EE2B7B;--n:#0A1F3D;--n2:#0D2547;--g:#22C55E;--r:#EF4444;--w:rgba(255,255,255,0.06);--b:rgba(255,255,255,0.10)}
+.xs{display:none}.xs.on{display:flex;flex-direction:column}
+.xd{background:var(--n);border-radius:20px;overflow:hidden;color:#fff;flex:1}
+.xhd{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b)}
+.xbg{background:var(--p);color:#fff;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:4px 12px;border-radius:100px}
+.xpg{display:flex;gap:5px;align-items:center}
+.xpd{width:7px;height:7px;border-radius:50%;background:var(--b);transition:all .25s}
+.xpd.cur{background:var(--p);width:20px;border-radius:4px}
+.xpd.dn{background:var(--g)}
+.xac{font-size:11px;color:rgba(255,255,255,0.4);font-weight:500}
+.xbody{padding:18px 20px 22px}
+.xtg{font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--p);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.xtg i{font-size:13px}
+.xtit{font-size:clamp(19px,3.5vw,27px);font-weight:900;line-height:1.2;letter-spacing:-.01em;margin-bottom:6px}
+.xsub{font-size:12px;color:rgba(255,255,255,0.50);line-height:1.6;margin-bottom:14px}
+.xctr{font-size:11px;color:rgba(255,255,255,0.40);margin-bottom:12px}
+.xctr b{color:var(--p)}
+.xbtn{display:inline-flex;align-items:center;gap:5px;background:var(--p);color:#fff;border:none;border-radius:11px;padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s;margin-top:12px}
+.xbtn:hover{opacity:.88}
+.xbtn.sec{background:var(--w);border:1px solid var(--b);color:rgba(255,255,255,0.6);font-size:12px;padding:9px 18px}
+.xbtn.sec:hover{border-color:var(--p);color:var(--p)}
+.xtst{display:none;align-items:center;gap:6px;background:var(--g);color:#052e16;border-radius:100px;padding:9px 18px;font-size:12px;font-weight:700;margin-top:12px}
+.xtst.show{display:inline-flex}
+.fcg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:500px){.fcg{grid-template-columns:repeat(3,1fr)}}
+.fc{perspective:1100px;cursor:pointer;height:148px}
+.fci{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.fc.flp .fci{transform:rotateY(180deg)}
+.fcf,.fcb{position:absolute;inset:0;border-radius:13px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;padding:12px}
+.fcf{background:var(--n2);border:1px solid var(--b);justify-content:space-between}
+.fcf p{font-size:clamp(11px,1.7vw,12.5px);font-weight:600;line-height:1.45;color:#e2e8f0;flex:1}
+.fch{font-size:10px;color:rgba(255,255,255,0.30);margin-top:6px;display:flex;align-items:center;gap:3px}
+.fcb{transform:rotateY(180deg)}
+.fcb.mito{background:rgba(239,68,68,0.13);border:1px solid rgba(239,68,68,0.28)}
+.fcb.real{background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.25)}
+.fvd{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:100px;display:inline-block;margin-bottom:7px;align-self:flex-start}
+.mito .fvd{background:rgba(239,68,68,0.22);color:#fca5a5}
+.real .fvd{background:rgba(34,197,94,0.18);color:#86efac}
+.fcb p{font-size:clamp(10px,1.5vw,11.5px);color:rgba(255,255,255,0.78);line-height:1.55}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mi{background:var(--w);border:1.5px solid var(--b);border-radius:11px;padding:10px 12px;cursor:pointer;font-size:clamp(11px,1.6vw,12.5px);font-weight:500;color:rgba(255,255,255,0.72);line-height:1.4;transition:all .2s;min-height:50px;display:flex;align-items:center;font-family:inherit;text-align:left;width:100%}
+.mi:not(.mat):not(.di):hover{border-color:rgba(255,255,255,0.22);color:#fff}
+.mi.sel{border-color:var(--p);background:rgba(238,43,123,0.12);color:#fff}
+.mi.mat{border-color:var(--g);background:rgba(34,197,94,0.09);color:#86efac;cursor:default;animation:pop .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+.mi.err{animation:shk .4s ease;border-color:var(--r)}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.mi.di{opacity:.25;pointer-events:none}
+.msc{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.msc span{font-size:11px;color:rgba(255,255,255,0.40)}
+.msc b{font-size:13px;font-weight:700;color:var(--p)}
+.vq{font-size:clamp(15px,2.8vw,21px);font-weight:800;margin-bottom:16px;line-height:1.4}
+.vdts{display:flex;gap:5px;margin-bottom:13px}
+.vdt{width:7px;height:7px;border-radius:50%;background:var(--b);transition:all .25s}
+.vdt.cur{background:var(--p);width:20px;border-radius:4px}
+.vdt.dn{background:var(--g)}
+.vos{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.vo{background:var(--w);border:1.5px solid var(--b);border-radius:11px;padding:12px 15px;cursor:pointer;font-size:clamp(12px,1.8vw,13.5px);font-weight:500;color:rgba(255,255,255,0.72);line-height:1.4;text-align:left;font-family:inherit;transition:all .2s;width:100%}
+.vo:hover{border-color:rgba(255,255,255,0.22);color:#fff}
+.vo.vsel{border-color:var(--p);background:rgba(238,43,123,0.10);color:#fff;pointer-events:none}
+.bc{display:flex;flex-direction:column;gap:8px}
+.br-top{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.50);margin-bottom:3px}
+.br-top .mine{color:var(--p);font-weight:700}
+.bt{height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden}
+.bf{height:100%;border-radius:4px;width:0;transition:width .9s cubic-bezier(.22,1,.36,1)}
+.bf.bm{background:var(--p)}
+.bf.bo{background:rgba(255,255,255,0.20)}
+.pf{text-align:center}
+.pey{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p);margin-bottom:12px}
+.pico{margin-bottom:8px}
+.pico i{font-size:56px}
+.pnm{font-size:clamp(24px,5vw,36px);font-weight:900;letter-spacing:-.02em;margin-bottom:7px}
+.ptg{font-size:13px;color:rgba(255,255,255,0.60);font-style:italic;max-width:360px;margin:0 auto 18px;line-height:1.6}
+.psc{background:var(--w);border:1px solid var(--b);border-radius:12px;padding:13px 17px;margin-bottom:12px;text-align:left}
+.psc-r{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.psc-l{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.38)}
+.psc-v{font-size:17px;font-weight:800}
+.pbr{height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden}
+.pbf{height:100%;border-radius:4px;width:0;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.pds{background:var(--w);border:1px solid var(--b);border-radius:12px;padding:13px 17px;font-size:13px;color:rgba(255,255,255,0.72);line-height:1.7;margin-bottom:11px;text-align:left}
+.ppr{background:rgba(238,43,123,0.08);border:1px solid rgba(238,43,123,0.20);border-radius:12px;padding:13px 17px;margin-bottom:18px;text-align:left}
+.ppr-l{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--p);margin-bottom:6px}
+.ppr-t{font-size:13px;color:#fff;font-weight:600;line-height:1.65}
+.ssl{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:9px;text-align:left}
+.sr{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.sn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.sb .st{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.sb .sd{font-size:11px;margin-top:1px;color:rgba(255,255,255,0.60)}
+.sr.cur .sb .st{color:var(--p)}
+.sr.cur .sb .sd{color:#fff}
+.pft{text-align:center;margin-top:18px}
+.pfc{display:inline-block;background:var(--p);color:#fff;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:9px}
+.ptag2{font-size:11px;color:rgba(255,255,255,0.40)}
+.ptag2 b{color:var(--p)}
+</style>
+
+<div class="xr">
+
+<div id="xs-w" class="xs on">
+  <div class="xd" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px 24px;min-height:500px;">
+    <div style="background:var(--p);color:#fff;font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;padding:4px 14px;border-radius:100px;margin-bottom:20px;">CESDE · Herramientas para la Productividad con IA · 2026</div>
+    <div style="width:68px;height:68px;border-radius:16px;background:rgba(238,43,123,0.14);border:1px solid rgba(238,43,123,0.28);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+      <i class="ti ti-brain" style="font-size:34px;color:var(--p);" aria-hidden="true"></i>
+    </div>
+    <h1 style="font-size:clamp(26px,5vw,44px);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:11px;color:#fff;">Descubre tu<br><span style="color:var(--p);">Perfil IA</span></h1>
+    <p style="font-size:clamp(12px,2vw,15px);color:rgba(255,255,255,0.50);max-width:360px;margin:0 auto 24px;line-height:1.7;">3 actividades · ~10 minutos · Al final descubres qué tipo de profesional IA eres y lo que te espera.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:26px;">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:11px;padding:9px 14px;text-align:center;">
+        <i class="ti ti-cards" style="font-size:20px;color:var(--p);display:block;margin-bottom:4px;" aria-hidden="true"></i>
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.72);">Voltea tarjetas</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:11px;padding:9px 14px;text-align:center;">
+        <i class="ti ti-arrows-exchange" style="font-size:20px;color:var(--p);display:block;margin-bottom:4px;" aria-hidden="true"></i>
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.72);">Conecta herramientas</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);border-radius:11px;padding:9px 14px;text-align:center;">
+        <i class="ti ti-chart-bar" style="font-size:20px;color:var(--p);display:block;margin-bottom:4px;" aria-hidden="true"></i>
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.72);">Vota en tiempo real</span>
+      </div>
+    </div>
+    <button class="xbtn" onclick="goTo('xs-w','xs-m')">
+      <i class="ti ti-player-play" aria-hidden="true"></i> ¡Comenzar!
+    </button>
+    <p style="font-size:10px;color:rgba(255,255,255,0.25);margin-top:11px;">Sin registro · Sin datos guardados</p>
+  </div>
+</div>
+
+<div id="xs-m" class="xs">
+  <div class="xd">
+    <div class="xhd">
+      <span class="xbg">CESDE · IA 2026</span>
+      <div class="xpg"><div class="xpd cur"></div><div class="xpd"></div><div class="xpd"></div><div class="xpd"></div></div>
+      <span class="xac">Actividad 1 de 3</span>
+    </div>
+    <div class="xbody">
+      <div class="xtg"><i class="ti ti-cards" aria-hidden="true"></i>Voltea las tarjetas</div>
+      <h2 class="xtit">Mito o Realidad</h2>
+      <p class="xsub">Toca cada tarjeta para descubrir si el enunciado sobre IA es un mito o una realidad.</p>
+      <div class="xctr" id="m-ctr">Reveladas: <b>0</b> / 6</div>
+      <div class="fcg" id="fc-grid"></div>
+      <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;">
+        <div class="xtst" id="m-done"><i class="ti ti-check" aria-hidden="true"></i>&nbsp;¡Completado!</div>
+        <button class="xbtn" id="m-next" style="display:none;" onclick="goTo('xs-m','xs-t')">Conecta herramientas <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="xs-t" class="xs">
+  <div class="xd">
+    <div class="xhd">
+      <span class="xbg">CESDE · IA 2026</span>
+      <div class="xpg"><div class="xpd dn"></div><div class="xpd cur"></div><div class="xpd"></div><div class="xpd"></div></div>
+      <span class="xac">Actividad 2 de 3</span>
+    </div>
+    <div class="xbody">
+      <div class="xtg"><i class="ti ti-arrows-exchange" aria-hidden="true"></i>Empareja</div>
+      <h2 class="xtit">Conecta las herramientas</h2>
+      <p class="xsub">Selecciona una herramienta (izquierda) y luego su uso correcto (derecha).</p>
+      <div class="msc"><span>Aciertos:</span><b id="t-sc">0</b><span style="font-size:11px;color:rgba(255,255,255,0.30);">/ 6</span></div>
+      <div class="mg" id="match-grid"></div>
+      <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+        <div class="xtst" id="t-done"><i class="ti ti-check" aria-hidden="true"></i>&nbsp;¡Arsenal dominado!</div>
+        <button class="xbtn" id="t-next" style="display:none;" onclick="goTo('xs-t','xs-v')">Ir a la votación <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="xs-v" class="xs">
+  <div class="xd">
+    <div class="xhd">
+      <span class="xbg">CESDE · IA 2026</span>
+      <div class="xpg"><div class="xpd dn"></div><div class="xpd dn"></div><div class="xpd cur"></div><div class="xpd"></div></div>
+      <span class="xac">Actividad 3 de 3</span>
+    </div>
+    <div class="xbody" id="vote-body"></div>
+  </div>
+</div>
+
+<div id="xs-p" class="xs">
+  <div class="xd">
+    <div class="xhd">
+      <span class="xbg">CESDE · IA 2026</span>
+      <div class="xpg"><div class="xpd dn"></div><div class="xpd dn"></div><div class="xpd dn"></div><div class="xpd cur"></div></div>
+      <span class="xac">Tu perfil</span>
+    </div>
+    <div class="xbody" id="prof-body"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const MYTHS=[
+  {f:"La IA va a reemplazar completamente a los trabajadores humanos en los próximos años.",t:"mito",b:"Las personas que saben usar IA superan a quienes no. Te hace más valioso, no te reemplaza."},
+  {f:"ChatGPT puede inventar información falsa y presentarla con total confianza como si fuera verdad.",t:"real",b:"Se llama 'alucinación'. Por eso verificar siempre lo que genera la IA es una regla de oro."},
+  {f:"Para usar herramientas de IA como ChatGPT o Claude necesitas saber programar.",t:"mito",b:"Si puedes escribir un mensaje, puedes usar IA. La clave es aprender a formular bien tus instrucciones."},
+  {f:"La calidad de lo que genera la IA depende principalmente de cómo le formulas la instrucción.",t:"real",b:"Un buen prompt con la versión gratuita supera un mal prompt con la premium. El prompt lo es todo."},
+  {f:"Las herramientas de IA avanzadas solo están disponibles para empresas con presupuesto alto.",t:"mito",b:"ChatGPT, Claude, Gemini, Canva IA y NotebookLM tienen planes gratuitos suficientes para empezar hoy."},
+  {f:"Con IA puedes crear imágenes, videos y presentaciones profesionales sin ser diseñador.",t:"real",b:"Canva IA, HeyGen y Gamma son prueba de ello. En este curso lo harás tú mismo en la Sesión 3."},
+];
+
+const TOOLS=[
+  {tool:"ChatGPT",use:"Redactar textos, resolver preguntas y generar ideas en segundos"},
+  {tool:"NotebookLM",use:"Analizar y resumir documentos extensos (PDFs, artículos)"},
+  {tool:"Gamma",use:"Crear presentaciones profesionales automáticamente desde un texto"},
+  {tool:"HeyGen IA",use:"Grabar videos con avatares sin cámara ni estudio de grabación"},
+  {tool:"Napkin IA",use:"Convertir texto en diagramas y visualizaciones de procesos"},
+  {tool:"Canva IA",use:"Generar imágenes y diseños profesionales sin saber diseño"},
+];
+
+const VOTES=[
+  {q:"¿Cuánto usas herramientas de IA actualmente?",opts:["Nunca — soy nuevo en esto","Alguna vez probé ChatGPT u otra","Varias veces por semana","Todos los días, es parte de mi rutina"],pcts:[35,38,20,7]},
+  {q:"¿Cuál es tu mayor reto laboral hoy?",opts:["Escribir documentos me toma mucho tiempo","Crear contenido visual profesional","Organizar y resumir información extensa","Todos los anteriores"],pcts:[32,28,25,15]},
+  {q:"¿Qué cambiaría más tu trabajo si lo dominaras?",opts:["Hacer presentaciones increíbles en minutos","Automatizar la redacción de informes","Crear videos sin equipo de grabación","Analizar datos sin ser experto en Excel"],pcts:[30,35,20,15]},
+];
+
+const PROFS=[
+  {name:"Explorador Curioso",icon:"ti-compass",color:"#38BDF8",tg:'"El viaje acaba de comenzar — y eso es lo más emocionante."',ds:"Llegas con la mejor actitud posible: la curiosidad. Tienes algo que muchos expertos perdieron — la mirada fresca. En 5 semanas vas a pasar de no saber qué es un prompt a construir flujos de trabajo completos con 9 herramientas de IA.",pr:"Al finalizar este curso, harás en minutos lo que hoy te tomaría horas. Y te vas a sorprender a ti mismo."},
+  {name:"Conector Digital",icon:"ti-link",color:"#34D399",tg:'"Ya tocaste la IA — ahora vas a dominarla."',ds:"Probaste algunas herramientas pero sabes que hay mucho más. Estás exactamente donde necesitas estar: con suficiente curiosidad para aprender rápido y experiencia para entender el valor real de cada herramienta.",pr:"En 5 semanas vas a pasar de usar IA ocasionalmente a convertirla en tu ventaja competitiva. Algo que pocos en tu entorno tienen."},
+  {name:"Amplificador Creativo",icon:"ti-bolt",color:"#FBBF24",tg:'"Sabes más de lo que crees. Ahora toca combinarlo todo."',ds:"Tienes una base sólida y ya piensas en IA de forma natural. Este curso conectará los puntos: aprenderás a encadenar las 9 herramientas en flujos integrados que antes requerían un equipo completo.",pr:"En 5 semanas producirás contenido, analizarás datos y comunicarás ideas a nivel profesional — tú solo. Eso cambia todo."},
+  {name:"Arquitecto IA",icon:"ti-rocket",color:"#EE2B7B",tg:'"Ya piensas en IA. Aquí vas a pensar CON ella."',ds:"Eres de los pocos que ya integra la IA estratégicamente en su trabajo. Hay un siguiente nivel: combinar herramientas en cadena, aplicar criterio ético avanzado y liderar a otros hacia la productividad con IA.",pr:"En 5 semanas serás el referente de tu equipo. El que todos van a preguntarle cómo lo hace."},
+];
+
+const SESS=[
+  {t:"Hoy · Sesión 1",d:"Fundamentos de IA · Primeras herramientas",cur:true},
+  {t:"Sesión 2",d:"Prompt Engineering — la clave de todo"},
+  {t:"Sesión 3",d:"Imágenes, Napkin IA y HeyGen"},
+  {t:"Sesión 4",d:"Ética y uso responsable de la IA"},
+  {t:"Sesión 5",d:"Proyecto Final + Certificado"},
+];
+
+let rev=0,msc=0,selT=null,matched=0,vq=0,votes=[],shuffUses=[];
+
+function goTo(a,b){
+  const fa=document.getElementById(a),fb=document.getElementById(b);
+  fa.style.cssText='opacity:0;transition:opacity .2s';
+  setTimeout(()=>{
+    fa.classList.remove('on');fa.style.cssText='';
+    fb.classList.add('on');fb.style.cssText='opacity:0;transition:opacity .2s';
+    setTimeout(()=>{
+      fb.style.cssText='opacity:1;transition:opacity .2s';
+      if(b==='xs-v')initVote();
+      if(b==='xs-p')initProf();
+    },20);
+  },200);
+}
+
+function initMyths(){
+  rev=0;
+  const g=document.getElementById('fc-grid');g.innerHTML='';
+  MYTHS.forEach((m,i)=>{
+    const d=document.createElement('div');
+    d.className='fc';d.id='fc'+i;
+    d.innerHTML=`<div class="fci"><div class="fcf"><p>${m.f}</p><div class="fch"><i class="ti ti-hand-click" style="font-size:11px" aria-hidden="true"></i>Toca para revelar</div></div><div class="fcb ${m.t}"><span class="fvd">${m.t==='mito'?'MITO':'REALIDAD'}</span><p>${m.b}</p></div></div>`;
+    d.onclick=()=>flipC(i);
+    g.appendChild(d);
+  });
+}
+
+function flipC(i){
+  const c=document.getElementById('fc'+i);
+  if(c.classList.contains('flp'))return;
+  c.classList.add('flp');rev++;
+  document.getElementById('m-ctr').innerHTML=`Reveladas: <b>${rev}</b> / 6`;
+  if(rev===6){
+    const t=document.getElementById('m-done');t.style.display='inline-flex';
+    setTimeout(()=>{document.getElementById('m-next').style.display='inline-flex';},400);
+  }
+}
+
+function initMatch(){
+  msc=0;selT=null;matched=0;
+  const g=document.getElementById('match-grid');g.innerHTML='';
+  shuffUses=[...TOOLS].sort(()=>Math.random()-.5);
+  TOOLS.forEach((t,i)=>{
+    const tb=document.createElement('button');
+    tb.className='mi';tb.id='mt'+i;tb.style.fontWeight='600';
+    tb.textContent=t.tool;tb.onclick=()=>selTool(i,t.tool);
+    g.appendChild(tb);
+    const ub=document.createElement('button');
+    ub.className='mi';ub.id='mu'+i;
+    ub.textContent=shuffUses[i].use;
+    ub.onclick=()=>selUse(i,shuffUses[i].tool);
+    g.appendChild(ub);
+  });
+}
+
+function selTool(idx){
+  if(selT!==null){
+    const p=document.getElementById('mt'+selT);
+    if(p&&!p.classList.contains('mat'))p.classList.remove('sel');
+  }
+  selT=idx;
+  document.getElementById('mt'+idx).classList.add('sel');
+}
+
+function selUse(idx,uTool){
+  if(selT===null)return;
+  const tb=document.getElementById('mt'+selT);
+  const ub=document.getElementById('mu'+idx);
+  if(!tb||!ub)return;
+  const ok=TOOLS[selT].tool===uTool;
+  if(ok){
+    tb.classList.remove('sel');tb.classList.add('mat');tb.onclick=null;
+    ub.classList.add('mat');ub.onclick=null;
+    msc++;matched++;
+    document.getElementById('t-sc').textContent=msc;
+    selT=null;
+    if(matched===6){
+      document.getElementById('t-done').style.display='inline-flex';
+      setTimeout(()=>{document.getElementById('t-next').style.display='inline-flex';},400);
+    }
+  } else {
+    tb.classList.add('err');ub.classList.add('err');tb.classList.remove('sel');
+    setTimeout(()=>{tb.classList.remove('err');ub.classList.remove('err');},450);
+    selT=null;
+  }
+}
+
+function initVote(){vq=0;votes=[];renderVQ();}
+
+function renderVQ(){
+  const vd=VOTES[vq];
+  const dots=VOTES.map((_,i)=>`<div class="vdt ${i<vq?'dn':i===vq?'cur':''}"></div>`).join('');
+  document.getElementById('vote-body').innerHTML=`
+    <div class="xtg"><i class="ti ti-chart-bar" aria-hidden="true"></i>Votación en tiempo real</div>
+    <div class="vdts">${dots}</div>
+    <h2 class="vq">${vd.q}</h2>
+    <div class="vos" id="v-opts">
+      ${vd.opts.map((o,i)=>`<button class="vo" type="button" onclick="castV(${i})">${o}</button>`).join('')}
+    </div>
+    <div id="v-bars" style="display:none">
+      <div class="bc" id="bc-wrap"></div>
+      <div>${vq<VOTES.length-1?`<button class="xbtn" type="button" onclick="nextVQ()">Siguiente pregunta <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:`<button class="xbtn" type="button" onclick="goTo('xs-v','xs-p')">Ver mi perfil <i class="ti ti-sparkles" aria-hidden="true"></i></button>`}</div>
+    </div>`;
+}
+
+function castV(oi){
+  votes.push(oi);
+  const vd=VOTES[vq];
+  document.querySelectorAll('.vo').forEach((b,i)=>{b.disabled=true;if(i===oi)b.classList.add('vsel');});
+  const bc=document.getElementById('bc-wrap');
+  bc.innerHTML=vd.opts.map((o,i)=>{
+    const mine=i===oi;
+    const lbl=o.length>36?o.substring(0,36)+'…':o;
+    return `<div class="br-wrap"><div class="br-top"><span class="${mine?'mine':''}">${lbl}${mine?' (tú)':''}</span><span>${vd.pcts[i]}%</span></div><div class="bt"><div class="bf ${mine?'bm':'bo'}" id="bf${i}"></div></div></div>`;
+  }).join('');
+  document.getElementById('v-bars').style.display='block';
+  document.getElementById('v-opts').style.display='none';
+  setTimeout(()=>{vd.pcts.forEach((_,i)=>{const b=document.getElementById('bf'+i);if(b)b.style.width=vd.pcts[i]+'%';});},60);
+}
+
+function nextVQ(){vq++;renderVQ();}
+
+function initProf(){
+  const pidx=msc<=1?0:msc<=3?1:msc<=5?2:3;
+  const pr=PROFS[pidx];
+  const pct=Math.round((msc/6)*100);
+  document.getElementById('prof-body').innerHTML=`
+    <div class="pf">
+      <div class="pey">Tu perfil IA · CESDE 2026</div>
+      <div class="pico"><i class="ti ${pr.icon}" style="font-size:56px;color:${pr.color};" aria-hidden="true"></i></div>
+      <div class="pnm" style="color:${pr.color};">${pr.name}</div>
+      <div class="ptg">${pr.tg}</div>
+      <div class="psc">
+        <div class="psc-r"><span class="psc-l">Dominio de herramientas</span><span class="psc-v" style="color:${pr.color};">${pct}%</span></div>
+        <div class="pbr"><div class="pbf" id="pb" style="background:${pr.color};"></div></div>
+      </div>
+      <div class="pds">${pr.ds}</div>
+      <div class="ppr"><div class="ppr-l"><i class="ti ti-target" aria-hidden="true"></i> Lo que lograrás en este curso</div><div class="ppr-t">${pr.pr}</div></div>
+      <div class="ssl"><i class="ti ti-calendar" aria-hidden="true"></i> Las 5 sesiones que vienen</div>
+      ${SESS.map((s,i)=>`<div class="sr ${s.cur?'cur':''}"><div class="sn" style="background:${s.cur?'#EE2B7B':'rgba(255,255,255,0.07)'};color:${s.cur?'#fff':'rgba(255,255,255,0.35)'};">${i+1}</div><div class="sb"><div class="st">${s.t}</div><div class="sd">${s.d}</div></div></div>`).join('')}
+      <div class="pft">
+        <div class="pfc">CESDE · Educación Continua · Agosto 2026</div>
+        <p class="ptag2">La IA ya piensa con nosotros. <b>No por nosotros.</b></p>
+        <button class="xbtn sec" type="button" onclick="restart()" style="margin-top:12px;"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+      </div>
+    </div>`;
+  setTimeout(()=>{const b=document.getElementById('pb');if(b)b.style.width=pct+'%';},300);
+}
+
+function restart(){
+  rev=0;msc=0;selT=null;matched=0;vq=0;votes=[];
+  document.getElementById('xs-p').classList.remove('on');
+  document.getElementById('xs-w').classList.add('on');
+  initMyths();initMatch();
+}
+
+initMyths();
+initMatch();
+</script>
