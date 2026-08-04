@@ -1,0 +1,136 @@
+
+<h2 class="sr-only">Registro de asistencia en línea — cada estudiante toca su nombre para registrarse · CESDE · Sesión 2</h2>
+<style>
+.r{font-family:var(--font-sans);padding:.75rem 0}
+.hd{border:0.5px solid var(--border);background:var(--surface-1);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.75rem}
+.ht{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.hs{font-size:12px;color:var(--text-secondary)}
+.srow{display:flex;gap:6px;flex-wrap:wrap;margin-top:.6rem}
+.bdg{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:4px 11px;border-radius:100px;border:0.5px solid}
+.bdg-p{background:var(--bg-success);color:var(--text-success);border-color:var(--border-success)}
+.bdg-a{background:var(--surface-2);color:var(--text-secondary);border-color:var(--border)}
+.al{border-radius:var(--radius);padding:.7rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:8px;font-size:13px;border:0.5px solid;transition:all .3s}
+.al-info{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent)}
+.al-ok{background:var(--bg-success);color:var(--text-success);border-color:var(--border-success)}
+.al-err{background:var(--bg-danger);color:var(--text-danger);border-color:var(--border-danger)}
+.sw{position:relative;margin-bottom:.75rem}
+.sw i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-muted);pointer-events:none}
+.sw input{width:100%;padding-left:34px}
+.grid{display:grid;grid-template-columns:1fr;gap:6px}
+@media(min-width:360px){.grid{grid-template-columns:1fr 1fr}}
+.card{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);cursor:pointer;transition:background .15s,border-color .15s,transform .1s;user-select:none;min-height:60px}
+.card:hover:not(.p){background:var(--surface-2);border-color:var(--border-strong)}
+.card:active:not(.p){transform:scale(.97)}
+.card.p{background:var(--bg-success);border-color:var(--border-success);cursor:default}
+.card.pop{animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.07)}100%{transform:scale(1)}}
+.av{width:32px;height:32px;border-radius:50%;background:var(--surface-2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-secondary);flex-shrink:0;transition:all .2s}
+.card.p .av{background:var(--fill-success);border-color:transparent;color:var(--on-success)}
+.nm{font-size:12.5px;color:var(--text-primary);flex:1;line-height:1.35;transition:color .2s}
+.card.p .nm{color:var(--text-success);font-weight:500}
+.si{font-size:15px;color:var(--text-muted);flex-shrink:0;transition:color .2s}
+.card.p .si{color:var(--text-success)}
+.empty{text-align:center;padding:2rem 1rem;color:var(--text-muted);font-size:14px}
+.ft{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;gap:8px;flex-wrap:wrap}
+.fi{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+</style>
+
+<div class="r">
+  <div class="hd">
+    <p class="ht">Registro de asistencia</p>
+    <p class="hs">Herramientas para la Productividad con IA · CESDE · Sesión 2 · 4 agosto 2026</p>
+    <div class="srow">
+      <span class="bdg bdg-p"><i class="ti ti-users" aria-hidden="true"></i><span id="cp">0</span> presentes</span>
+      <span class="bdg bdg-a"><i class="ti ti-clock" aria-hidden="true"></i><span id="ca">43</span> pendientes</span>
+    </div>
+  </div>
+
+  <div class="al al-info" id="al" role="status" aria-live="polite">
+    <i class="ti ti-hand-click" aria-hidden="true"></i>
+    <span id="al-txt">Busca tu nombre y tócalo para registrar tu asistencia.</span>
+  </div>
+
+  <div class="sw">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="search" id="q" placeholder="Escribe tu nombre..." oninput="render()" autocomplete="off" aria-label="Buscar tu nombre">
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empt" style="display:none">No se encontró ese nombre. Revisa cómo está escrito.</div>
+
+  <div class="ft">
+    <span class="fi"><i class="ti ti-refresh" aria-hidden="true"></i>Se actualiza cada 20 s</span>
+    <button onclick="loadAtt()" aria-label="Actualizar lista ahora"><i class="ti ti-refresh" aria-hidden="true"></i> Actualizar</button>
+  </div>
+</div>
+
+<script>
+const S=["Ana Milena Bernal Gomez","Ana Veronica Arias Quirama","Angela Tatiana Buitrago Barrero","Carlos Fernando Jaimes Ramos","Claudia Maria Lopez Patiño","Daniela Mira Ochoa","Darly Yuranny Garcia Carvallo","Deisy Yurani Lopez Ospina","Eduardo Alfonso Miranda Antequera","Estefany Arias Avila","Fares Serna Palacio","German Andres Cordoba Ordoñez","Gillian Alejandra Sanabria Cuestas","Gina Maria Alvarez Giraldo","Henry Alonso Villa Jimenez","Isabel Cristina Villa Velez","Jennifer Jaramillo Delgado","Jessenia Toro Munera","Jhon Alexis Valencia Ochoa","Joan Sebastian Muñoz Rios","Jorge Alexis Gomez Zapata","Jorge Andres Moreno Agudelo","Jorge Wilson Cano Diaz","Juan Carlos Lopez Galeano","Juan David Blandon Arenas","Jully Albany Correa Mesa","Laura Catalina Cardona Calle","Liliana Maria Duque Mora","Luis Alfredo Posada Espinosa","Luisa Fernanda Alvarez Monsalve","Manuel Felipe Rosso Manosalva","Manuela Montoya Tamayo","Maria Yeraldin Arroyave Puerta","Mariana Arcila Toro","Mariana Taborda Mejia","Natalia Andrea Munera Velez","Oscar Jovanny Acevedo Delgado","Paola Andrea Montoya Alvarez","Santiago Ocampo Vargas","Silvana Sierra Zuluaga","Valeria Rodriguez Alzate","Vanesa Giraldo Serna","Yesica Andrea Cano Vasquez"];
+
+let here=new Set(), t;
+
+function ini(n){const p=n.trim().split(' ');return(p[0][0]+(p[1]?p[1][0]:'')).toUpperCase()}
+
+async function loadAtt(){
+  try{
+    const r=await window.storage.list('a2s_',true);
+    if(r&&r.keys&&r.keys.length>0){
+      here=new Set(r.keys.map(k=>parseInt(k.replace('a2s_',''))).filter(n=>!isNaN(n)&&n>=0&&n<S.length));
+    } else {
+      here=new Set();
+    }
+  }catch(e){here=new Set();}
+  render();
+  clearInterval(t);
+  t=setInterval(()=>{loadAtt();},20000);
+}
+
+function render(){
+  const q=(document.getElementById('q').value||'').toLowerCase().trim();
+  const g=document.getElementById('grid');
+  const em=document.getElementById('empt');
+  const filt=S.map((s,i)=>({s,i})).filter(({s})=>!q||s.toLowerCase().includes(q));
+  g.innerHTML='';
+  filt.forEach(({s,i})=>{
+    const pr=here.has(i);
+    const d=document.createElement('div');
+    d.className='card'+(pr?' p':'');
+    d.setAttribute('role',pr?'status':'button');
+    d.setAttribute('tabindex',pr?'-1':'0');
+    d.setAttribute('aria-label',pr?`${s}, ya registrado`:`${s}, toca para registrar tu asistencia`);
+    d.innerHTML=`<div class="av">${ini(s)}</div><span class="nm">${s}</span><i class="ti ${pr?'ti-check':'ti-circle-dashed'} si" aria-hidden="true"></i>`;
+    if(!pr){
+      d.onclick=()=>mark(i,s,d);
+      d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();mark(i,s,d);}};
+    }
+    g.appendChild(d);
+  });
+  em.style.display=filt.length===0?'block':'none';
+  document.getElementById('cp').textContent=here.size;
+  document.getElementById('ca').textContent=S.length-here.size;
+}
+
+async function mark(idx,name,el){
+  if(here.has(idx))return;
+  try{
+    await window.storage.set('a2s_'+idx,name,true);
+    here.add(idx);
+    el.classList.add('p','pop');
+    el.setAttribute('role','status');
+    el.setAttribute('tabindex','-1');
+    el.onclick=null;el.onkeydown=null;
+    el.querySelector('.si').className='ti ti-check si';
+    document.getElementById('cp').textContent=here.size;
+    document.getElementById('ca').textContent=S.length-here.size;
+    const al=document.getElementById('al');
+    al.className='al al-ok';
+    al.querySelector('#al-txt').textContent=`¡${name.split(' ')[0]}, tu asistencia quedó registrada!`;
+  }catch(e){
+    const al=document.getElementById('al');
+    al.className='al al-err';
+    al.querySelector('#al-txt').textContent='No se pudo guardar. Intenta de nuevo o actualiza la página.';
+  }
+}
+
+loadAtt();
+</script>
