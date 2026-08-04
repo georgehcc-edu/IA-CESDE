@@ -1,0 +1,152 @@
+
+<h2 class="sr-only">Registro de asistencia en línea — Herramientas para la Productividad con IA · CESDE · Sesión 2</h2>
+
+<style>
+.at-root { padding: 1rem 0; font-family: var(--font-sans); }
+.at-header { background: var(--surface-1); border: 0.5px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.at-title { font-size: 18px; font-weight: 500; color: var(--text-primary); margin: 0 0 2px; }
+.at-sub { font-size: 13px; color: var(--text-secondary); margin: 0; }
+.at-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+.at-stat { background: var(--surface-1); border: 0.5px solid var(--border); border-radius: var(--radius); padding: .75rem 1rem; text-align: center; }
+.at-stat-n { font-size: 24px; font-weight: 500; color: var(--text-primary); display: block; }
+.at-stat-l { font-size: 12px; color: var(--text-secondary); }
+.at-stat.present .at-stat-n { color: var(--text-success); }
+.at-stat.absent .at-stat-n { color: var(--text-danger); }
+.at-controls { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+.at-controls input { flex: 1; min-width: 160px; }
+.at-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 6px; }
+@media (min-width: 480px) { .at-grid { grid-template-columns: repeat(2, 1fr); } }
+.at-card { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); border: 0.5px solid var(--border); background: var(--surface-1); cursor: pointer; transition: background .12s; user-select: none; }
+.at-card:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.at-card.present { background: var(--bg-success); border-color: var(--border-success); }
+.at-card.present:hover { filter: brightness(0.97); }
+.at-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--text-secondary); flex-shrink: 0; }
+.at-card.present .at-avatar { background: var(--fill-success); border-color: var(--border-success); color: var(--on-success); }
+.at-name { font-size: 13px; color: var(--text-primary); font-weight: 400; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.at-card.present .at-name { color: var(--text-success); font-weight: 500; }
+.at-ico { font-size: 14px; flex-shrink: 0; color: var(--text-muted); }
+.at-card.present .at-ico { color: var(--text-success); }
+.at-actions { display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap; }
+.at-copybox { background: var(--surface-1); border: 0.5px solid var(--border); border-radius: var(--radius); padding: .75rem 1rem; margin-top: .75rem; font-size: 12px; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.6; display: none; }
+.at-copybox.show { display: block; }
+.at-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 14px; }
+</style>
+
+<div class="at-root">
+  <div class="at-header">
+    <p class="at-title">Registro de asistencia</p>
+    <p class="at-sub">Herramientas para la Productividad con IA · CESDE · Sesión 2 · 4 agosto 2026</p>
+  </div>
+
+  <div class="at-stats">
+    <div class="at-stat present">
+      <span class="at-stat-n" id="cnt-p">0</span>
+      <span class="at-stat-l">Presentes</span>
+    </div>
+    <div class="at-stat absent">
+      <span class="at-stat-n" id="cnt-a">43</span>
+      <span class="at-stat-l">Ausentes</span>
+    </div>
+    <div class="at-stat">
+      <span class="at-stat-n" id="cnt-pct">0%</span>
+      <span class="at-stat-l">Asistencia</span>
+    </div>
+  </div>
+
+  <div class="at-controls">
+    <input type="search" placeholder="Buscar estudiante..." id="search" oninput="filterList()" aria-label="Buscar estudiante">
+    <button onclick="markAll(true)" aria-label="Marcar todos presentes"><i class="ti ti-check" aria-hidden="true"></i> Todos presentes</button>
+    <button onclick="markAll(false)" aria-label="Desmarcar todos"><i class="ti ti-refresh" aria-hidden="true"></i> Reiniciar</button>
+  </div>
+
+  <div class="at-grid" id="grid"></div>
+  <div class="at-empty" id="empty" style="display:none">No se encontraron estudiantes</div>
+
+  <div class="at-actions">
+    <button onclick="copyList()" aria-label="Copiar lista de presentes"><i class="ti ti-copy" aria-hidden="true"></i> Copiar lista de presentes</button>
+  </div>
+  <div class="at-copybox" id="copybox"></div>
+</div>
+
+<script>
+const STUDENTS = [
+  "Ana Milena Bernal Gomez","Ana Veronica Arias Quirama","Angela Tatiana Buitrago Barrero",
+  "Carlos Fernando Jaimes Ramos","Claudia Maria Lopez Patiño","Daniela Mira Ochoa",
+  "Darly Yuranny Garcia Carvallo","Deisy Yurani Lopez Ospina","Eduardo Alfonso Miranda Antequera",
+  "Estefany Arias Avila","Fares Serna Palacio","German Andres Cordoba Ordoñez",
+  "Gillian Alejandra Sanabria Cuestas","Gina Maria Alvarez Giraldo","Henry Alonso Villa Jimenez",
+  "Isabel Cristina Villa Velez","Jennifer Jaramillo Delgado","Jessenia Toro Munera",
+  "Jhon Alexis Valencia Ochoa","Joan Sebastian Muñoz Rios","Jorge Alexis Gomez Zapata",
+  "Jorge Andres Moreno Agudelo","Jorge Wilson Cano Diaz","Juan Carlos Lopez Galeano",
+  "Juan David Blandon Arenas","Jully Albany Correa Mesa","Laura Catalina Cardona Calle",
+  "Liliana Maria Duque Mora","Luis Alfredo Posada Espinosa","Luisa Fernanda Alvarez Monsalve",
+  "Manuel Felipe Rosso Manosalva","Manuela Montoya Tamayo","Maria Yeraldin Arroyave Puerta",
+  "Mariana Arcila Toro","Mariana Taborda Mejia","Natalia Andrea Munera Velez",
+  "Oscar Jovanny Acevedo Delgado","Paola Andrea Montoya Alvarez","Santiago Ocampo Vargas",
+  "Silvana Sierra Zuluaga","Valeria Rodriguez Alzate","Vanesa Giraldo Serna",
+  "Yesica Andrea Cano Vasquez"
+];
+
+const state = new Array(STUDENTS.length).fill(false);
+const grid = document.getElementById('grid');
+const empty = document.getElementById('empty');
+
+function initials(name) {
+  const parts = name.trim().split(' ');
+  return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+}
+
+function render(filter) {
+  const q = (filter || '').toLowerCase();
+  const filtered = STUDENTS.map((s,i) => ({s, i})).filter(({s}) => s.toLowerCase().includes(q));
+  grid.innerHTML = '';
+  filtered.forEach(({s, i}) => {
+    const card = document.createElement('div');
+    card.className = 'at-card' + (state[i] ? ' present' : '');
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-pressed', state[i].toString());
+    card.setAttribute('aria-label', s + (state[i] ? ', presente' : ', ausente'));
+    card.innerHTML = `
+      <div class="at-avatar">${initials(s)}</div>
+      <span class="at-name">${s}</span>
+      <i class="ti ${state[i] ? 'ti-check' : 'ti-circle'} at-ico" aria-hidden="true"></i>`;
+    card.onclick = () => toggle(i);
+    card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i); } };
+    grid.appendChild(card);
+  });
+  empty.style.display = filtered.length === 0 ? 'block' : 'none';
+  updateStats();
+}
+
+function toggle(i) { state[i] = !state[i]; render(document.getElementById('search').value); }
+
+function markAll(val) { state.fill(val); document.getElementById('search').value = ''; render(); }
+
+function filterList() { render(document.getElementById('search').value); }
+
+function updateStats() {
+  const p = state.filter(Boolean).length;
+  const total = STUDENTS.length;
+  document.getElementById('cnt-p').textContent = p;
+  document.getElementById('cnt-a').textContent = total - p;
+  document.getElementById('cnt-pct').textContent = Math.round((p / total) * 100) + '%';
+}
+
+function copyList() {
+  const present = STUDENTS.filter((_, i) => state[i]);
+  const box = document.getElementById('copybox');
+  if (present.length === 0) {
+    box.className = 'at-copybox show';
+    box.textContent = '(Ningún estudiante marcado como presente todavía)';
+    return;
+  }
+  const text = `Asistencia — Sesión 2 · CESDE · 4 agosto 2026\nPresentes: ${present.length}/${STUDENTS.length}\n\n` +
+    present.map((n, i) => `${i+1}. ${n}`).join('\n');
+  box.className = 'at-copybox show';
+  box.textContent = text;
+  if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+}
+
+render();
+</script>
