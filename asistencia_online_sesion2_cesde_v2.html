@@ -1,0 +1,258 @@
+
+<h2 class="sr-only">Registro de asistencia en línea — toca tu nombre para registrarte · Vista docente disponible · CESDE · Sesión 2</h2>
+<style>
+.r{font-family:var(--font-sans);padding:.75rem 0}
+.hd{border:0.5px solid var(--border);background:var(--surface-1);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.75rem}
+.ht{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.hs{font-size:12px;color:var(--text-secondary)}
+.srow{display:flex;gap:6px;flex-wrap:wrap;margin-top:.6rem;align-items:center;justify-content:space-between}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.bdg{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:4px 11px;border-radius:100px;border:0.5px solid}
+.bdg-p{background:var(--bg-success);color:var(--text-success);border-color:var(--border-success)}
+.bdg-a{background:var(--surface-2);color:var(--text-secondary);border-color:var(--border)}
+.btn-doc{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:4px 10px;border-radius:100px;border:0.5px solid var(--border-accent);background:var(--bg-accent);color:var(--text-accent);cursor:pointer;font-family:var(--font-sans)}
+.btn-doc:hover{filter:brightness(.95)}
+.al{border-radius:var(--radius);padding:.7rem 1rem;margin-bottom:.75rem;display:flex;align-items:center;gap:8px;font-size:13px;border:0.5px solid;transition:all .3s}
+.al-info{background:var(--bg-accent);color:var(--text-accent);border-color:var(--border-accent)}
+.al-ok{background:var(--bg-success);color:var(--text-success);border-color:var(--border-success)}
+.al-err{background:var(--bg-danger);color:var(--text-danger);border-color:var(--border-danger)}
+.sw{position:relative;margin-bottom:.75rem}
+.sw i{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--text-muted);pointer-events:none}
+.sw input{width:100%;padding-left:34px}
+.grid{display:grid;grid-template-columns:1fr;gap:6px}
+@media(min-width:360px){.grid{grid-template-columns:1fr 1fr}}
+.card{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);cursor:pointer;transition:background .15s,border-color .15s,transform .1s;user-select:none;min-height:60px}
+.card:hover:not(.p){background:var(--surface-2);border-color:var(--border-strong)}
+.card:active:not(.p){transform:scale(.97)}
+.card.p{background:var(--bg-success);border-color:var(--border-success);cursor:default}
+.card.pop{animation:pop .4s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.07)}100%{transform:scale(1)}}
+.av{width:32px;height:32px;border-radius:50%;background:var(--surface-2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-secondary);flex-shrink:0;transition:all .2s}
+.card.p .av{background:var(--fill-success);border-color:transparent;color:var(--on-success)}
+.nm{font-size:12.5px;color:var(--text-primary);flex:1;line-height:1.35}
+.card.p .nm{color:var(--text-success);font-weight:500}
+.si{font-size:15px;color:var(--text-muted);flex-shrink:0}
+.card.p .si{color:var(--text-success)}
+.empty{text-align:center;padding:2rem 1rem;color:var(--text-muted);font-size:14px}
+.ft{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;gap:8px;flex-wrap:wrap}
+.fi{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px}
+/* ── VISTA DOCENTE ── */
+.panel{display:none;border:0.5px solid var(--border-accent);border-radius:12px;overflow:hidden;margin-bottom:.75rem}
+.panel.show{display:block}
+.panel-hd{background:var(--bg-accent);padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:0.5px solid var(--border-accent)}
+.panel-title{font-size:14px;font-weight:500;color:var(--text-accent);display:flex;align-items:center;gap:6px}
+.panel-body{padding:.75rem 1rem;display:grid;gap:.75rem}
+@media(min-width:480px){.panel-body{grid-template-columns:1fr 1fr}}
+.pcol{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem}
+.pcol-hd{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);margin-bottom:.5rem;display:flex;align-items:center;gap:5px}
+.pcol-hd.ok{color:var(--text-success)}
+.pcol-hd.nd{color:var(--text-danger)}
+.plist{display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto}
+.pitem{font-size:12px;color:var(--text-primary);padding:4px 0;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:6px}
+.pitem:last-child{border-bottom:none}
+.pitem i{font-size:13px;flex-shrink:0}
+.pitem.ok i{color:var(--text-success)}
+.pitem.nd i{color:var(--text-danger)}
+.pbar-wrap{margin:.5rem 0}
+.pbar-bg{height:8px;background:var(--surface-2);border-radius:100px;overflow:hidden;border:0.5px solid var(--border)}
+.pbar-fill{height:100%;background:var(--fill-success);border-radius:100px;transition:width .5s ease}
+.pbar-lbl{font-size:11px;color:var(--text-secondary);margin-top:4px}
+.copy-area{background:var(--surface-2);border:0.5px solid var(--border);border-radius:var(--radius);padding:.6rem .75rem;font-size:11px;color:var(--text-secondary);font-family:var(--font-mono);white-space:pre-wrap;line-height:1.6;max-height:160px;overflow-y:auto;display:none;margin-top:.5rem}
+.copy-area.show{display:block}
+</style>
+
+<div class="r">
+  <div class="hd">
+    <p class="ht">Registro de asistencia</p>
+    <p class="hs">Herramientas para la Productividad con IA · CESDE · Sesión 2 · 4 agosto 2026</p>
+    <div class="srow">
+      <div class="badges">
+        <span class="bdg bdg-p"><i class="ti ti-users" aria-hidden="true"></i><span id="cp">0</span> presentes</span>
+        <span class="bdg bdg-a"><i class="ti ti-clock" aria-hidden="true"></i><span id="ca">43</span> pendientes</span>
+      </div>
+      <button class="btn-doc" onclick="togglePanel()" id="btn-doc" aria-expanded="false">
+        <i class="ti ti-eye" aria-hidden="true"></i> Vista docente
+      </button>
+    </div>
+  </div>
+
+  <!-- VISTA DOCENTE -->
+  <div class="panel" id="panel" role="region" aria-label="Vista docente">
+    <div class="panel-hd">
+      <span class="panel-title"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Panel del facilitador</span>
+      <button onclick="togglePanel()" aria-label="Cerrar vista docente"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="panel-body">
+      <div class="pcol">
+        <div class="pcol-hd ok"><i class="ti ti-check" aria-hidden="true"></i> Presentes (<span id="d-cp">0</span>)</div>
+        <div class="pbar-wrap">
+          <div class="pbar-bg"><div class="pbar-fill" id="pbar" style="width:0%"></div></div>
+          <p class="pbar-lbl" id="pbar-lbl">0 de 43 · 0%</p>
+        </div>
+        <div class="plist" id="d-plist"></div>
+      </div>
+      <div class="pcol">
+        <div class="pcol-hd nd"><i class="ti ti-clock" aria-hidden="true"></i> Pendientes (<span id="d-ca">43</span>)</div>
+        <div class="plist" id="d-alist"></div>
+      </div>
+    </div>
+    <div style="padding:0 1rem .75rem;display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="copyPresent()" aria-label="Copiar lista de presentes"><i class="ti ti-copy" aria-hidden="true"></i> Copiar presentes</button>
+      <button onclick="copyAll()" aria-label="Copiar resumen completo"><i class="ti ti-file-text" aria-hidden="true"></i> Copiar resumen</button>
+    </div>
+    <div class="copy-area" id="copy-area"></div>
+  </div>
+
+  <div class="al al-info" id="al" role="status" aria-live="polite">
+    <i class="ti ti-hand-click" aria-hidden="true"></i>
+    <span id="al-txt">Busca tu nombre y tócalo para registrar tu asistencia.</span>
+  </div>
+
+  <div class="sw">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="search" id="q" placeholder="Escribe tu nombre..." oninput="render()" autocomplete="off" aria-label="Buscar tu nombre">
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empt" style="display:none">No se encontró ese nombre. Revisa cómo está escrito.</div>
+
+  <div class="ft">
+    <span class="fi"><i class="ti ti-refresh" aria-hidden="true"></i> Se actualiza cada 20 s</span>
+    <button onclick="loadAtt()" aria-label="Actualizar lista ahora"><i class="ti ti-refresh" aria-hidden="true"></i> Actualizar</button>
+  </div>
+</div>
+
+<script>
+const S=["Ana Milena Bernal Gomez","Ana Veronica Arias Quirama","Angela Tatiana Buitrago Barrero","Carlos Fernando Jaimes Ramos","Claudia Maria Lopez Patiño","Daniela Mira Ochoa","Darly Yuranny Garcia Carvallo","Deisy Yurani Lopez Ospina","Eduardo Alfonso Miranda Antequera","Estefany Arias Avila","Fares Serna Palacio","German Andres Cordoba Ordoñez","Gillian Alejandra Sanabria Cuestas","Gina Maria Alvarez Giraldo","Henry Alonso Villa Jimenez","Isabel Cristina Villa Velez","Jennifer Jaramillo Delgado","Jessenia Toro Munera","Jhon Alexis Valencia Ochoa","Joan Sebastian Muñoz Rios","Jorge Alexis Gomez Zapata","Jorge Andres Moreno Agudelo","Jorge Wilson Cano Diaz","Juan Carlos Lopez Galeano","Juan David Blandon Arenas","Jully Albany Correa Mesa","Laura Catalina Cardona Calle","Liliana Maria Duque Mora","Luis Alfredo Posada Espinosa","Luisa Fernanda Alvarez Monsalve","Manuel Felipe Rosso Manosalva","Manuela Montoya Tamayo","Maria Yeraldin Arroyave Puerta","Mariana Arcila Toro","Mariana Taborda Mejia","Natalia Andrea Munera Velez","Oscar Jovanny Acevedo Delgado","Paola Andrea Montoya Alvarez","Santiago Ocampo Vargas","Silvana Sierra Zuluaga","Valeria Rodriguez Alzate","Vanesa Giraldo Serna","Yesica Andrea Cano Vasquez"];
+
+let here=new Set(), timer, panelOpen=false;
+
+function ini(n){const p=n.trim().split(' ');return(p[0][0]+(p[1]?p[1][0]:'')).toUpperCase()}
+
+async function loadAtt(){
+  try{
+    const r=await window.storage.list('a2s_',true);
+    if(r&&r.keys&&r.keys.length>0){
+      here=new Set(r.keys.map(k=>parseInt(k.replace('a2s_',''))).filter(n=>!isNaN(n)&&n>=0&&n<S.length));
+    } else { here=new Set(); }
+  }catch(e){here=new Set();}
+  render();
+  if(panelOpen) renderPanel();
+  clearInterval(timer);
+  timer=setInterval(()=>{loadAtt();},20000);
+}
+
+function render(){
+  const q=(document.getElementById('q').value||'').toLowerCase().trim();
+  const g=document.getElementById('grid');
+  const em=document.getElementById('empt');
+  const filt=S.map((s,i)=>({s,i})).filter(({s})=>!q||s.toLowerCase().includes(q));
+  g.innerHTML='';
+  filt.forEach(({s,i})=>{
+    const pr=here.has(i);
+    const d=document.createElement('div');
+    d.className='card'+(pr?' p':'');
+    d.setAttribute('role',pr?'status':'button');
+    d.setAttribute('tabindex',pr?'-1':'0');
+    d.setAttribute('aria-label',pr?`${s}, ya registrado`:`${s}, toca para registrar tu asistencia`);
+    d.innerHTML=`<div class="av">${ini(s)}</div><span class="nm">${s}</span><i class="ti ${pr?'ti-check':'ti-circle-dashed'} si" aria-hidden="true"></i>`;
+    if(!pr){
+      d.onclick=()=>mark(i,s,d);
+      d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();mark(i,s,d);}};
+    }
+    g.appendChild(d);
+  });
+  em.style.display=filt.length===0?'block':'none';
+  document.getElementById('cp').textContent=here.size;
+  document.getElementById('ca').textContent=S.length-here.size;
+}
+
+function renderPanel(){
+  const pres=S.map((s,i)=>({s,i})).filter(({i})=>here.has(i));
+  const aus=S.map((s,i)=>({s,i})).filter(({i})=>!here.has(i));
+  const pct=Math.round((here.size/S.length)*100);
+
+  document.getElementById('d-cp').textContent=pres.length;
+  document.getElementById('d-ca').textContent=aus.length;
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('pbar-lbl').textContent=`${pres.length} de ${S.length} · ${pct}%`;
+
+  const pl=document.getElementById('d-plist');
+  pl.innerHTML=pres.length===0
+    ?'<p style="font-size:12px;color:var(--text-muted);padding:8px 0">Nadie ha registrado asistencia aún</p>'
+    :pres.map(({s},n)=>`<div class="pitem ok"><i class="ti ti-check" aria-hidden="true"></i><span>${n+1}. ${s}</span></div>`).join('');
+
+  const al=document.getElementById('d-alist');
+  al.innerHTML=aus.length===0
+    ?'<p style="font-size:12px;color:var(--text-muted);padding:8px 0">¡Todos han registrado asistencia!</p>'
+    :aus.map(({s})=>`<div class="pitem nd"><i class="ti ti-clock" aria-hidden="true"></i><span>${s}</span></div>`).join('');
+}
+
+function togglePanel(){
+  panelOpen=!panelOpen;
+  const p=document.getElementById('panel');
+  const b=document.getElementById('btn-doc');
+  if(panelOpen){
+    p.classList.add('show');
+    b.innerHTML='<i class="ti ti-eye-off" aria-hidden="true"></i> Cerrar vista';
+    b.setAttribute('aria-expanded','true');
+    renderPanel();
+  } else {
+    p.classList.remove('show');
+    b.innerHTML='<i class="ti ti-eye" aria-hidden="true"></i> Vista docente';
+    b.setAttribute('aria-expanded','false');
+    document.getElementById('copy-area').classList.remove('show');
+  }
+}
+
+function copyPresent(){
+  const pres=S.map((s,i)=>({s,i})).filter(({i})=>here.has(i));
+  const txt=pres.length===0
+    ? '(Ningún estudiante ha registrado asistencia aún)'
+    : `PRESENTES — Sesión 2 · CESDE · 4 agosto 2026\nTotal: ${pres.length} de ${S.length}\n\n`+pres.map(({s},n)=>`${n+1}. ${s}`).join('\n');
+  showCopy(txt);
+}
+
+function copyAll(){
+  const pres=S.map((s,i)=>({s,i})).filter(({i})=>here.has(i));
+  const aus=S.map((s,i)=>({s,i})).filter(({i})=>!here.has(i));
+  const pct=Math.round((here.size/S.length)*100);
+  const txt=`RESUMEN DE ASISTENCIA\nSesión 2 · Herramientas para la Productividad con IA · CESDE\nFecha: 4 agosto 2026\n\nASISTENCIA: ${pres.length}/${S.length} (${pct}%)\n\nPRESENTES (${pres.length}):\n`
+    +pres.map(({s},n)=>`${n+1}. ${s}`).join('\n')
+    +`\n\nPENDIENTES / AUSENTES (${aus.length}):\n`
+    +aus.map(({s})=>`- ${s}`).join('\n');
+  showCopy(txt);
+}
+
+function showCopy(txt){
+  const box=document.getElementById('copy-area');
+  box.textContent=txt;
+  box.classList.add('show');
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).catch(()=>{});
+}
+
+async function mark(idx,name,el){
+  if(here.has(idx))return;
+  try{
+    await window.storage.set('a2s_'+idx,name,true);
+    here.add(idx);
+    el.classList.add('p','pop');
+    el.setAttribute('role','status');
+    el.setAttribute('tabindex','-1');
+    el.onclick=null;el.onkeydown=null;
+    el.querySelector('.si').className='ti ti-check si';
+    document.getElementById('cp').textContent=here.size;
+    document.getElementById('ca').textContent=S.length-here.size;
+    const al=document.getElementById('al');
+    al.className='al al-ok';
+    al.querySelector('#al-txt').textContent=`¡${name.split(' ')[0]}, tu asistencia quedó registrada!`;
+    if(panelOpen)renderPanel();
+  }catch(e){
+    const al=document.getElementById('al');
+    al.className='al al-err';
+    al.querySelector('#al-txt').textContent='No se pudo guardar. Intenta de nuevo o actualiza la página.';
+  }
+}
+
+loadAtt();
+</script>
