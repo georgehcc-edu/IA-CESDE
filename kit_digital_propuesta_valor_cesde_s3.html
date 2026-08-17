@@ -1,0 +1,521 @@
+
+<h2 class="sr-only">Guía interactiva Sesión 3 — Kit Digital de Propuesta de Valor: ChatGPT, Gamma, Napkin, HeyGen · CESDE</h2>
+<style>
+:root{--navy:#0A1F3D;--pink:#EE2B7B;--g1:#22C55E;--g2:#16A34A;--gbg:#F0FDF4;--gbr:#BBF7D0;--gtx:#15803D;--b1:#2563EB;--bbg:#EFF6FF;--bbr:#BFDBFE;--btx:#1D4ED8;--amber:#F59E0B;--ambg:#FFFBEB;--amtx:#92400E;--red:#DC2626;--rbg:#FEF2F2;--rbr:#FECACA;--rtx:#B91C1C}
+.kit{font-family:var(--font-sans);padding:.5rem 0}
+/* PROGRESS */
+.prog-wrap{margin-bottom:1rem}
+.prog-bar{display:flex;gap:4px;align-items:center;justify-content:center;margin-bottom:.4rem}
+.pd{width:9px;height:9px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer;border:none;padding:0}
+.pd.done{background:var(--g1)}
+.pd.active{background:var(--pink);transform:scale(1.3)}
+.prog-lbl{text-align:center;font-size:12px;color:var(--text-secondary)}
+/* SCREENS */
+.sc{display:none}.sc.on{display:block}
+/* WELCOME */
+.w-hero{background:var(--navy);border-radius:14px;padding:1.5rem;text-align:center;margin-bottom:.75rem}
+.w-hero h1{color:#fff;font-size:20px;font-weight:700;margin-bottom:.4rem}
+.w-hero p{color:rgba(255,255,255,.65);font-size:13px}
+.chain{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:.75rem}
+@media(min-width:460px){.chain{grid-template-columns:repeat(4,1fr)}}
+.chain-item{border:0.5px solid var(--border);border-radius:10px;padding:.65rem .75rem;text-align:center;background:var(--surface-1)}
+.chain-num{font-size:11px;font-weight:600;color:var(--text-secondary);margin-bottom:3px}
+.chain-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+.chain-desc{font-size:11px;color:var(--text-secondary);margin-top:2px}
+.arrow-row{text-align:center;color:var(--text-muted);font-size:20px;margin:.25rem 0;display:none}
+@media(min-width:460px){.arrow-row{display:block}}
+/* FORM */
+.field{margin-bottom:.75rem}
+.field label{display:block;font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px}
+.field .hint{font-size:11px;color:var(--text-secondary);margin-bottom:5px}
+.field input,.field textarea{width:100%;padding:9px 12px;border:0.5px solid var(--border);border-radius:var(--radius);font-family:var(--font-sans);font-size:13px;background:var(--surface-1);color:var(--text-primary);outline:none;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(238,43,123,.1)}
+/* TOOL SCREEN */
+.tool-hd{border-radius:12px;padding:1rem 1.25rem;margin-bottom:.75rem;color:#fff}
+.tool-hd h2{font-size:17px;font-weight:700;margin-bottom:2px}
+.tool-hd p{font-size:12px;opacity:.8}
+.tool-hd .chain-badge{display:inline-block;background:rgba(255,255,255,.18);border-radius:100px;padding:2px 10px;font-size:11px;font-weight:600;margin-bottom:6px}
+/* CARDS */
+.card{background:var(--surface-1);border:0.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;margin-bottom:.65rem}
+.card-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:.4rem;display:flex;align-items:center;gap:6px}
+.card-title i{font-size:15px}
+.card p{font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:.4rem}
+.card p:last-child{margin-bottom:0}
+/* PROMPT BOX */
+.pbox-wrap{margin:.5rem 0}
+.pbox-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between}
+.pbox{background:#1F2D3D;border-radius:8px;padding:.75rem 1rem;font-size:11.5px;font-family:monospace;color:#E2E8F0;white-space:pre-wrap;line-height:1.7;word-break:break-word}
+.pbox .cmd{color:#FBBf24;font-weight:700}
+.pbox .hl{color:#38BDF8}
+.copy-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:4px 10px;border-radius:100px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .15s}
+.copy-btn:hover{border-color:var(--pink);color:var(--pink)}
+.copy-btn.copied{background:var(--gbg);border-color:var(--gbr);color:var(--gtx)}
+/* ALERT BOXES */
+.al{border-radius:var(--radius);padding:.65rem .9rem;font-size:13px;border:0.5px solid;margin-bottom:.65rem;display:flex;align-items:flex-start;gap:7px}
+.al i{font-size:15px;flex-shrink:0;margin-top:1px}
+.al-info{background:var(--bbg);border-color:var(--bbr);color:var(--btx)}
+.al-ok{background:var(--gbg);border-color:var(--gbr);color:var(--gtx)}
+.al-warn{background:var(--ambg);border-color:#FCD34D;color:var(--amtx)}
+/* FROM PREV */
+.from-prev{background:var(--surface-2);border:0.5px solid var(--border);border-left:3px solid var(--pink);border-radius:0 8px 8px 0;padding:.6rem .85rem;margin-bottom:.65rem;font-size:12px;color:var(--text-secondary)}
+.from-prev strong{color:var(--text-primary);display:block;margin-bottom:2px}
+/* STEPS INSIDE TOOL */
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--pink);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+/* COMPLETE KIT */
+.kit-item{display:flex;align-items:center;gap:10px;padding:.7rem .9rem;border:0.5px solid var(--border);border-radius:8px;background:var(--surface-1);margin-bottom:.5rem}
+.kit-item i{font-size:20px;flex-shrink:0}
+.kit-item .ki-body{}
+.kit-item .ki-tool{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+.kit-item .ki-desc{font-size:13px;color:var(--text-primary);font-weight:500}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;font-size:14px;font-weight:600;padding:10px 20px;border:none;cursor:pointer;font-family:var(--font-sans);transition:all .15s}
+.btn-primary{background:var(--pink);color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-sec{background:var(--surface-1);border:0.5px solid var(--border);color:var(--text-secondary)}
+.btn-sec:hover{border-color:var(--pink);color:var(--pink)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:.75rem}
+.btn-check{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:0.5px solid var(--gbr);background:var(--gbg);color:var(--gtx);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-check:hover{filter:brightness(.96)}
+/* DONE BADGE */
+.done-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gbg);border:0.5px solid var(--gbr);color:var(--gtx);border-radius:100px;padding:3px 10px;font-size:12px;font-weight:600;margin-left:8px}
+</style>
+
+<div class="kit">
+
+<!-- PROGRESS -->
+<div class="prog-wrap" id="prog-wrap" style="display:none">
+  <div class="prog-bar">
+    <button class="pd" id="pd0" onclick="goTo(0)" aria-label="Paso 0: Mi contexto" title="Mi Contexto"></button>
+    <button class="pd" id="pd1" onclick="goTo(1)" aria-label="Paso 1: ChatGPT" title="ChatGPT"></button>
+    <button class="pd" id="pd2" onclick="goTo(2)" aria-label="Paso 2: Gamma" title="Gamma"></button>
+    <button class="pd" id="pd3" onclick="goTo(3)" aria-label="Paso 3: Napkin" title="Napkin"></button>
+    <button class="pd" id="pd4" onclick="goTo(4)" aria-label="Paso 4: HeyGen" title="HeyGen"></button>
+    <button class="pd" id="pd5" onclick="goTo(5)" aria-label="Paso 5: Mi Kit" title="Mi Kit"></button>
+  </div>
+  <p class="prog-lbl" id="prog-lbl"></p>
+</div>
+
+<!-- SCREEN 0: WELCOME -->
+<div class="sc on" id="sc0">
+  <div class="w-hero">
+    <h1>Tu Kit Digital de Propuesta de Valor</h1>
+    <p>Sesión 3 · CESDE · G1-Martes · 4 herramientas · 1 cadena continua</p>
+  </div>
+  <div class="chain">
+    <div class="chain-item"><div class="chain-num">Paso 1</div><div class="chain-name">ChatGPT</div><div class="chain-desc">Propuesta de valor + imagen</div></div>
+    <div class="chain-item"><div class="chain-num">Paso 2</div><div class="chain-name">Gamma</div><div class="chain-desc">Presentación profesional</div></div>
+    <div class="chain-item"><div class="chain-num">Paso 3</div><div class="chain-name">Napkin IA</div><div class="chain-desc">Diagrama visual</div></div>
+    <div class="chain-item"><div class="chain-num">Paso 4</div><div class="chain-name">HeyGen</div><div class="chain-desc">Video pitch con avatar</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-info-circle"></i> Cómo funciona esta guía</div>
+    <p>Rellenas <strong>una sola vez</strong> tu información profesional y la guía genera automáticamente todos los prompts personalizados. El resultado de cada herramienta es el insumo de la siguiente.</p>
+    <p>Al terminar tendrás: <strong>imagen · presentación · diagrama · video pitch</strong> — todos coherentes entre sí.</p>
+  </div>
+  <div class="btn-row"><button class="btn btn-primary" onclick="goTo(0)"><i class="ti ti-arrow-right"></i> Comenzar — Mi contexto</button></div>
+</div>
+
+<!-- SCREEN 0: MI CONTEXTO -->
+<div class="sc" id="sc0b" style="display:none">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-user-circle"></i> Mi contexto profesional</div>
+    <p>Completa estos 5 campos. La guía usará esta información para generar todos los prompts del día personalizados para ti.</p>
+  </div>
+  <div class="field"><label>¿Cuál es tu cargo o profesión?</label><div class="hint">Ej: Coordinadora de Talento Humano / Emprendedora en moda sostenible / Contador independiente</div><input type="text" id="f-cargo" placeholder="Mi cargo es..."></div>
+  <div class="field"><label>¿Quién es tu cliente o audiencia principal?</label><div class="hint">Ej: Empresas medianas del sector industrial / Madres entre 25-40 años / Startups en etapa temprana</div><input type="text" id="f-cliente" placeholder="Mi cliente/audiencia es..."></div>
+  <div class="field"><label>¿Qué problema concreto resuelves?</label><div class="hint">Ej: Las empresas pierden tiempo en procesos manuales de selección / Los emprendedores no saben cómo diferenciarse visualmente</div><textarea id="f-problema" rows="2" placeholder="El problema que resuelvo es..."></textarea></div>
+  <div class="field"><label>¿Qué ofreces como solución?</label><div class="hint">Ej: Asesoría en automatización de RRHH / Diseño de marca con identidad auténtica / Consultoría financiera personalizada</div><textarea id="f-solucion" rows="2" placeholder="Mi solución/servicio es..."></textarea></div>
+  <div class="field"><label>¿Qué te diferencia de los demás?</label><div class="hint">Ej: Combino tecnología con enfoque humano / Entrego resultados en 48 horas / Soy especialista solo en ese sector</div><input type="text" id="f-diferenciador" placeholder="Lo que me diferencia es..."></div>
+  <div class="btn-row">
+    <button class="btn btn-sec" onclick="showWelcome()"><i class="ti ti-arrow-left"></i> Atrás</button>
+    <button class="btn btn-primary" onclick="validateAndStart()"><i class="ti ti-sparkles"></i> Generar mis prompts personalizados</button>
+  </div>
+</div>
+
+<!-- SCREEN 1: CHATGPT -->
+<div class="sc" id="sc1">
+  <div class="tool-hd" style="background:linear-gradient(135deg,#1F4E79,#2E75B6)">
+    <div class="chain-badge">Paso 1 de 4</div>
+    <h2><i class="ti ti-brand-openai"></i> ChatGPT — Propuesta de Valor + Imagen</h2>
+    <p>Tiempo estimado: 40 minutos · Entregables: texto + imagen</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-bulb"></i> ¿Qué harás en este paso?</div>
+    <p>Usarás <strong>dos prompts tipo LOOP</strong> en ChatGPT. Cada uno genera, evalúa y mejora solo.</p>
+    <p><strong>Resultado 1:</strong> Tu propuesta de valor en 2-3 oraciones + titular poderoso<br><strong>Resultado 2:</strong> Prompt de imagen para generar en Bing o Canva IA</p>
+  </div>
+
+  <div class="al al-info"><i class="ti ti-link"></i><div>Abre <strong>ChatGPT</strong> en una pestaña nueva. Copia el prompt, pégalo y presiona Enter. Espera la respuesta completa antes de continuar.</div></div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">1</span> LOOP 1 — Propuesta de Valor</div>
+    <p>Copia este prompt completo y pégalo en ChatGPT:</p>
+    <div class="pbox-wrap">
+      <div class="pbox-label"><span>Tu prompt personalizado</span><button class="copy-btn" onclick="copyPrompt('p1',this)" aria-label="Copiar prompt 1"><i class="ti ti-copy"></i> Copiar</button></div>
+      <div class="pbox" id="p1"></div>
+    </div>
+    <div class="al al-ok" style="margin-top:.5rem"><i class="ti ti-check"></i><div>Cuando tengas tu <strong>Versión 2</strong>, cópiala. La necesitarás en los siguientes pasos.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">2</span> LOOP 2 — Prompt de Imagen</div>
+    <p>Con tu propuesta lista, usa este segundo LOOP para generar el prompt de imagen:</p>
+    <div class="pbox-wrap">
+      <div class="pbox-label"><span>Tu prompt de imagen</span><button class="copy-btn" onclick="copyPrompt('p2',this)" aria-label="Copiar prompt 2"><i class="ti ti-copy"></i> Copiar</button></div>
+      <div class="pbox" id="p2"></div>
+    </div>
+  </div>
+
+  <div class="al al-warn"><i class="ti ti-camera"></i><div><strong>Genera tu imagen:</strong> Copia el prompt final de imagen y pégalo en <a href="https://bing.com/images/create" target="_blank" style="color:inherit;font-weight:600">Bing Image Creator</a> (gratis) o en Canva IA. Guarda la imagen que más te guste.</div></div>
+
+  <div class="btn-row">
+    <button class="btn-check" onclick="markDone(1)"><i class="ti ti-check"></i> Tengo mi propuesta de valor + imagen</button>
+    <button class="btn btn-sec" onclick="goTo(-1)"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: GAMMA -->
+<div class="sc" id="sc2">
+  <div class="tool-hd" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">
+    <div class="chain-badge">Paso 2 de 4</div>
+    <h2><i class="ti ti-presentation"></i> Gamma — Presentación Profesional</h2>
+    <p>Tiempo estimado: 40 minutos · Entregable: presentación de 6-8 slides</p>
+  </div>
+
+  <div class="from-prev"><strong>Viene del Paso 1 (ChatGPT)</strong>Ten a la mano: tu Versión 2 de la propuesta de valor y tu titular. Los necesitarás aquí.</div>
+
+  <div class="al al-info"><i class="ti ti-link"></i><div>Abre <a href="https://gamma.app" target="_blank" style="color:inherit;font-weight:600">gamma.app</a> → Inicia sesión con Google → <strong>New → Generate</strong>. Crea cuenta si no la tienes (plan gratuito, 400 créditos).</div></div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">1</span> Prompt para Gamma</div>
+    <p>Copia este prompt. Antes de pegarlo en Gamma, <strong>reemplaza las partes en mayúsculas</strong> con tu información real del Paso 1:</p>
+    <div class="pbox-wrap">
+      <div class="pbox-label"><span>Tu prompt para Gamma</span><button class="copy-btn" onclick="copyPrompt('p3',this)" aria-label="Copiar prompt Gamma"><i class="ti ti-copy"></i> Copiar</button></div>
+      <div class="pbox" id="p3"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">2</span> Personaliza tu presentación</div>
+    <p>Gamma genera la presentación automáticamente. Una vez lista:</p>
+    <p>• Revisa que los 7 slides tengan sentido para tu propuesta<br>• Agrega tu imagen del Paso 1 en la slide de portada<br>• Cambia colores o tipografía si quieres (opcional)</p>
+  </div>
+
+  <div class="al al-ok"><i class="ti ti-check"></i><div>Anota los <strong>3-5 puntos clave</strong> de tu presentación. Los necesitarás en el Paso 3 (Napkin).</div></div>
+
+  <div class="btn-row">
+    <button class="btn-check" onclick="markDone(2)"><i class="ti ti-check"></i> Tengo mi presentación en Gamma</button>
+    <button class="btn btn-sec" onclick="goTo(1)"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: NAPKIN -->
+<div class="sc" id="sc3">
+  <div class="tool-hd" style="background:linear-gradient(135deg,#15803D,#22C55E)">
+    <div class="chain-badge">Paso 3 de 4</div>
+    <h2><i class="ti ti-chart-dots"></i> Napkin IA — Diagrama Visual</h2>
+    <p>Tiempo estimado: 30 minutos · Entregable: diagrama PNG para compartir</p>
+  </div>
+
+  <div class="from-prev"><strong>Viene del Paso 2 (Gamma)</strong>Necesitas los 3-5 puntos clave de tu presentación. Tenlos copiados antes de abrir Napkin.</div>
+
+  <div class="al al-info"><i class="ti ti-link"></i><div>Abre <a href="https://napkin.ai" target="_blank" style="color:inherit;font-weight:600">napkin.ai</a> → <strong>Sign in with Google</strong> → plan gratuito. Crea cuenta si no la tienes.</div></div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">1</span> Qué pegar en Napkin</div>
+    <p>Napkin funciona diferente a ChatGPT. <strong>No uses un prompt largo</strong> — pega directamente tus puntos clave con una estructura clara:</p>
+    <div class="pbox-wrap">
+      <div class="pbox-label"><span>Estructura sugerida para pegar en Napkin</span><button class="copy-btn" onclick="copyPrompt('p4',this)" aria-label="Copiar estructura Napkin"><i class="ti ti-copy"></i> Copiar</button></div>
+      <div class="pbox" id="p4"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">2</span> Elige y personaliza tu diagrama</div>
+    <p>Napkin sugerirá varios tipos de visualización automáticamente. Elige el que mejor represente tu propuesta:</p>
+    <p>• <strong>Flujo</strong> → si describes etapas o pasos de tu proceso<br>• <strong>Red/Hub</strong> → si tienes un servicio central con varios beneficios<br>• <strong>Pirámide</strong> → si hay jerarquía (base → resultado principal)<br>• <strong>Comparativa</strong> → si destacas diferencias con la competencia</p>
+    <p style="margin-top:.5rem">Personaliza colores e íconos. Cuando esté listo: <strong>Download → PNG</strong>.</p>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-check" onclick="markDone(3)"><i class="ti ti-check"></i> Tengo mi diagrama en Napkin</button>
+    <button class="btn btn-sec" onclick="goTo(2)"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: HEYGEN -->
+<div class="sc" id="sc4">
+  <div class="tool-hd" style="background:linear-gradient(135deg,#7C3AED,#C00000)">
+    <div class="chain-badge">Paso 4 de 4</div>
+    <h2><i class="ti ti-video"></i> HeyGen IA — Video Pitch con Avatar</h2>
+    <p>Tiempo estimado: 35 minutos · Entregable: video de 60-75 segundos</p>
+  </div>
+
+  <div class="from-prev"><strong>Viene de todos los pasos anteriores</strong>Necesitas: tu propuesta de valor (Paso 1) y tu titular. El guión se genera con ChatGPT primero.</div>
+
+  <div class="al al-info"><i class="ti ti-link"></i><div>Abre <a href="https://heygen.com" target="_blank" style="color:inherit;font-weight:600">heygen.com</a> → <strong>Sign up con Google</strong>. Plan gratuito incluye 1 video de prueba. Crea cuenta si no la tienes.</div></div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">1</span> Genera tu guión con ChatGPT (LOOP)</div>
+    <p>Primero genera el guión en ChatGPT, luego lo pegas en HeyGen:</p>
+    <div class="pbox-wrap">
+      <div class="pbox-label"><span>LOOP para guión de video</span><button class="copy-btn" onclick="copyPrompt('p5',this)" aria-label="Copiar prompt guión"><i class="ti ti-copy"></i> Copiar</button></div>
+      <div class="pbox" id="p5"></div>
+    </div>
+    <div class="al al-ok" style="margin-top:.5rem"><i class="ti ti-check"></i><div>Verifica que el guión final tenga <strong>entre 100 y 130 palabras</strong> (60-75 segundos de lectura).</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="step-num">2</span> Crea el video en HeyGen</div>
+    <p>Con el guión listo:</p>
+    <p>• Abre HeyGen → <strong>+ Create → Video</strong><br>• Elige un avatar profesional que te represente<br>• Selecciona idioma: <strong>Español</strong><br>• Pega tu guión en el campo de texto<br>• Opcional: agrega tu imagen del Paso 1 como fondo<br>• Clic en <strong>Generate</strong> — tarda 1-3 minutos<br>• Descarga el video (MP4)</p>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-check" onclick="markDone(4)"><i class="ti ti-check"></i> Tengo mi video en HeyGen</button>
+    <button class="btn btn-sec" onclick="goTo(3)"><i class="ti ti-arrow-left"></i> Volver</button>
+  </div>
+</div>
+
+<!-- SCREEN 5: KIT COMPLETO -->
+<div class="sc" id="sc5">
+  <div style="background:var(--navy);border-radius:14px;padding:1.25rem;text-align:center;margin-bottom:.75rem">
+    <div style="font-size:32px;margin-bottom:.4rem">🎉</div>
+    <h2 style="color:#fff;font-size:20px;font-weight:700;margin-bottom:.3rem">¡Tu Kit Digital está completo!</h2>
+    <p style="color:rgba(255,255,255,.65);font-size:13px">Creaste 4 entregables profesionales con IA — coherentes y listos para usar</p>
+  </div>
+
+  <div class="kit-item" id="ki1"><i class="ti ti-photo" style="color:var(--b1)"></i><div class="ki-body"><div class="ki-tool">ChatGPT</div><div class="ki-desc">Propuesta de valor redactada + imagen representativa</div></div></div>
+  <div class="kit-item" id="ki2"><i class="ti ti-presentation" style="color:#3B82F6"></i><div class="ki-body"><div class="ki-tool">Gamma</div><div class="ki-desc">Presentación profesional de 6-8 slides</div></div></div>
+  <div class="kit-item" id="ki3"><i class="ti ti-chart-dots" style="color:var(--g2)"></i><div class="ki-body"><div class="ki-tool">Napkin IA</div><div class="ki-desc">Diagrama visual de tus puntos clave</div></div></div>
+  <div class="kit-item" id="ki4"><i class="ti ti-video" style="color:#7C3AED"></i><div class="ki-body"><div class="ki-tool">HeyGen IA</div><div class="ki-desc">Video pitch de 60-75 segundos con avatar</div></div></div>
+
+  <div class="card" style="margin-top:.75rem;background:var(--ambg);border-color:#FCD34D">
+    <div class="card-title" style="color:var(--amtx)"><i class="ti ti-device-mobile-message"></i> Comparte en WhatsApp</div>
+    <p style="color:var(--amtx)">Elige UNO de tus 4 entregables (el que más te guste o el que más te costó) y compártelo en el grupo de WhatsApp del curso con:</p>
+    <p style="color:var(--amtx)"><strong>1.</strong> ¿Qué herramienta usaste?<br><strong>2.</strong> ¿Qué fue lo más sorprendente del proceso?</p>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-sec" onclick="restart()"><i class="ti ti-refresh"></i> Reiniciar guía</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+let datos={cargo:'',cliente:'',problema:'',solucion:'',diferenciador:''};
+let cur=-1; // -1=welcome, 0=form, 1-4=tools, 5=kit
+let done=new Set();
+
+const LABELS=['Mi Contexto','ChatGPT','Gamma','Napkin','HeyGen','Kit Completo'];
+
+function showWelcome(){
+  document.getElementById('sc0').classList.add('on');
+  document.getElementById('sc0b').style.display='none';
+  document.getElementById('prog-wrap').style.display='none';
+}
+
+function goTo(step){
+  // hide all
+  document.getElementById('sc0').classList.remove('on');
+  document.getElementById('sc0b').style.display='none';
+  for(let i=1;i<=5;i++) document.getElementById('sc'+i).classList.remove('on');
+
+  if(step===-1){showWelcome();return;}
+
+  cur=step;
+  document.getElementById('prog-wrap').style.display='block';
+
+  if(step===0){
+    document.getElementById('sc0b').style.display='block';
+  } else {
+    document.getElementById('sc'+step).classList.add('on');
+  }
+  updateProg();
+  window.scrollTo(0,0);
+}
+
+function updateProg(){
+  LABELS.forEach((_,i)=>{
+    const pd=document.getElementById('pd'+i);
+    if(!pd)return;
+    pd.className='pd';
+    if(i<cur||done.has(i)) pd.classList.add('done');
+    if(i===cur) pd.classList.add('active');
+  });
+  document.getElementById('prog-lbl').textContent=cur>=0?`${LABELS[cur]} · Paso ${cur} de 5`:'';
+}
+
+function validateAndStart(){
+  const cargo=document.getElementById('f-cargo').value.trim();
+  const cliente=document.getElementById('f-cliente').value.trim();
+  const problema=document.getElementById('f-problema').value.trim();
+  const solucion=document.getElementById('f-solucion').value.trim();
+  const diferenciador=document.getElementById('f-diferenciador').value.trim();
+
+  if(!cargo||!cliente||!problema||!solucion||!diferenciador){
+    alert('Por favor completa todos los campos antes de continuar.');
+    return;
+  }
+
+  datos={cargo,cliente,problema,solucion,diferenciador};
+  buildPrompts();
+  done.add(0);
+  goTo(1);
+}
+
+function buildPrompts(){
+  const {cargo,cliente,problema,solucion,diferenciador}=datos;
+
+  // PROMPT 1 — LOOP Propuesta de Valor
+  document.getElementById('p1').innerHTML=hl(`Actúa como consultor de estrategia empresarial y comunicación.
+
+--- TAREA ---
+Soy ${cargo} y trabajo con ${cliente}.
+El problema principal que resuelvo: ${problema}.
+Mi solución: ${solucion}.
+Lo que me diferencia: ${diferenciador}.
+
+Genera:
+1. Propuesta de valor en máximo 3 oraciones (clara, sin jargon)
+2. Titular poderoso de máximo 10 palabras
+3. Descripción visual de imagen que me represente
+
+--- AUTOEVALUACIÓN ---
+1. ¿Es clara para alguien que no me conoce?
+2. ¿Menciona el beneficio concreto para el cliente?
+3. ¿Incluye el diferenciador de forma memorable?
+
+--- REFINAMIENTO ---
+Reescribe corrigiendo exactamente lo que identificaste.
+
+--- ENTREGA FINAL ---
+✍️  VERSIÓN 1 — propuesta inicial
+🔍  AUTOEVALUACIÓN — qué encontraste
+✅  VERSIÓN 2 — propuesta + titular + descripción visual`);
+
+  // PROMPT 2 — LOOP Imagen
+  document.getElementById('p2').innerHTML=hl(`Actúa como director de arte creativo.
+
+--- TAREA ---
+Mi propuesta de valor: [PEGA AQUÍ TU VERSIÓN 2]
+Mi sector: ${cargo}
+
+Genera un prompt de imagen con:
+- Descripción visual específica (qué se ve)
+- Estilo (fotografía / ilustración / diseño gráfico)
+- Paleta de colores que refleje ${diferenciador}
+- Composición y punto focal
+
+--- AUTOEVALUACIÓN ---
+¿El prompt generará una imagen profesional para mi sector?
+¿Transmite el diferenciador visualmente?
+
+--- REFINAMIENTO ---
+Mejora el prompt de imagen.
+
+--- ENTREGA FINAL ---
+✅  PROMPT FINAL — listo para pegar en Bing Image Creator o Canva IA`);
+
+  // PROMPT 3 — Gamma
+  document.getElementById('p3').innerHTML=hl(`Crea una presentación profesional sobre mi propuesta de valor.
+
+PROPUESTA DE VALOR: [PEGA TU VERSIÓN 2 DE CHATGPT]
+TITULAR: [PEGA TU TITULAR]
+MI DIFERENCIADOR: ${diferenciador}
+
+ESTRUCTURA (6-8 slides):
+1. Portada con titular poderoso
+2. El problema que vive ${cliente}
+3. Mi solución: ${solucion}
+4. Mis 3 diferenciadores clave (empezar con: ${diferenciador})
+5. Casos de uso o a quién le sirve
+6. Los beneficios concretos de trabajar conmigo
+7. Llamada a la acción clara
+
+Estilo: profesional y moderno. Idioma: español.
+Con íconos y elementos visuales en cada slide.`);
+
+  // PROMPT 4 — Napkin estructura
+  document.getElementById('p4').innerHTML=hl(`Pega esto en Napkin IA (reemplaza los puntos con los de tu presentación Gamma):
+
+Mi propuesta de valor como ${cargo}:
+
+Punto 1: [Tu primer punto clave de Gamma]
+Punto 2: [Tu segundo punto clave de Gamma]
+Punto 3: [Tu tercer punto clave de Gamma]
+Punto 4: ${diferenciador}
+Punto 5: [Tu llamada a la acción de Gamma]
+
+Consejo: elige entre 4-5 puntos únicamente.
+Napkin sugerirá el tipo de diagrama automáticamente.`);
+
+  // PROMPT 5 — LOOP Guión HeyGen
+  document.getElementById('p5').innerHTML=hl(`Actúa como guionista profesional de video corporativo.
+
+--- TAREA ---
+Mi propuesta de valor: [PEGA TU VERSIÓN 2 DE CHATGPT]
+Mi titular: [PEGA TU TITULAR]
+Audiencia del video: ${cliente}
+Tono: profesional pero cercano
+
+Guión de 60-75 segundos (máximo 130 palabras):
+- 0-10s: Gancho (pregunta o afirmación sobre el problema de ${cliente})
+- 10-45s: Mi propuesta + diferenciador principal (${diferenciador})
+- 45-60s: Llamada a la acción concreta y específica
+- 60-75s: Frase de cierre memorable
+
+--- AUTOEVALUACIÓN ---
+1. ¿El gancho engancha en los primeros 5 segundos?
+2. ¿Suena natural al leerlo en voz alta?
+3. ¿La llamada a la acción es específica?
+
+--- REFINAMIENTO ---
+Reescribe mejorando ritmo. Lee en voz alta mientras escribes.
+
+--- ENTREGA FINAL ---
+✅  GUIÓN FINAL (100-130 palabras) — listo para pegar en HeyGen`);
+}
+
+function hl(text){
+  return text
+    .replace(/^(---\s*.+?\s*---)/gm,'<span class="cmd">$1</span>')
+    .replace(/^(✍️|🔍|✅).+/gm,'<span class="hl">$&</span>');
+}
+
+function copyPrompt(id, btn){
+  const el=document.getElementById(id);
+  const text=el.innerText||el.textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied');
+    btn.innerHTML='<i class="ti ti-check"></i> Copiado';
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="ti ti-copy"></i> Copiar';},2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.classList.add('copied');
+    btn.innerHTML='<i class="ti ti-check"></i> Copiado';
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="ti ti-copy"></i> Copiar';},2000);
+  });
+}
+
+function markDone(step){
+  done.add(step);
+  updateProg();
+  if(step<5) goTo(step+1);
+}
+
+function restart(){
+  datos={cargo:'',cliente:'',problema:'',solucion:'',diferenciador:''};
+  done.clear(); cur=-1;
+  ['f-cargo','f-cliente','f-problema','f-solucion','f-diferenciador'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  showWelcome();
+}
+</script>
