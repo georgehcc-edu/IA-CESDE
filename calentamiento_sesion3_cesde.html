@@ -1,0 +1,419 @@
+
+<h2 class="sr-only">Calentamiento interactivo Sesión 3 — repaso de Sesiones 1 y 2 con acertijos, Verdadero/Falso, matching y ordenar el LOOP · CESDE</h2>
+<style>
+.g{font-family:var(--font-sans);padding:.5rem 0}
+.sc{display:none}.sc.on{display:block}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px}
+.prog{display:flex;gap:5px;align-items:center}
+.pd{width:10px;height:10px;border-radius:50%;background:var(--border);border:none;padding:0;cursor:default;transition:all .3s}
+.pd.dn{background:var(--text-success)}
+.pd.ac{background:var(--fill-accent);transform:scale(1.35)}
+.score-pill{display:inline-flex;align-items:center;gap:5px;background:var(--bg-warning);border:0.5px solid var(--border-warning);color:var(--text-warning);border-radius:100px;padding:4px 12px;font-size:13px;font-weight:500}
+.act-hd{border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.75rem}
+.act-hd .tag{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;opacity:.8;margin-bottom:4px}
+.act-hd h2{font-size:18px;font-weight:500;color:#fff;margin-bottom:2px}
+.act-hd p{font-size:12px;color:rgba(255,255,255,.75)}
+.qnum{font-size:11px;color:var(--text-secondary);margin-bottom:.35rem;font-weight:500}
+.qtext{font-size:15px;font-weight:500;color:var(--text-primary);line-height:1.5;margin-bottom:.75rem}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{width:100%;padding:11px 14px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);font-family:var(--font-sans);font-size:13px;font-weight:400;color:var(--text-primary);cursor:pointer;text-align:left;transition:all .15s;line-height:1.4}
+.opt:hover:not(:disabled){border-color:var(--border-accent);background:var(--bg-accent)}
+.opt.ok{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.opt.no{background:var(--bg-danger);border-color:var(--border-danger);color:var(--text-danger)}
+.opt:disabled{cursor:default}
+.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.25rem}
+.tf{padding:18px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);font-family:var(--font-sans);font-size:18px;font-weight:500;cursor:pointer;text-align:center;transition:all .15s}
+.tf.vv{border-color:var(--border-success);color:var(--text-success)}
+.tf.ff{border-color:var(--border-danger);color:var(--text-danger)}
+.tf.ok{background:var(--bg-success)!important;border-color:var(--border-success)!important;color:var(--text-success)!important}
+.tf.no{background:var(--bg-danger)!important;border-color:var(--border-danger)!important;color:var(--text-danger)!important}
+.tf:disabled{cursor:default}
+.fb{font-size:13px;padding:.6rem .9rem;border-radius:var(--radius);border:0.5px solid;margin-top:.5rem;display:none}
+.fb.ok{display:block;background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.fb.no{display:block;background:var(--bg-danger);border-color:var(--border-danger);color:var(--text-danger)}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mi{padding:10px 12px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);font-size:12.5px;font-weight:400;color:var(--text-primary);cursor:pointer;text-align:left;transition:all .15s;min-height:50px;display:flex;align-items:center;font-family:var(--font-sans);line-height:1.35;width:100%}
+.mi:hover:not(.mat):not(.di){border-color:var(--border-accent);background:var(--bg-accent)}
+.mi.sel{border-color:var(--fill-accent);background:var(--bg-accent);color:var(--text-accent)}
+.mi.mat{border-color:var(--border-success);background:var(--bg-success);color:var(--text-success);cursor:default}
+.mi.bad{animation:shk .35s;border-color:var(--border-danger);background:var(--bg-danger)}
+.mi.di{opacity:.3;pointer-events:none;cursor:default}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.loop-slots{display:flex;flex-direction:column;gap:6px;margin-bottom:.75rem}
+.slot{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);border:1.5px dashed var(--border);background:var(--surface-2);min-height:50px;transition:all .3s}
+.slot.filled{border-style:solid;border-color:var(--border-success);background:var(--bg-success)}
+.slot-lbl{font-size:11px;font-weight:500;color:var(--text-secondary);min-width:44px}
+.slot.filled .slot-lbl{color:var(--text-success)}
+.slot-content{font-size:13px;font-weight:500;color:var(--text-primary)}
+.slot.filled .slot-content{color:var(--text-success)}
+.loop-cards{display:flex;flex-direction:column;gap:6px}
+.lc{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);cursor:pointer;transition:all .15s;font-family:var(--font-sans)}
+.lc:hover:not(.placed){border-color:var(--border-success);background:var(--bg-success)}
+.lc.sel{border-color:var(--border-success);background:var(--bg-success);color:var(--text-success);transform:scale(1.01)}
+.lc.placed{opacity:.3;pointer-events:none;cursor:default}
+.lc-ico{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;flex-shrink:0}
+.lc-body{}
+.lc-name{font-size:13px;font-weight:500;color:var(--text-primary)}
+.lc.sel .lc-name{color:var(--text-success)}
+.lc-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius);font-size:14px;font-weight:500;padding:10px 18px;border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-primary);cursor:pointer;font-family:var(--font-sans);transition:all .15s;margin-top:.75rem}
+.btn:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.btn-p{background:var(--fill-accent);border-color:var(--fill-accent);color:var(--on-accent)}
+.btn-p:hover{opacity:.9}
+.stars{font-size:28px;text-align:center;margin:.5rem 0}
+.result-ring{width:80px;height:80px;border-radius:50%;border:3px solid var(--fill-accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;margin:0 auto .75rem;color:var(--text-accent)}
+.info-card{border-radius:12px;padding:.9rem 1.1rem;border:0.5px solid var(--border);background:var(--surface-1);margin-bottom:.65rem}
+.info-card h3{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:.35rem;display:flex;align-items:center;gap:6px}
+.info-card p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:.5rem 0}
+.cpill{padding:5px 13px;border-radius:100px;font-size:12px;font-weight:500;color:var(--on-accent);background:var(--fill-accent)}
+.carr{color:var(--text-muted);font-size:16px}
+.ses-pills{display:flex;gap:8px;flex-wrap:wrap;margin:.5rem 0}
+.spill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:500;border:0.5px solid}
+.spill.dn{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.spill.today{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)}
+</style>
+
+<div class="g">
+<div class="top-bar" id="topbar" style="display:none">
+  <div class="prog" id="prog"></div>
+  <div class="score-pill"><i class="ti ti-star" aria-hidden="true"></i><span id="score-lbl">0 puntos</span></div>
+</div>
+
+<div class="sc on" id="sc-w">
+  <div class="info-card" style="background:var(--surface-2)">
+    <h3><i class="ti ti-confetti" aria-hidden="true"></i>Bienvenidos de regreso</h3>
+    <p>La semana pasada tuvimos un contratiempo. Hoy retomamos con todo.</p>
+    <div class="ses-pills">
+      <span class="spill dn"><i class="ti ti-check" aria-hidden="true"></i>Sesión 1 — IA y herramientas</span>
+      <span class="spill dn"><i class="ti ti-check" aria-hidden="true"></i>Sesión 2 — Prompt Engineering + LOOPS</span>
+      <span class="spill today"><i class="ti ti-flame" aria-hidden="true"></i>Sesión 3 — hoy</span>
+    </div>
+  </div>
+  <div class="info-card">
+    <h3><i class="ti ti-brain" aria-hidden="true"></i>Calentamiento rápido</h3>
+    <p>Antes de arrancar con la sesión de hoy, vamos a despertar la memoria con <strong>4 actividades cortas</strong>. ¿Recuerdas lo aprendido?</p>
+  </div>
+  <div class="info-card">
+    <h3><i class="ti ti-target" aria-hidden="true"></i>Lo que viene hoy</h3>
+    <p>Cada herramienta que usarás hoy genera el insumo de la siguiente:</p>
+    <div class="chain">
+      <span class="cpill">ChatGPT</span><span class="carr">→</span>
+      <span class="cpill">Gamma</span><span class="carr">→</span>
+      <span class="cpill">Napkin IA</span><span class="carr">→</span>
+      <span class="cpill">HeyGen</span>
+    </div>
+    <p style="margin-top:.35rem">Resultado: imagen + presentación + diagrama + video pitch. Todo tuyo, en 3 horas.</p>
+  </div>
+  <button class="btn btn-p" onclick="start()"><i class="ti ti-player-play" aria-hidden="true"></i>Comenzar el calentamiento</button>
+</div>
+
+<div class="sc" id="sc-tf">
+  <div class="act-hd" style="background:linear-gradient(135deg,var(--fill-pro),#4338CA)">
+    <div class="tag">Actividad 1 de 4</div>
+    <h2>Verdadero o Falso</h2>
+    <p>5 preguntas · 1 punto cada una · La IA y el Prompt Engineering</p>
+  </div>
+  <div id="tf-wrap"></div>
+</div>
+
+<div class="sc" id="sc-match">
+  <div class="act-hd" style="background:linear-gradient(135deg,#0891B2,var(--fill-accent))">
+    <div class="tag">Actividad 2 de 4</div>
+    <h2>Conecta la herramienta</h2>
+    <p>Empareja cada herramienta con su uso principal · 1 punto por acierto</p>
+  </div>
+  <div id="match-score" style="font-size:12px;color:var(--text-secondary);margin-bottom:.5rem"></div>
+  <div class="mg" id="match-grid"></div>
+  <div id="match-fb" class="fb"></div>
+  <button class="btn btn-p" id="btn-match-next" style="display:none" onclick="nextScreen()"><i class="ti ti-arrow-right" aria-hidden="true"></i>Siguiente actividad</button>
+</div>
+
+<div class="sc" id="sc-fill">
+  <div class="act-hd" style="background:linear-gradient(135deg,#B45309,var(--fill-warning))">
+    <div class="tag">Actividad 3 de 4</div>
+    <h2>El elemento que falta</h2>
+    <p>4 prompts incompletos · Identifica qué elemento falta</p>
+  </div>
+  <div id="fill-wrap"></div>
+</div>
+
+<div class="sc" id="sc-loop">
+  <div class="act-hd" style="background:linear-gradient(135deg,#15803D,#059669)">
+    <div class="tag">Actividad 4 de 4</div>
+    <h2>Ordena el LOOP</h2>
+    <p>Coloca los 4 pasos del ciclo LOOP en el orden correcto</p>
+  </div>
+  <div id="loop-slots" class="loop-slots"></div>
+  <div class="loop-cards" id="loop-cards"></div>
+  <div id="loop-fb" class="fb"></div>
+  <button class="btn btn-p" id="btn-loop-check" style="display:none" onclick="checkLoop()"><i class="ti ti-check" aria-hidden="true"></i>Verificar orden</button>
+  <button class="btn btn-p" id="btn-loop-next" style="display:none" onclick="nextScreen()"><i class="ti ti-arrow-right" aria-hidden="true"></i>Ver resultados</button>
+</div>
+
+<div class="sc" id="sc-res">
+  <div class="result-ring" id="res-ring"></div>
+  <div class="stars" id="res-stars"></div>
+  <p style="text-align:center;font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:.25rem" id="res-title"></p>
+  <p style="text-align:center;font-size:13px;color:var(--text-secondary);margin-bottom:1rem" id="res-sub"></p>
+  <div class="info-card" style="border-left:3px solid var(--fill-accent)">
+    <h3><i class="ti ti-rocket" aria-hidden="true"></i>Arranca la Sesión 3</h3>
+    <p>Construirás tu <strong>Kit Digital de Propuesta de Valor</strong> con 4 herramientas encadenadas. Al terminar tendrás:</p>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-top:.5rem">
+      <span style="font-size:13px;color:var(--text-primary)"><i class="ti ti-photo" style="color:var(--text-accent)" aria-hidden="true"></i> Imagen generada con IA</span>
+      <span style="font-size:13px;color:var(--text-primary)"><i class="ti ti-presentation" style="color:var(--text-accent)" aria-hidden="true"></i> Presentación profesional en Gamma</span>
+      <span style="font-size:13px;color:var(--text-primary)"><i class="ti ti-chart-dots" style="color:var(--text-success)" aria-hidden="true"></i> Diagrama visual en Napkin IA</span>
+      <span style="font-size:13px;color:var(--text-primary)"><i class="ti ti-video" style="color:var(--text-pro)" aria-hidden="true"></i> Video pitch con avatar en HeyGen</span>
+    </div>
+  </div>
+  <div class="info-card">
+    <h3><i class="ti ti-link" aria-hidden="true"></i>Primer paso ahora mismo</h3>
+    <p>Abre la guía interactiva que ya tienes en el grupo de WhatsApp. Completa el formulario de contexto — eso activará todos los prompts personalizados para ti.</p>
+  </div>
+  <button class="btn btn-p" onclick="restartGame()"><i class="ti ti-refresh" aria-hidden="true"></i>Volver a jugar</button>
+</div>
+</div>
+
+<script>
+const TF=[
+  {q:"Para usar herramientas como ChatGPT o Claude necesitas saber programar.",ans:false,ok:"Correcto. Si puedes escribir un mensaje de WhatsApp, puedes usar IA. La clave es aprender a formular bien las instrucciones.",no:"Incorrecto. No necesitas programar. La IA funciona con lenguaje natural."},
+  {q:"La IA puede inventar información falsa y presentarla con total confianza como si fuera verdad. Este fenómeno se llama 'alucinación'.",ans:true,ok:"Exacto. Las alucinaciones son reales. Por eso siempre hay que verificar lo que genera la IA.",no:"Incorrecto. Sí ocurre — se llama 'alucinación'. La IA puede inventar datos con total confianza."},
+  {q:"En el ciclo LOOP, la 'P' de Perfeccionar es el segundo paso.",ans:false,ok:"Correcto. Perfeccionar es el CUARTO paso. El orden es: Lanzar → Observar → Optimizar → Perfeccionar.",no:"Incorrecto. Perfeccionar es el cuarto paso, no el segundo. L → O → O → P."},
+  {q:"La calidad del resultado de una IA depende principalmente de cómo formulas la instrucción (el prompt).",ans:true,ok:"¡Exacto! Un buen prompt con la versión gratuita supera un prompt vago con la versión premium.",no:"Incorrecto. El prompt lo es todo. La calidad de la instrucción determina la calidad del resultado."},
+  {q:"HeyGen permite crear videos con presentadores avatar sin necesitar cámara ni estudio de grabación.",ans:true,ok:"Correcto. HeyGen genera videos con avatares que hablan tu guión. Sin cámara, sin estudio.",no:"Incorrecto. Sí lo permite. HeyGen es una de las herramientas que usarás hoy en clase."},
+];
+const MATCH_DATA=[
+  {tool:"ChatGPT",use:"Redactar textos, resolver preguntas y generar ideas"},
+  {tool:"NotebookLM",use:"Analizar y resumir documentos y PDFs extensos"},
+  {tool:"Gamma",use:"Crear presentaciones profesionales desde un texto"},
+  {tool:"HeyGen IA",use:"Grabar videos con avatares sin cámara"},
+  {tool:"Napkin IA",use:"Convertir texto en diagramas y visualizaciones"},
+  {tool:"Canva IA",use:"Generar imágenes y diseños profesionales"},
+];
+const FILL=[
+  {q:"Escribe un correo para pedir una reunión. Tono formal. Máximo 100 palabras. Incluye asunto.",missing:"ROL",prompt:"Actúa como [?]. Escribe un correo profesional...",opts:["ROL","CLARIDAD","FORMATO","CONTEXTO"],exp:"Falta el ROL: la IA necesita saber desde qué perspectiva actuar. Ej: 'Actúa como ejecutivo de ventas'."},
+  {q:"El siguiente prompt no especifica qué tipo de respuesta necesitas ni su estructura.",missing:"FORMATO",prompt:"Soy gerente de RRHH. Dame información sobre onboarding de empleados.",opts:["CONTEXTO","ROL","CLARIDAD","FORMATO"],exp:"Falta el FORMATO. Podrías agregar: 'Responde en 5 puntos concretos, con título y descripción breve en cada uno'."},
+  {q:"Escribe el análisis de ventas del mes. — ¿Qué elemento crítico falta aquí?",missing:"CONTEXTO",prompt:"Actúa como analista financiero. Escribe el análisis de ventas. Formato: tabla.",opts:["ROL","CONTEXTO","CLARIDAD","FORMATO"],exp:"Falta el CONTEXTO. La IA no sabe de qué empresa, qué período, qué productos. Siempre da el trasfondo específico."},
+  {q:"Redacta algo para clientes que no han pagado.",missing:"CLARIDAD",prompt:"Actúa como asesor legal. Contexto: empresa de servicios, Colombia. Formato: correo formal.",opts:["CONTEXTO","ROL","CLARIDAD","FORMATO"],exp:"Falta la CLARIDAD. El pedido es vago. ¿Qué tipo de comunicación? ¿Cuánto tiempo sin pagar? ¿Primer recordatorio o último?"},
+];
+const LOOP_CORRECT=["LANZAR","OBSERVAR","OPTIMIZAR","PERFECCIONAR"];
+const LOOP_ITEMS=[
+  {name:"LANZAR",desc:"Escribe tu primer prompt con los 4 elementos",col:"var(--bg-accent)",tcol:"var(--text-accent)"},
+  {name:"OBSERVAR",desc:"Evalúa el resultado con las 4 preguntas",col:"var(--bg-success)",tcol:"var(--text-success)"},
+  {name:"OPTIMIZAR",desc:"Identifica UNA cosa concreta que mejorar",col:"var(--bg-warning)",tcol:"var(--text-warning)"},
+  {name:"PERFECCIONAR",desc:"Reescribe el prompt con la mejora",col:"var(--bg-danger)",tcol:"var(--text-danger)"},
+];
+
+let score=0, cur=0, qIdx=0, matchSel=null, matchDone=0, loopSlots=[], loopSelCard=null;
+const SCREENS=['w','tf','match','fill','loop','res'];
+
+function setScore(n){score=n;document.getElementById('score-lbl').textContent=n+' punto'+(n===1?'':'s');}
+
+function start(){
+  document.getElementById('topbar').style.display='flex';
+  showScreen(1);
+  renderTF();
+}
+
+function showScreen(i){
+  cur=i;
+  SCREENS.forEach((s,j)=>{
+    document.getElementById('sc-'+s).classList.toggle('on',j===i);
+  });
+  const dots=document.getElementById('prog');
+  dots.innerHTML='';
+  for(let j=1;j<=4;j++){
+    const d=document.createElement('div');
+    d.className='pd'+(j<i?' dn':j===i?' ac':'');
+    dots.appendChild(d);
+  }
+}
+
+function nextScreen(){showScreen(cur+1);if(cur===2)renderMatch();else if(cur===3)renderFill();else if(cur===4)renderLoop();else if(cur===5)renderResults();}
+
+// ── V/F ──
+function renderTF(){
+  const wrap=document.getElementById('tf-wrap');
+  const q=TF[qIdx];
+  wrap.innerHTML=`
+    <p class="qnum">Pregunta ${qIdx+1} de ${TF.length}</p>
+    <p class="qtext">${q.q}</p>
+    <div class="tf-row">
+      <button class="tf vv" id="tf-v" onclick="answerTF(true)" aria-label="Verdadero">Verdadero</button>
+      <button class="tf ff" id="tf-f" onclick="answerTF(false)" aria-label="Falso">Falso</button>
+    </div>
+    <div class="fb" id="tf-fb"></div>`;
+}
+function answerTF(val){
+  const q=TF[qIdx];
+  const correct=val===q.ans;
+  const picked=val?'tf-v':'tf-f';
+  const other=val?'tf-f':'tf-v';
+  document.getElementById('tf-v').disabled=true;
+  document.getElementById('tf-f').disabled=true;
+  document.getElementById(picked).classList.add(correct?'ok':'no');
+  if(!correct) document.getElementById(other).classList.add('ok');
+  const fb=document.getElementById('tf-fb');
+  fb.className='fb '+(correct?'ok':'no');
+  fb.textContent=(correct?'✓ ':'✗ ')+(correct?q.ok:q.no);
+  if(correct) setScore(score+1);
+  setTimeout(()=>{
+    qIdx++;
+    if(qIdx<TF.length) renderTF();
+    else{qIdx=0;showScreen(2);renderMatch();}
+  },1800);
+}
+
+// ── MATCH ──
+let shuffledUses=[];
+function renderMatch(){
+  shuffledUses=[...MATCH_DATA].sort(()=>Math.random()-.5);
+  matchSel=null; matchDone=0;
+  const g=document.getElementById('match-grid');
+  g.innerHTML='';
+  MATCH_DATA.forEach((d,i)=>{
+    const tb=document.createElement('button');
+    tb.className='mi'; tb.id='mt'+i; tb.textContent=d.tool;
+    tb.style.fontWeight='500'; tb.onclick=()=>selTool(i);
+    g.appendChild(tb);
+    const ub=document.createElement('button');
+    ub.className='mi'; ub.id='mu'+i; ub.textContent=shuffledUses[i].use;
+    ub.onclick=()=>selUse(i,shuffledUses[i].tool);
+    g.appendChild(ub);
+  });
+  document.getElementById('match-score').textContent='Aciertos: 0 / '+MATCH_DATA.length;
+  document.getElementById('match-fb').className='fb';
+  document.getElementById('btn-match-next').style.display='none';
+}
+function selTool(idx){
+  if(matchSel!==null){document.getElementById('mt'+matchSel).classList.remove('sel');}
+  matchSel=idx;
+  document.getElementById('mt'+idx).classList.add('sel');
+}
+function selUse(idx,utool){
+  if(matchSel===null)return;
+  const tb=document.getElementById('mt'+matchSel);
+  const ub=document.getElementById('mu'+idx);
+  const ok=MATCH_DATA[matchSel].tool===utool;
+  if(ok){
+    tb.classList.remove('sel'); tb.classList.add('mat'); tb.onclick=null;
+    ub.classList.add('mat'); ub.onclick=null;
+    setScore(score+1); matchDone++;
+    document.getElementById('match-score').textContent='Aciertos: '+matchDone+' / '+MATCH_DATA.length;
+    if(matchDone===MATCH_DATA.length){
+      const fb=document.getElementById('match-fb');
+      fb.className='fb ok'; fb.textContent='¡Perfecto! Conectaste todas las herramientas correctamente.';
+      document.getElementById('btn-match-next').style.display='inline-flex';
+    }
+  } else {
+    tb.classList.remove('sel'); tb.classList.add('bad');
+    ub.classList.add('bad');
+    setTimeout(()=>{tb.classList.remove('bad','sel');ub.classList.remove('bad');},450);
+  }
+  matchSel=null;
+}
+
+// ── FILL ──
+function renderFill(){
+  const wrap=document.getElementById('fill-wrap');
+  const q=FILL[qIdx];
+  const opts=q.opts.map(o=>`<button class="opt" onclick="answerFill('${o}','${q.missing}',this)">${o}</button>`).join('');
+  wrap.innerHTML=`
+    <p class="qnum">Pregunta ${qIdx+1} de ${FILL.length}</p>
+    <p class="qtext">${q.q}</p>
+    <div style="background:var(--surface-2);border-radius:var(--radius);padding:.65rem .9rem;margin-bottom:.65rem;font-size:12.5px;font-family:var(--font-mono);color:var(--text-secondary);border:0.5px solid var(--border)"><em>${q.prompt}</em></div>
+    <div class="opts">${opts}</div>
+    <div class="fb" id="fill-fb"></div>`;
+}
+function answerFill(val,correct,el){
+  document.querySelectorAll('#fill-wrap .opt').forEach(b=>b.disabled=true);
+  const ok=val===correct;
+  el.classList.add(ok?'ok':'no');
+  if(!ok) document.querySelectorAll('#fill-wrap .opt').forEach(b=>{if(b.textContent===correct)b.classList.add('ok');});
+  const fb=document.getElementById('fill-fb');
+  fb.className='fb '+(ok?'ok':'no');
+  fb.textContent=(ok?'✓ ':'✗ ')+FILL[qIdx].exp;
+  if(ok) setScore(score+1);
+  setTimeout(()=>{
+    qIdx++;
+    if(qIdx<FILL.length) renderFill();
+    else{qIdx=0;showScreen(4);renderLoop();}
+  },1900);
+}
+
+// ── LOOP ──
+function renderLoop(){
+  loopSlots=[null,null,null,null]; loopSelCard=null;
+  const shuffled=[...LOOP_ITEMS].sort(()=>Math.random()-.5);
+  const slotsEl=document.getElementById('loop-slots');
+  slotsEl.innerHTML=LOOP_CORRECT.map((_,i)=>`
+    <div class="slot" id="slot${i}">
+      <span class="slot-lbl">Paso ${i+1}</span>
+      <span class="slot-content" id="slot-txt${i}">Toca un paso para colocarlo aquí</span>
+    </div>`).join('');
+  const cardsEl=document.getElementById('loop-cards');
+  cardsEl.innerHTML=shuffled.map(it=>`
+    <button class="lc" id="lc-${it.name}" onclick="selectLoopCard('${it.name}')" aria-label="${it.name}">
+      <div class="lc-ico" style="background:${it.col};color:${it.tcol}">${it.name[0]}</div>
+      <div class="lc-body">
+        <div class="lc-name">${it.name}</div>
+        <div class="lc-desc">${it.desc}</div>
+      </div>
+    </button>`).join('');
+  document.getElementById('loop-fb').className='fb';
+  document.getElementById('btn-loop-check').style.display='none';
+  document.getElementById('btn-loop-next').style.display='none';
+}
+function selectLoopCard(name){
+  if(loopSelCard){document.getElementById('lc-'+loopSelCard).classList.remove('sel');}
+  loopSelCard=name;
+  document.getElementById('lc-'+name).classList.add('sel');
+  const nextEmpty=loopSlots.indexOf(null);
+  if(nextEmpty===-1)return;
+  loopSlots[nextEmpty]=name;
+  document.getElementById('slot'+nextEmpty).classList.add('filled');
+  const it=LOOP_ITEMS.find(x=>x.name===name);
+  document.getElementById('slot-txt'+nextEmpty).textContent=name+' — '+it.desc;
+  document.getElementById('lc-'+name).classList.add('placed');
+  loopSelCard=null;
+  if(!loopSlots.includes(null)){
+    document.getElementById('btn-loop-check').style.display='inline-flex';
+  }
+}
+function checkLoop(){
+  const correct=loopSlots.every((v,i)=>v===LOOP_CORRECT[i]);
+  const fb=document.getElementById('loop-fb');
+  if(correct){
+    fb.className='fb ok';
+    fb.textContent='¡Perfecto! Lanzar → Observar → Optimizar → Perfeccionar. Ese es el ciclo completo.';
+    setScore(score+3);
+    document.getElementById('btn-loop-check').style.display='none';
+    document.getElementById('btn-loop-next').style.display='inline-flex';
+  } else {
+    fb.className='fb no';
+    fb.textContent='No es ese orden. Intenta de nuevo.';
+    setTimeout(()=>{renderLoop();},1500);
+  }
+}
+
+// ── RESULTS ──
+function renderResults(){
+  const max=5+6+4+3;
+  const pct=Math.round((score/max)*100);
+  document.getElementById('res-ring').textContent=score+'/'+max;
+  let stars='',title='',sub='';
+  if(pct>=80){stars='★★★';title='¡Excelente! La memoria está lista.';sub='Dominas los conceptos de S1 y S2. Hoy los llevarás al siguiente nivel.';}
+  else if(pct>=60){stars='★★☆';title='Muy bien, ya recuerdas bastante.';sub='Algunos conceptos están frescos. La práctica de hoy los afianzará.';}
+  else{stars='★☆☆';title='Buen repaso — ahora a reforzar.';sub='La práctica de hoy te ayudará a consolidar lo aprendido. ¡Adelante!';}
+  document.getElementById('res-stars').textContent=stars;
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-sub').textContent=sub;
+}
+
+function restartGame(){
+  score=0; qIdx=0; matchSel=null; matchDone=0; loopSlots=[]; loopSelCard=null;
+  setScore(0);
+  document.getElementById('topbar').style.display='none';
+  showScreen(0);
+}
+</script>
