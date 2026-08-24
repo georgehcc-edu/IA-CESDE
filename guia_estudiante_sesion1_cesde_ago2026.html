@@ -1,0 +1,367 @@
+
+<h2 class="sr-only">Guía interactiva del estudiante — Sesión 1: Introducción a la IA y su impacto en el trabajo · CESDE · 24 agosto 2026</h2>
+<style>
+.g{font-family:var(--font-sans);padding:.5rem 0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;border:0.5px solid var(--border);background:var(--surface-2);font-size:12px;color:var(--text-secondary)}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;border-bottom:0.5px solid var(--border);padding-bottom:.6rem}
+.tab{display:inline-flex;align-items:center;gap:4px;padding:6px 13px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-secondary);cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:500;transition:all .15s}
+.tab.on{background:var(--fill-accent);border-color:var(--fill-accent);color:var(--on-accent)}
+.tab:hover:not(.on){border-color:var(--border-strong);color:var(--text-primary)}
+.sc{display:none}.sc.on{display:block}
+.prog-wrap{margin-bottom:1rem}
+.prog-bg{height:7px;background:var(--surface-2);border-radius:100px;overflow:hidden;border:0.5px solid var(--border)}
+.prog-fill{height:100%;background:var(--fill-success);border-radius:100px;transition:width .4s ease;width:0%}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);margin-top:4px}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:.65rem}
+.card-t{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:.45rem;display:flex;align-items:center;gap:6px}
+.card-t i{font-size:16px}
+.cki{display:flex;align-items:flex-start;gap:9px;padding:.4rem 0;border-bottom:0.5px solid var(--border)}
+.cki:last-child{border-bottom:none}
+.cki input[type=checkbox]{flex-shrink:0;margin-top:2px;cursor:pointer;width:15px;height:15px}
+.cki label{font-size:13px;color:var(--text-primary);cursor:pointer;line-height:1.55}
+.cki input:checked~label{text-decoration:line-through;color:var(--text-muted)}
+.plat{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.5rem;background:var(--surface-2);transition:border-color .2s}
+.plat-hd{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;cursor:pointer}
+.plat-hd:hover{background:var(--surface-1)}
+.plat-name{font-size:14px;font-weight:500;color:var(--text-primary);display:flex;align-items:center;gap:7px}
+.plat-body{display:none;padding:.75rem 1rem;border-top:0.5px solid var(--border)}
+.plat-body.open{display:block}
+.step{display:flex;gap:8px;font-size:12.5px;color:var(--text-secondary);padding:.28rem 0;line-height:1.5}
+.sn{width:18px;height:18px;border-radius:50%;background:var(--bg-accent);color:var(--text-accent);font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.done-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;background:var(--bg-success);border:0.5px solid var(--border-success);color:var(--text-success);font-size:11px;font-weight:500}
+.pbox{font-family:var(--font-mono);font-size:12.5px;padding:.65rem .8rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--surface-1);color:var(--text-primary);width:100%;box-sizing:border-box;line-height:1.65}
+.pbox:focus{outline:none;border-color:var(--border-accent)}
+textarea.pbox{resize:vertical;min-height:75px}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-primary);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:var(--border-strong)}
+.btn-p{background:var(--fill-accent);border-color:var(--fill-accent);color:var(--on-accent)}.btn-p:hover{opacity:.9}
+.btn-s{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.lnk{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:var(--radius);border:0.5px solid var(--border-accent);background:var(--bg-accent);color:var(--text-accent);font-size:12.5px;font-weight:500;text-decoration:none;transition:filter .15s}
+.lnk:hover{filter:brightness(.95)}
+.al{display:flex;align-items:flex-start;gap:7px;padding:.65rem .9rem;border-radius:var(--radius);border:0.5px solid;font-size:13px;margin-bottom:.65rem;line-height:1.55}
+.al i{font-size:15px;flex-shrink:0;margin-top:1px}
+.al-i{background:var(--bg-accent);border-color:var(--border-accent);color:var(--text-accent)}
+.al-w{background:var(--bg-warning);border-color:var(--border-warning);color:var(--text-warning)}
+.al-s{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.sec-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin:.75rem 0 .4rem}
+.flbl{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:4px;display:block;margin-top:.45rem}
+.ql{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+@media(max-width:400px){.ql{grid-template-columns:repeat(3,1fr)}}
+.qi{display:flex;flex-direction:column;align-items:center;gap:5px;padding:.65rem .4rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--surface-2);text-decoration:none;transition:all .15s}
+.qi:hover{border-color:var(--border-accent);background:var(--bg-accent)}
+.qi span{font-size:11px;font-weight:500;color:var(--text-secondary);text-align:center}
+.qi:hover span{color:var(--text-accent)}
+.vid-card{display:flex;gap:12px;align-items:flex-start;padding:.75rem 1rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--surface-2);margin-bottom:.5rem}
+.vid-ico{width:34px;height:34px;border-radius:8px;background:var(--bg-danger);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prompt-static{background:var(--surface-1);border:0.5px solid var(--border);border-left:3px solid var(--border-accent);border-radius:0 var(--radius) var(--radius) 0;padding:.7rem .9rem;font-family:var(--font-mono);font-size:12.5px;color:var(--text-primary);line-height:1.65;cursor:text;user-select:all;margin-bottom:.5rem}
+.divl{border:none;border-top:0.5px solid var(--border);margin:.75rem 0}
+.badge-cnt{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:100px;background:var(--bg-accent);border:0.5px solid var(--border-accent);color:var(--text-accent);font-size:11px;font-weight:500}
+</style>
+
+<div class="g">
+<div class="chips">
+  <span class="chip"><i class="ti ti-calendar" aria-hidden="true"></i>24 de agosto de 2026</span>
+  <span class="chip"><i class="ti ti-clock" aria-hidden="true"></i>5:00–8:30 PM</span>
+  <span class="chip"><i class="ti ti-device-desktop" aria-hidden="true"></i>Microsoft Teams</span>
+  <span class="chip"><i class="ti ti-book" aria-hidden="true"></i>Sesión 1</span>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab on" onclick="gTab(0)" aria-label="Bienvenida"><i class="ti ti-home" aria-hidden="true"></i>Bienvenida</button>
+  <button class="tab" onclick="gTab(1)" aria-label="Actividad 1 — Rompehielo"><i class="ti ti-users" aria-hidden="true"></i>Act. 1</button>
+  <button class="tab" onclick="gTab(2)" aria-label="Actividad 2 — Cuentas"><i class="ti ti-key" aria-hidden="true"></i>Act. 2</button>
+  <button class="tab" onclick="gTab(3)" aria-label="Actividad 3 — Experiencia con IA"><i class="ti ti-brain" aria-hidden="true"></i>Act. 3</button>
+  <button class="tab" onclick="gTab(4)" aria-label="Tarea para Sesión 2"><i class="ti ti-clipboard-list" aria-hidden="true"></i>Tarea</button>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+  <div class="prog-row"><span id="pl">Progreso de la sesión</span><span id="pp">0%</span></div>
+</div>
+
+<!-- TAB 0: Bienvenida -->
+<div class="sc on" id="t0">
+  <div class="al al-s"><i class="ti ti-sparkles" aria-hidden="true"></i><span>Bienvenido/a al curso <strong>Herramientas para la Productividad Empresarial con IA</strong>. Esta guía te acompañará durante toda la sesión. Marca cada elemento conforme avances.</span></div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-target" aria-hidden="true"></i>Objetivos de hoy</div>
+    <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:.5rem">Al finalizar esta sesión, serás capaz de:</p>
+    <div class="cki"><input type="checkbox" id="o1" onchange="tick()"><label for="o1">Comprender qué es la Inteligencia Artificial y cómo está transformando el trabajo.</label></div>
+    <div class="cki"><input type="checkbox" id="o2" onchange="tick()"><label for="o2">Distinguir entre Machine Learning e IA Generativa.</label></div>
+    <div class="cki"><input type="checkbox" id="o3" onchange="tick()"><label for="o3">Desmitificar conceptos erróneos sobre la IA.</label></div>
+    <div class="cki"><input type="checkbox" id="o4" onchange="tick()"><label for="o4">Tener cuentas activas en 5 plataformas: ChatGPT, Claude, Gemini, Gamma y NotebookLM.</label></div>
+    <div class="cki"><input type="checkbox" id="o5" onchange="tick()"><label for="o5">Experimentar con IA generativa para crear contenido de texto.</label></div>
+  </div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-checklist" aria-hidden="true"></i>Materiales necesarios</div>
+    <div class="cki"><input type="checkbox" id="m1" onchange="tick()"><label for="m1">Computadora con acceso a internet.</label></div>
+    <div class="cki"><input type="checkbox" id="m2" onchange="tick()"><label for="m2">Navegador web actualizado (Chrome, Firefox, Edge o Safari).</label></div>
+    <div class="cki"><input type="checkbox" id="m3" onchange="tick()"><label for="m3">Cuenta de correo electrónico activa (preferiblemente Gmail).</label></div>
+    <div class="cki"><input type="checkbox" id="m4" onchange="tick()"><label for="m4">Libreta y bolígrafo para notas (opcional pero recomendado).</label></div>
+    <div class="cki"><input type="checkbox" id="m5" onchange="tick()"><label for="m5">Actitud abierta y disposición para participar activamente.</label></div>
+  </div>
+
+  <div class="sec-lbl">Accesos rápidos — ábrelos en pestañas separadas</div>
+  <div class="ql">
+    <a class="qi" href="https://chat.openai.com" target="_blank"><i class="ti ti-message-circle" style="font-size:22px;color:var(--text-accent)" aria-hidden="true"></i><span>ChatGPT</span></a>
+    <a class="qi" href="https://claude.ai" target="_blank"><i class="ti ti-sparkles" style="font-size:22px;color:var(--text-pro)" aria-hidden="true"></i><span>Claude</span></a>
+    <a class="qi" href="https://gemini.google.com" target="_blank"><i class="ti ti-stars" style="font-size:22px;color:var(--text-warning)" aria-hidden="true"></i><span>Gemini</span></a>
+    <a class="qi" href="https://gamma.app" target="_blank"><i class="ti ti-presentation" style="font-size:22px;color:var(--text-success)" aria-hidden="true"></i><span>Gamma</span></a>
+    <a class="qi" href="https://notebooklm.google.com" target="_blank"><i class="ti ti-notebook" style="font-size:22px;color:var(--text-secondary)" aria-hidden="true"></i><span>NotebookLM</span></a>
+  </div>
+  <p style="font-size:11px;color:var(--text-muted);margin-top:.4rem">La IA es tu aliada, no tu competencia.</p>
+</div>
+
+<!-- TAB 1: Actividad 1 -->
+<div class="sc" id="t1">
+  <div class="al al-i"><i class="ti ti-clock" aria-hidden="true"></i><span><strong>Dinámica rompehielo — 25 minutos</strong> · Participación individual con cámara encendida. Prepara tu presentación antes de que sea tu turno.</span></div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-user-circle" aria-hidden="true"></i>Pregunta 1 — Preséntate</div>
+    <span class="flbl">¿Cómo te llamas y a qué te dedicas? (anota aquí para tenerlo a mano)</span>
+    <input type="text" class="pbox" placeholder="Mi nombre es... y me dedico a..." style="min-height:auto;padding:.55rem .75rem">
+  </div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-device-mobile" aria-hidden="true"></i>Pregunta 2 — Tu experiencia con IA</div>
+    <span class="flbl">¿Has usado alguna herramienta de Inteligencia Artificial? Sí / No — ¿cuál?</span>
+    <input type="text" class="pbox" placeholder="Sí/No... He usado... / Nunca la he usado" style="min-height:auto;padding:.55rem .75rem">
+  </div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-bulb" aria-hidden="true"></i>Pregunta 3 — Tu motivación</div>
+    <span class="flbl">Completa esta frase: "Quiero aprender sobre IA para..."</span>
+    <textarea class="pbox" placeholder="Quiero aprender sobre IA para..." style="min-height:80px"></textarea>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:.4rem">Tip: piensa en un ejemplo concreto de cómo usarías la IA en tu trabajo o vida personal. Eso hace la presentación más memorable.</p>
+  </div>
+
+  <div class="al al-s"><i class="ti ti-check" aria-hidden="true"></i><span>El facilitador invitará a varios participantes a compartir. Escucha las respuestas de tus compañeros — pueden inspirarte.</span></div>
+  <button class="btn btn-p" onclick="gTab(2)"><i class="ti ti-arrow-right" aria-hidden="true"></i>Continuar a Actividad 2</button>
+</div>
+
+<!-- TAB 2: Actividad 2 -->
+<div class="sc" id="t2">
+  <div class="al al-i"><i class="ti ti-info-circle" aria-hidden="true"></i><span><strong>Apertura de cuentas — 60 minutos</strong> · El facilitador te guiará. Toca cada plataforma para ver los pasos y márcala como lista al terminar.</span></div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem">
+    <span style="font-size:12.5px;color:var(--text-secondary)">Plataformas configuradas</span>
+    <span class="badge-cnt" id="pcnt"><i class="ti ti-circle" aria-hidden="true"></i>0 / 5</span>
+  </div>
+
+  <div id="platlist"></div>
+
+  <div class="al al-s" style="margin-top:.65rem"><i class="ti ti-info-circle" aria-hidden="true"></i><span>Gemini se conecta directo si ya usas Gmail/Drive. Gamma es ideal para presentaciones rápidas. NotebookLM organiza y resume tus propios documentos.</span></div>
+  <button class="btn btn-p" id="btn-next2" onclick="gTab(3)" style="margin-top:.25rem"><i class="ti ti-arrow-right" aria-hidden="true"></i>Continuar a Actividad 3</button>
+</div>
+
+<!-- TAB 3: Actividad 3 -->
+<div class="sc" id="t3">
+  <div class="al al-i"><i class="ti ti-info-circle" aria-hidden="true"></i><span><strong>Primera experiencia con IA — 45 minutos</strong> · Práctica individual con socialización grupal. Abre ChatGPT, Claude y Gemini en pestañas separadas.</span></div>
+
+  <div class="sec-lbl">Ejercicio 1 — Redacción de un correo profesional</div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-mail" aria-hidden="true"></i>El prompt — cópialo EXACTAMENTE</div>
+    <div class="prompt-static" id="pr1">"Escribe un correo profesional para solicitar una reunión con un cliente importante. El objetivo es presentarle una nueva solución tecnológica para su empresa. El tono debe ser formal pero cercano."</div>
+    <button class="btn" onclick="doCopy('pr1',this)"><i class="ti ti-copy" aria-hidden="true"></i>Copiar prompt</button>
+  </div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-notes" aria-hidden="true"></i>Compara las 3 respuestas</div>
+    <span class="flbl">¿Cuál te gustó más y por qué?</span>
+    <textarea class="pbox" placeholder="Me gustó más la respuesta de... porque..." style="min-height:65px"></textarea>
+    <span class="flbl">¿Notaste diferencias en el estilo de redacción entre las plataformas?</span>
+    <textarea class="pbox" placeholder="Las diferencias que noté fueron..." style="min-height:65px"></textarea>
+    <span class="flbl">¿Cuál usarías en tu trabajo?</span>
+    <textarea class="pbox" placeholder="Usaría... porque..." style="min-height:55px"></textarea>
+    <button class="btn btn-s" style="margin-top:.6rem" id="bex1" onclick="mkEx(1,this)"><i class="ti ti-check" aria-hidden="true"></i>Marcar ejercicio 1 completado</button>
+  </div>
+
+  <hr class="divl">
+  <div class="sec-lbl">Ejercicio 2 — Generación de ideas</div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-bulb" aria-hidden="true"></i>Usa la plataforma que más te gustó del Ejercicio 1</div>
+    <div class="prompt-static" id="pr2">"Dame 5 ideas innovadoras para mejorar la productividad en una oficina pequeña de 10 personas."</div>
+    <button class="btn" onclick="doCopy('pr2',this)"><i class="ti ti-copy" aria-hidden="true"></i>Copiar prompt</button>
+  </div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-message-dots" aria-hidden="true"></i>Mi reflexión</div>
+    <span class="flbl">¿Son ideas útiles? ¿Alguna te sorprendió?</span>
+    <textarea class="pbox" placeholder="Las ideas me parecieron... Me sorprendió que..." style="min-height:65px"></textarea>
+    <span class="flbl">¿Cómo adaptarías estas ideas a TU contexto específico?</span>
+    <textarea class="pbox" placeholder="En mi trabajo/estudio podría aplicar..." style="min-height:65px"></textarea>
+    <button class="btn btn-s" style="margin-top:.6rem" id="bex2" onclick="mkEx(2,this)"><i class="ti ti-check" aria-hidden="true"></i>Marcar ejercicio 2 completado</button>
+  </div>
+
+  <div class="al al-i"><i class="ti ti-microphone" aria-hidden="true"></i><span>El facilitador te invitará a compartir: ¿qué te sorprendió?, ¿diferencias entre plataformas?, ¿cómo lo usarías en tu trabajo o estudios?</span></div>
+  <button class="btn btn-p" onclick="gTab(4)"><i class="ti ti-arrow-right" aria-hidden="true"></i>Ver tarea para la Sesión 2</button>
+</div>
+
+<!-- TAB 4: Tarea -->
+<div class="sc" id="t4">
+  <div class="al al-w"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span><strong>Importante:</strong> la Sesión 2 usa Aula Invertida. DEBES completar esta tarea antes de la próxima clase para participar efectivamente.</span></div>
+
+  <div class="sec-lbl">Tarea 1 — Lectura (15-20 min)</div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-book" aria-hidden="true"></i>Artículo de IBM sobre Prompt Engineering</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:.5rem">Artículo oficial de IBM en español. Cubre: definición, técnicas (zero-shot, few-shot, chain-of-thought) y buenas prácticas.</p>
+    <a class="lnk" href="https://www.ibm.com/es-es/think/topics/prompt-engineering" target="_blank"><i class="ti ti-external-link" aria-hidden="true"></i>Abrir artículo IBM</a>
+    <div class="cki" style="margin-top:.65rem;padding-top:.5rem;border-top:0.5px solid var(--border)">
+      <input type="checkbox" id="ta1" onchange="tick()"><label for="ta1">Leí el artículo completo sobre Prompt Engineering.</label>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Tarea 2 — Videos</div>
+
+  <div class="vid-card">
+    <div class="vid-ico"><i class="ti ti-player-play" style="font-size:17px;color:var(--text-danger)" aria-hidden="true"></i></div>
+    <div style="flex:1;min-width:0">
+      <p style="font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px">Video 1 — Fundamentos de Prompt Engineering</p>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:3px">Simplilearn · 6 minutos</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:.5rem">Definición, importancia, buenas prácticas y ejemplos paso a paso. Pausa el video después de cada ejemplo y pruébalo en ChatGPT.</p>
+      <a class="lnk" href="https://www.youtube.com/watch?v=BzIF4hrEgyk" target="_blank" style="font-size:12px"><i class="ti ti-brand-youtube" aria-hidden="true"></i>Ver video</a>
+      <div class="cki" style="margin-top:.5rem"><input type="checkbox" id="ta2a" onchange="tick()"><label for="ta2a">Vi el Video 1 (Simplilearn, 6 min).</label></div>
+    </div>
+  </div>
+
+  <div class="vid-card">
+    <div class="vid-ico"><i class="ti ti-player-play" style="font-size:17px;color:var(--text-danger)" aria-hidden="true"></i></div>
+    <div style="flex:1;min-width:0">
+      <p style="font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px">Video 2 — 4 métodos de Prompt Engineering</p>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:3px">IBM Technology · 12 minutos</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:.5rem">RAG, Chain of Thought, ReACT y Directional Stimulus Prompting. Video avanzado — no obligatorio entenderlo todo a la primera.</p>
+      <a class="lnk" href="https://www.youtube.com/watch?v=1c9iyoVIwDs" target="_blank" style="font-size:12px"><i class="ti ti-brand-youtube" aria-hidden="true"></i>Ver video</a>
+      <div class="cki" style="margin-top:.5rem"><input type="checkbox" id="ta2b" onchange="tick()"><label for="ta2b">Vi el Video 2 (IBM Technology, 12 min).</label></div>
+    </div>
+  </div>
+
+  <div class="card" style="background:var(--bg-accent);border-color:var(--border-accent)">
+    <div class="card-t" style="color:var(--text-accent)"><i class="ti ti-bookmark" aria-hidden="true"></i>Lo que debe quedarte claro</div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div style="display:flex;gap:8px;font-size:13px;color:var(--text-accent)"><i class="ti ti-circle-dot" style="flex-shrink:0;font-size:14px;margin-top:1px" aria-hidden="true"></i>Un prompt es una instrucción clara a la IA.</div>
+      <div style="display:flex;gap:8px;font-size:13px;color:var(--text-accent)"><i class="ti ti-circle-dot" style="flex-shrink:0;font-size:14px;margin-top:1px" aria-hidden="true"></i>La calidad de tu prompt = calidad de la respuesta.</div>
+      <div style="display:flex;gap:8px;font-size:13px;color:var(--text-accent)"><i class="ti ti-circle-dot" style="flex-shrink:0;font-size:14px;margin-top:1px" aria-hidden="true"></i>Los 4 elementos clave: Contexto, Claridad, Rol, Formato.</div>
+      <div style="display:flex;gap:8px;font-size:13px;color:var(--text-accent)"><i class="ti ti-circle-dot" style="flex-shrink:0;font-size:14px;margin-top:1px" aria-hidden="true"></i>Practicar es la mejor forma de aprender.</div>
+    </div>
+  </div>
+
+  <div class="sec-lbl">Tarea 3 — Ejercicio práctico (la más importante)</div>
+  <div class="al al-i"><i class="ti ti-info-circle" aria-hidden="true"></i><span><strong>Escenario:</strong> crear un anuncio de trabajo para <strong>Asistente Administrativo</strong> en una empresa de tecnología. Escribe 3 prompts distintos y pruébalos en ChatGPT, Claude o Gemini.</span></div>
+
+  <div class="card">
+    <div class="card-t"><i class="ti ti-number-1" aria-hidden="true"></i>Prompt simple</div>
+    <span class="flbl">Escribe tu prompt más básico (sin contexto extra):</span>
+    <textarea class="pbox" id="tp1" style="min-height:65px" placeholder="Escribe un anuncio de trabajo para un Asistente Administrativo."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-number-2" aria-hidden="true"></i>Prompt con contexto</div>
+    <span class="flbl">Añade detalles sobre la empresa y el candidato ideal:</span>
+    <textarea class="pbox" id="tp2" style="min-height:80px" placeholder="Escribe un anuncio para un Asistente Administrativo en una empresa de tecnología de 50 empleados. Debe ser atractivo para candidatos jóvenes."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-number-3" aria-hidden="true"></i>Prompt detallado con formato</div>
+    <span class="flbl">Usa rol, estructura y formato específico:</span>
+    <textarea class="pbox" id="tp3" style="min-height:100px" placeholder="Actúa como un reclutador experto. Escribe un anuncio de trabajo para Asistente Administrativo en una empresa de tecnología. Incluye: título atractivo, descripción del puesto, requisitos (3-5), beneficios (3), y un llamado a la acción. Tono profesional pero amigable. Máximo 200 palabras."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-t"><i class="ti ti-message-dots" aria-hidden="true"></i>Mis conclusiones</div>
+    <span class="flbl">¿Qué diferencias notaste entre los 3 resultados?</span>
+    <textarea class="pbox" style="min-height:65px" placeholder="Las diferencias que noté fueron..."></textarea>
+    <span class="flbl">¿Cuál prompt te dio el mejor resultado y por qué?</span>
+    <textarea class="pbox" style="min-height:65px" placeholder="El mejor fue el Prompt... porque..."></textarea>
+    <div class="cki" style="margin-top:.6rem;padding-top:.5rem;border-top:0.5px solid var(--border)">
+      <input type="checkbox" id="ta3" onchange="tick()"><label for="ta3">Completé los 3 prompts y tengo los resultados listos para compartir en la Sesión 2.</label>
+    </div>
+  </div>
+
+  <div class="al al-s"><i class="ti ti-star" aria-hidden="true"></i><span>En la Sesión 2 algunos participantes presentarán sus resultados. Trae tus 3 prompts y los resultados guardados.</span></div>
+</div>
+</div>
+
+<script>
+const PLATS=[
+  {id:'cgpt',name:'ChatGPT',sub:'OpenAI',ico:'ti-message-circle',url:'https://chat.openai.com',steps:['Ve a chat.openai.com','Haz clic en "Sign up" (Registrarse)','Elige tu método: correo, Google, Microsoft o Apple','Completa el formulario y verifica tu correo','Inicia sesión y explora brevemente la interfaz','Escribe "listo" en el chat de Teams cuando termines']},
+  {id:'clde',name:'Claude',sub:'Anthropic',ico:'ti-sparkles',url:'https://claude.ai',steps:['Ve a claude.ai','Haz clic en "Sign up" o "Get started"','Elige tu método: correo electrónico o Google','Completa el registro','Inicia sesión y haz una pregunta de prueba','Comparte una reacción en Teams cuando estés listo/a']},
+  {id:'gmin',name:'Gemini',sub:'Google',ico:'ti-stars',url:'https://gemini.google.com',steps:['Ve a gemini.google.com','Si tienes cuenta de Google, inicia sesión directamente','Si no tienes cuenta, créala en accounts.google.com','Explora la interfaz y prueba una consulta']},
+  {id:'gmma',name:'Gamma',sub:'Presentaciones con IA',ico:'ti-presentation',url:'https://gamma.app',steps:['Ve a gamma.app','Haz clic en "Sign up" o "Get started for free"','Elige tu método: correo o Google','Completa el registro','Explora las opciones de creación de presentaciones']},
+  {id:'nlm',name:'NotebookLM',sub:'Google',ico:'ti-notebook',url:'https://notebooklm.google.com',steps:['Ve a notebooklm.google.com','Inicia sesión con tu cuenta de Google','Crea un notebook de prueba para familiarizarte con la interfaz']},
+];
+
+let pd={}, ex={1:false,2:false};
+
+// Build platform cards
+const pl=document.getElementById('platlist');
+PLATS.forEach(p=>{
+  const div=document.createElement('div');
+  div.className='plat'; div.id='plat-'+p.id;
+  div.innerHTML=`
+    <div class="plat-hd" onclick="tglP('${p.id}')">
+      <span class="plat-name"><i class="ti ${p.ico}" style="font-size:18px" aria-hidden="true"></i>${p.name}<span style="font-size:11px;color:var(--text-muted);font-weight:400">${p.sub}</span></span>
+      <div style="display:flex;align-items:center;gap:9px">
+        <a href="${p.url}" target="_blank" onclick="event.stopPropagation()" style="font-size:12px;color:var(--text-accent);display:inline-flex;align-items:center;gap:3px;text-decoration:none;font-weight:500"><i class="ti ti-external-link" style="font-size:13px" aria-hidden="true"></i>Abrir</a>
+        <i class="ti ti-chevron-down" id="arr-${p.id}" style="font-size:16px;color:var(--text-muted);transition:transform .2s" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="plat-body" id="body-${p.id}">
+      ${p.steps.map((s,i)=>`<div class="step"><span class="sn">${i+1}</span><span>${s}</span></div>`).join('')}
+      <button class="btn btn-s" id="btn-${p.id}" style="margin-top:.6rem" onclick="mkPlat('${p.id}',this)"><i class="ti ti-check" aria-hidden="true"></i>Marcar como lista</button>
+    </div>`;
+  pl.appendChild(div);
+});
+
+function tglP(id){
+  const b=document.getElementById('body-'+id);
+  const a=document.getElementById('arr-'+id);
+  const open=b.classList.toggle('open');
+  a.style.transform=open?'rotate(180deg)':'';
+}
+
+function mkPlat(id,btn){
+  if(pd[id])return;
+  pd[id]=true;
+  btn.outerHTML='<span class="done-pill"><i class="ti ti-check" aria-hidden="true"></i>Lista</span>';
+  const card=document.getElementById('plat-'+id);
+  card.style.borderColor='var(--border-success)';
+  const cnt=Object.keys(pd).length;
+  const pcnt=document.getElementById('pcnt');
+  pcnt.innerHTML=`<i class="ti ti-check" aria-hidden="true"></i>${cnt} / 5`;
+  if(cnt===5){pcnt.style.background='var(--bg-success)';pcnt.style.borderColor='var(--border-success)';pcnt.style.color='var(--text-success)';}
+  tick();
+}
+
+function mkEx(n,btn){
+  ex[n]=true;
+  btn.outerHTML='<span class="done-pill"><i class="ti ti-check" aria-hidden="true"></i>Ejercicio '+n+' completado</span>';
+  tick();
+}
+
+function gTab(n){
+  document.querySelectorAll('.sc').forEach((s,i)=>s.classList.toggle('on',i===n));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',i===n));
+}
+
+function tick(){
+  const ids=['o1','o2','o3','o4','o5','m1','m2','m3','m4','m5','ta1','ta2a','ta2b','ta3'];
+  let done=0;
+  const total=ids.length+PLATS.length+2;
+  ids.forEach(id=>{const el=document.getElementById(id);if(el&&el.checked)done++;});
+  done+=Object.keys(pd).length;
+  if(ex[1])done++;if(ex[2])done++;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pp').textContent=pct+'%';
+  document.getElementById('pl').textContent=done+' de '+total+' elementos completados';
+}
+
+function doCopy(elId,btn){
+  const txt=document.getElementById(elId).innerText||document.getElementById(elId).textContent;
+  const clean=txt.replace(/^"|"$/g,'').trim();
+  navigator.clipboard.writeText(clean).then(()=>{ok(btn);}).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=clean;ta.style.cssText='position:fixed;opacity:0';
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);ok(btn);
+  });
+  function ok(b){const orig=b.innerHTML;b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i>Copiado';setTimeout(()=>b.innerHTML=orig,1800);}
+}
+</script>
