@@ -1,0 +1,524 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Fundamentos de Excel Sesión 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: cabecera fija con 7 estaciones; una estación visible a la vez; tarjetas y retos tipo hoja de cálculo */
+:root{
+  --green:#0e803e; --green-ink:#0b6a33; --green-soft:#e4f3ea; --green-line:#b7dcc6;
+  --mag:#e72a77; --mag-ink:#c4175f; --mag-soft:#fde6ef;
+  --bg:#f6faf7; --card:#ffffff; --fg:#14231b; --muted:#506358; --line:#d5e3da; --cell:#f0f6f2;
+  --on-green:#ffffff; --on-mag:#ffffff;
+  --fd:'Montserrat','Segoe UI',Arial,sans-serif; --fb:'Roboto','Segoe UI',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--fb);font-weight:400;font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--green);z-index:30}
+h1,h2,h3{font-family:var(--fd);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(1.9rem,5vw,3rem)} h2{font-size:clamp(1.4rem,3.4vw,2rem)} h3{font-size:1.1rem;font-weight:700}
+p{margin:0} ul{margin:0;padding-left:1.2em;display:grid;gap:.35em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mag);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px))) ;padding-inline:max(16px,env(safe-area-inset-left,0px));color:var(--on-green)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:8px}
+.brand{font-family:var(--fd);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+nav.st{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;padding-block:2px}
+nav.st::-webkit-scrollbar{display:none}
+nav.st button{flex:none;border:0;background:rgba(255,255,255,.14);color:var(--on-green);border-radius:6px;padding:7px 12px;cursor:pointer;font-family:var(--fd);font-weight:700;font-size:.78rem}
+nav.st button[aria-current="true"]{background:var(--mag);color:var(--on-mag)}
+nav.st b{opacity:.75;margin-right:5px}
+.theme{flex:none;border:1px solid rgba(255,255,255,.4);background:transparent;color:var(--on-green);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:.78rem}
+main{padding-block:28px 56px}
+section.s{display:none;gap:22px}
+section.s.on{display:grid}
+.eyebrow{font-family:var(--fd);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mag-ink)}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.hero{display:grid;gap:14px;padding:28px;border-radius:10px;background:var(--green);color:var(--on-green);position:relative;overflow:hidden}
+.hero .eyebrow{color:#ffd3e3}
+.hero p{max-width:58ch;opacity:.95}
+.hero .tag{display:inline-block;background:var(--mag);color:var(--on-mag);font-family:var(--fd);font-weight:700;padding:4px 10px;border-radius:4px;font-size:.8rem;width:fit-content}
+.colhead{display:flex;gap:2px;position:absolute;right:0;top:0;opacity:.18;font-family:var(--fd);font-weight:800;font-size:3.5rem;pointer-events:none}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.card.g{border-top:4px solid var(--green)} .card.m{border-top:4px solid var(--mag)}
+.muted{color:var(--muted);font-size:.92rem}
+.btn{border:0;border-radius:6px;padding:11px 18px;font-family:var(--fd);font-weight:700;font-size:.9rem;cursor:pointer;background:var(--green);color:var(--on-green);width:fit-content}
+.btn.mag{background:var(--mag);color:var(--on-mag)} .btn.ghost{background:transparent;color:var(--green-ink);border:2px solid var(--green)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.agenda{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+.agenda div{display:grid;grid-template-columns:44px 1fr auto;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.agenda div:last-child{border:0}
+.agenda .n{font-family:var(--fd);font-weight:700;color:var(--mag-ink);text-align:center}
+.agenda .t{font-variant-numeric:tabular-nums;font-weight:500;color:var(--green-ink)}
+form.f{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+label{display:grid;gap:4px;font-weight:500;font-size:.9rem}
+input,select,textarea{border:1.5px solid var(--line);background:var(--card);border-radius:6px;padding:9px 11px;width:100%;min-width:0}
+textarea{min-height:76px;resize:vertical}
+.full{grid-column:1/-1}
+.split{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+.id{background:var(--card);border:2px solid var(--green);border-radius:10px;overflow:hidden;min-width:0}
+.id .bar{background:var(--green);color:var(--on-green);padding:8px 14px;font-family:var(--fd);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
+.id .body{padding:14px;display:grid;gap:8px}
+.id .nm{font-family:var(--fd);font-weight:800;font-size:1.25rem;overflow-wrap:anywhere}
+.id dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:.92rem}
+.id dt{color:var(--muted)} .id dd{margin:0;overflow-wrap:anywhere}
+.lvl{display:flex;gap:3px} .lvl i{height:8px;flex:1;border-radius:2px;background:var(--line)} .lvl i.on{background:var(--mag)}
+.wall{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.note{font-size:.86rem;color:var(--muted);background:var(--cell);border-radius:6px;padding:8px 12px}
+.spin{display:grid;gap:14px;justify-items:start}
+.cellbig{font-family:var(--fd);font-weight:800;font-size:2.6rem;border:3px solid var(--green);background:var(--card);padding:6px 20px;border-radius:4px;min-width:110px;text-align:center;font-variant-numeric:tabular-nums}
+.q{font-size:1.25rem;font-weight:500;max-width:46ch;min-height:3.2em}
+.range{display:grid;grid-template-columns:36px repeat(8,1fr);gap:0;border:1px solid var(--line);font-size:.85rem;max-width:560px;user-select:none}
+.range>*{padding:7px 4px;text-align:center;border:.5px solid var(--line);background:var(--card);min-width:0;font-variant-numeric:tabular-nums}
+.range .h{background:var(--cell);color:var(--muted);font-weight:700}
+.range button.c{cursor:pointer;border:.5px solid var(--line);padding:7px 2px}
+.range button.c.sel{background:var(--green-soft);outline:1.5px solid var(--green);outline-offset:-1.5px}
+.range button.c.act{background:var(--mag-soft);outline:2px solid var(--mag);outline-offset:-2px}
+.pill{display:inline-block;font-family:var(--fd);font-weight:700;font-size:.8rem;padding:3px 10px;border-radius:99px;background:var(--green-soft);color:var(--green-ink)}
+.pill.m{background:var(--mag-soft);color:var(--mag-ink)}
+.types{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.tchip{border:2px solid var(--line);background:var(--card);border-radius:8px;padding:10px 12px;cursor:pointer;text-align:left;display:grid;gap:2px}
+.tchip code{font-family:Consolas,monospace;font-size:1rem;color:var(--mag-ink);font-weight:700}
+.tchip.ok{border-color:var(--green);background:var(--green-soft)} .tchip.bad{border-color:var(--mag);background:var(--mag-soft)}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{border:1.5px solid var(--green);background:transparent;color:var(--green-ink);border-radius:6px;padding:6px 12px;cursor:pointer;font-weight:500}
+.opts button.pick{background:var(--green);color:var(--on-green)}
+.sheet{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--green);color:var(--on-green);font-family:var(--fd);font-weight:700;font-size:.8rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.check{display:grid;gap:8px}
+.check label{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-weight:400;font-size:1rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--green);margin-top:2px}
+.prog{height:12px;border-radius:99px;background:var(--line);overflow:hidden} .prog i{display:block;height:100%;background:var(--mag);width:0;transition:width .3s}
+.mod{display:grid;gap:8px;padding:16px;border-radius:8px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--green)}
+.mod.now{border-left-color:var(--mag)}
+.hrs{display:flex;gap:6px;flex-wrap:wrap}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:6px;z-index:40;font-weight:500;max-width:90vw}
+
+.wheelbox{display:grid;gap:14px;justify-items:center}
+.wheelwrap{position:relative;width:min(100%,360px);aspect-ratio:1;max-width:100%}
+.wheelwrap svg{width:100%;height:100%;display:block}
+#wg{transform-origin:160px 160px;transition:transform 4s cubic-bezier(.12,.7,.1,1)}
+.ptr{position:absolute;left:50%;top:-6px;width:0;height:0;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent;border-top:26px solid var(--mag);filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));z-index:2}
+.res{display:grid;gap:8px;justify-items:start;width:100%}
+.intro{background:var(--mag-soft);border-left:5px solid var(--mag);padding:10px 14px;border-radius:6px;font-weight:500}
+.flip{all:unset;box-sizing:border-box;display:grid;cursor:pointer;perspective:1100px;min-width:0;border-radius:10px}
+.flip:focus-visible{outline:3px solid var(--mag);outline-offset:3px}
+.flip .face{grid-area:1/1;display:grid;gap:8px;align-content:start;padding:18px;border-radius:10px;border:1px solid var(--line);background:var(--card);backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s;min-width:0}
+.flip .front{border-left:6px solid var(--green);transform:rotateY(0)}
+.flip .back{background:var(--green);color:var(--on-green);border-color:var(--green);transform:rotateY(180deg)}
+.flip .back li{font-size:.92rem}
+.flip.now .front{border-left-color:var(--mag)}
+.flip.on .front{transform:rotateY(-180deg)} .flip.on .back{transform:rotateY(0)}
+.flip .hint{font-size:.82rem;color:var(--mag-ink);font-weight:500}
+.flip .back .pill{background:rgba(255,255,255,.18);color:var(--on-green)}
+@media (prefers-reduced-motion:reduce){#wg,.flip .face{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.brand{display:none}.hero{padding:20px}}
+</style>
+
+<header class="top"><div class="wrap">
+  <span class="brand">Fundamentos de Excel</span>
+  <nav class="st" id="nav" aria-label="Estaciones"></nav>
+  <button class="theme" id="theme" type="button">Tema</button>
+</div></header>
+
+<main class="wrap">
+
+<!-- 1 BIENVENIDA -->
+<section class="s" id="s1">
+  <div class="hero">
+    <div class="colhead" aria-hidden="true"><span>A</span><span>B</span><span>C</span></div>
+    <span class="tag">Sesión 1 · Lunes 19 de octubre de 2026</span>
+    <h1>Bienvenidos a Fundamentos de Excel</h1>
+    <p>Hoy no venimos a escuchar sobre Excel. Venimos a abrirlo, tocarlo y construir algo juntos. Este recorrido tiene seis estaciones y las vamos a visitar en orden durante las 3 horas y media de la sesión.</p>
+    <p>Curso CESDE código 1605 · Nivel básico · 20 horas · Virtual sincrónico por Teams</p>
+  </div>
+  <div class="split">
+    <div class="card g">
+      <h2>Cómo trabajamos</h2>
+      <ul>
+        <li>Mantén Excel abierto en una ventana y esta guía en otra. En Teams, comparte pantalla solo cuando te lo pidamos.</li>
+        <li>Las explicaciones son cortas. Después de cada una, tú haces algo en tu archivo.</li>
+        <li>Preguntar es parte de la clase. Escribe en el chat o activa tu micrófono.</li>
+        <li>Lo que descubras, se lo cuentas a un compañero. Así lo construimos entre todos.</li>
+      </ul>
+      <p class="note">Antes de empezar: abre Excel, crea un libro en blanco y guárdalo como <b>S1_TuNombre.xlsx</b>.</p>
+    </div>
+    <div>
+      <h3 style="margin-bottom:8px">Ruta de la sesión · 210 minutos</h3>
+      <div class="agenda" id="agenda"></div>
+    </div>
+  </div>
+  <div class="pager"><span></span><button class="btn mag" data-go="2" type="button">Ir a la estación 2: presentación y rompehielo</button></div>
+</section>
+
+<!-- 2 TARJETA -->
+<section class="s" id="s2">
+  <div><p class="eyebrow">Estación 2 · 40 min</p><h2>Preséntate y rompe el hielo</h2>
+  <p class="lead">Primero crea tu tarjeta, que se actualiza mientras escribes, y publícala en el muro del grupo. Después gira la ruleta de celdas y responde la pregunta que te toque.</p></div>
+  <div class="split">
+    <form class="f card" id="form" autocomplete="off">
+      <label>Nombre<input id="f_nombre" maxlength="40" required></label>
+      <label>Apellido<input id="f_apellido" maxlength="40" required></label>
+      <label class="full">Ocupación laboral<input id="f_ocup" maxlength="70" placeholder="Ej.: auxiliar contable, vendedora, estudiante, independiente"></label>
+      <label class="full">Estudios<input id="f_est" maxlength="80" placeholder="Ej.: bachiller, técnico en logística, profesional en administración"></label>
+      <label class="full">Experiencia<textarea id="f_exp" maxlength="220" placeholder="Dónde has trabajado o qué has hecho. Si ya usaste Excel, para qué."></textarea></label>
+      <label>Mi nivel actual con Excel
+        <select id="f_niv"><option value="1">1 · Nunca lo he usado</option><option value="2" selected>2 · Lo he abierto algunas veces</option><option value="3">3 · Lo uso de vez en cuando</option><option value="4">4 · Lo uso casi todos los días</option></select></label>
+      <label>Lo que quiero lograr<input id="f_meta" maxlength="90" placeholder="Ej.: llevar mis cuentas, hacer informes"></label>
+      <div class="full" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn" type="submit" id="pub">Publicar mi tarjeta</button>
+        <span class="muted" id="pubmsg"></span>
+      </div>
+    </form>
+    <div class="id" aria-live="polite">
+      <div class="bar"><span>Participante</span><span>Fundamentos de Excel · 1605</span></div>
+      <div class="body" id="preview"></div>
+    </div>
+  </div>
+  <div>
+    <h3 style="margin-bottom:10px">Muro del grupo <span class="pill m" id="count">0</span></h3>
+    <p class="note" id="wallnote" style="margin-bottom:10px"></p>
+    <div class="wall" id="wall"></div>
+  </div>
+  
+
+
+  <div class="split" style="margin-top:6px">
+    <div class="card m wheelbox">
+      <div><p class="eyebrow">Rompehielo · 15 min</p><h3>La ruleta de celdas</h3></div>
+      <div class="wheelwrap"><span class="ptr" aria-hidden="true"></span><svg viewBox="0 0 320 320" role="img" aria-label="Ruleta con 15 celdas de Excel"><g id="wg"></g><circle cx="160" cy="160" r="22" fill="#fff" stroke="#e72a77" stroke-width="5"/></svg></div>
+      <button class="btn mag" id="spin" type="button">Girar la ruleta</button>
+      <div class="res" aria-live="polite">
+        <div class="cellbig" id="cellref">--</div>
+        <p class="intro" id="intro" hidden>Antes de responder, preséntate en 20 segundos: tu nombre, a qué te dedicas y qué esperas del curso.</p>
+        <p class="q" id="cellq">Gira la ruleta para recibir tu celda.</p>
+        <button class="btn ghost" id="pass" type="button" hidden>Cambiar pregunta (una sola vez)</button>
+      </div>
+    </div>
+    <div class="card g">
+      <h3>Reglas para Teams</h3>
+      <ul>
+        <li>Micrófono abierto solo para quien responde. Cámara encendida si es posible.</li>
+        <li>Primero te presentas y luego respondes la pregunta de tu celda.</li>
+        <li>Máximo 40 segundos por persona.</li>
+        <li>Quien termina escribe en el chat el nombre de la siguiente persona.</li>
+        <li>Si alguien prefiere no responder, cambia la pregunta una vez.</li>
+        <li>Quien dirige registra en una hoja de Excel las respuestas que se repiten. Esa tabla se usa en la estación 4.</li>
+      </ul>
+      <p class="note">Variante rápida para grupos grandes: todos escriben su respuesta en el chat al mismo tiempo cuando se diga "ya".</p>
+    </div>
+  </div>
+  <div class="pager"><button class="btn ghost" data-go="1" type="button">Anterior</button><button class="btn mag" data-go="3" type="button">Ir al programa</button></div>
+</section>
+
+<!-- 4 PROGRAMA -->
+<section class="s" id="s3">
+  <div><p class="eyebrow">Estación 3 · 20 min</p><h2>El programa del curso</h2>
+  <p class="lead">Tres módulos, 20 horas. Al terminar vas a poder moverte con soltura en Excel, hacer cálculos con fórmulas y presentar tus datos en gráficos claros.</p></div>
+  <div class="grid">
+    <button class="flip now" type="button" aria-pressed="false" aria-label="Módulo I: Introducción a Microsoft Excel y entorno Office. Toca para voltear la tarjeta.">
+      <span class="face front"><span class="pill m">Módulo I · hoy</span><h3>Introducción a Microsoft Excel y entorno Office</h3><span class="muted">Reconocer la estructura, las funciones básicas y el entorno de trabajo de Excel.</span><span class="hrs"><span class="pill">2 h teoría</span><span class="pill">4 h práctica</span><span class="pill">6 h</span></span><span class="hint">Toca para ver qué aprenderás</span></span>
+      <span class="face back"><span class="pill">Módulo I</span><b>Lo que vas a aprender</b><ul><li>Office y sus aplicaciones principales</li><li>Interfaz, menús y herramientas básicas</li><li>Filas, columnas, celdas y rangos</li><li>Tipos de datos: texto, número, fecha y fórmulas</li><li>Guardar, abrir y organizar archivos</li><li>Personalizar el entorno de Excel</li></ul><span><b>Al terminar podrás:</b> moverte con seguridad en un libro, escribir cada dato como corresponde y dejar tu archivo ordenado.</span><span class="hint" style="color:inherit;opacity:.85">Toca para volver</span></span>
+    </button>
+    <button class="flip" type="button" aria-pressed="false" aria-label="Módulo II: Operaciones básicas y manejo de fórmulas. Toca para voltear la tarjeta.">
+      <span class="face front"><span class="pill">Módulo II</span><h3>Operaciones básicas y manejo de fórmulas</h3><span class="muted">Aplicar operaciones aritméticas y funciones simples para resolver cálculos comunes.</span><span class="hrs"><span class="pill">2 h teoría</span><span class="pill">6 h práctica</span><span class="pill">8 h</span></span><span class="hint">Toca para ver qué aprenderás</span></span>
+      <span class="face back"><span class="pill">Módulo II</span><b>Lo que vas a aprender</b><ul><li>Un primer cálculo en celdas</li><li>Suma, resta, multiplicación y división</li><li>Referencias relativas, absolutas y mixtas</li><li>SUMA, PROMEDIO, MAX, MIN y CONTAR</li><li>Formato numérico y validación de resultados</li><li>Copiar, arrastrar y autocompletar fórmulas</li></ul><span><b>Al terminar podrás:</b> resolver cálculos de tu trabajo o tu casa con fórmulas que se copian y se revisan solas.</span><span class="hint" style="color:inherit;opacity:.85">Toca para volver</span></span>
+    </button>
+    <button class="flip" type="button" aria-pressed="false" aria-label="Módulo III: Presentación de datos y gráficos en Excel. Toca para voltear la tarjeta.">
+      <span class="face front"><span class="pill">Módulo III</span><h3>Presentación de datos y gráficos en Excel</h3><span class="muted">Diseñar gráficos básicos con formato y elementos que cuenten bien la información.</span><span class="hrs"><span class="pill">3 h teoría</span><span class="pill">3 h práctica</span><span class="pill">6 h</span></span><span class="hint">Toca para ver qué aprenderás</span></span>
+      <span class="face back"><span class="pill">Módulo III</span><b>Lo que vas a aprender</b><ul><li>Principios para visualizar datos</li><li>Gráficos de columnas, líneas, circulares y combinados</li><li>Creación de gráficos paso a paso</li><li>Colores, etiquetas, títulos y leyendas</li><li>Objetos visuales y plantillas</li><li>Exportar e imprimir hojas con gráficos</li></ul><span><b>Al terminar podrás:</b> elegir el gráfico adecuado, darle formato claro y entregarlo impreso o en PDF.</span><span class="hint" style="color:inherit;opacity:.85">Toca para volver</span></span>
+    </button>
+    </div>
+  <div>
+    <h3 style="margin-bottom:10px">Calendario: cada lunes</h3>
+    <div class="sheet"><table><thead><tr><th>Sesión</th><th>Fecha</th><th>Foco</th></tr></thead><tbody>
+      <tr><td>1</td><td>19 de octubre</td><td>Módulo I: Office, interfaz, hoja de cálculo, tipos de datos, guardar</td></tr>
+      <tr><td>2</td><td>26 de octubre</td><td>Cierre del Módulo I e inicio del Módulo II: primer cálculo y operadores</td></tr>
+      <tr><td>3</td><td>9 de noviembre</td><td>Módulo II: referencias y funciones SUMA, PROMEDIO, MAX, MIN, CONTAR</td></tr>
+      <tr><td>4</td><td>23 de noviembre</td><td>Cierre del Módulo II e inicio del Módulo III: gráficos</td></tr>
+      <tr><td>5</td><td>30 de noviembre</td><td>Módulo III: personalizar, exportar, imprimir y proyecto integrador</td></tr>
+    </tbody></table></div>
+    <p class="note" style="margin-top:10px">Los lunes 2 y 16 de noviembre son festivos y no hay clase. Entre sesiones habrá una práctica corta de unos 30 minutos para llegar con el tema ya explorado.</p>
+  </div>
+  <div class="grid">
+    <div class="card g"><h3>Cómo vamos a aprender</h3><ul><li>Clases magistrales cortas</li><li>Aula invertida y videos de apoyo</li><li>Talleres y trabajo colaborativo</li><li>Pensamiento de diseño y pensamiento lateral</li></ul></div>
+    <div class="card m"><h3>Lo que necesitas</h3><ul><li>Manejo básico de Windows y del navegador</li><li>Excel instalado o Excel en línea</li><li>Acceso a Teams</li></ul></div>
+    <div class="card g"><h3>Valores del curso</h3><ul><li><b>Compromiso</b> con lo que prometemos</li><li><b>Excelencia</b> en lo que hacemos</li><li><b>Dedicación</b> hacia las demás personas</li></ul><p class="muted">Recibes certificado de asistencia digital.</p></div>
+  </div>
+  <div class="card"><h3>Una pregunta para el grupo</h3><p>Mirando los tres módulos, ¿cuál te genera más curiosidad y cuál te da más susto? Respóndelo en el chat.</p></div>
+  <div class="pager"><button class="btn ghost" data-go="2" type="button">Anterior</button><button class="btn mag" data-go="4" type="button">Ir a la teoría</button></div>
+</section>
+
+<!-- 5 TEORIA -->
+<section class="s" id="s4">
+  <div><p class="eyebrow">Estación 4 · 45 min</p><h2>Primer acercamiento: la hoja de cálculo</h2>
+  <p class="lead">Cuatro ideas, cada una con algo para hacer. Escucha unos minutos, prueba en tu Excel y comparte lo que viste.</p></div>
+
+  <div class="card g">
+    <h3>1 · Office y el lugar de Excel</h3>
+    <p>Office es un conjunto de aplicaciones que trabajan juntas. Cada una resuelve un tipo de tarea.</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="note"><b>Word</b><br>Documentos y cartas</div>
+      <div class="note"><b>Excel</b><br>Números, tablas y cálculos</div>
+      <div class="note"><b>PowerPoint</b><br>Presentaciones</div>
+      <div class="note"><b>Outlook</b><br>Correo y agenda</div>
+      <div class="note"><b>Teams</b><br>Reuniones y archivos en equipo</div>
+    </div>
+    <p class="note"><b>Para hacer:</b> en el chat, escribe una tarea de tu trabajo y la aplicación que usarías para resolverla.</p>
+  </div>
+
+  <div class="card g">
+    <h3>2 · La interfaz de Excel</h3>
+    <p>Toca cada parte para saber qué hace. Búscala en tu pantalla.</p>
+    <div class="opts" id="ui"></div>
+    <p class="note" id="uitxt">Elige una parte de la interfaz.</p>
+  </div>
+
+  <div class="card g">
+    <h3>3 · Filas, columnas, celdas y rangos</h3>
+    <p>Una <b>celda</b> es el cruce de una columna (letra) y una fila (número). Un <b>rango</b> es un bloque de celdas y se escribe con dos puntos entre la primera y la última. Toca una celda y luego otra para armar un rango.</p>
+    <div class="range" id="rg" role="grid" aria-label="Hoja de práctica"></div>
+    <p><span class="pill m" id="rgout">Toca una celda</span></p>
+    <p class="note">Una hoja de Excel tiene 16.384 columnas (hasta XFD) y 1.048.576 filas. Hoy usaremos muy pocas.</p>
+  </div>
+
+  <div class="card g">
+    <h3>4 · Tipos de datos</h3>
+    <p>Excel trata distinto lo que escribes según su tipo. Toca el tipo correcto para cada dato.</p>
+    <div class="types" id="tq"></div>
+    <p class="note" id="tqmsg">Aciertos: 0 de 6</p>
+    <p class="note"><b>Pista:</b> los números se alinean a la derecha y el texto a la izquierda. Una fórmula siempre empieza con el signo igual.</p>
+  </div>
+
+  <div class="card m">
+    <h3>5 · Guardar y organizar</h3>
+    <ul><li><b>Guardar</b> (Ctrl+G en español, Ctrl+S en inglés) y <b>Guardar como</b> para elegir nombre y carpeta.</li>
+    <li>Formato de libro: <b>.xlsx</b>. Para compartir sin editar, PDF.</li>
+    <li>Un nombre claro ayuda: <b>Gastos_Octubre_2026.xlsx</b> se encuentra mejor que <b>Libro1.xlsx</b>.</li></ul>
+  </div>
+  <div class="card m">
+    <h3>6 · Paseo por la interfaz en tu computador</h3>
+    <p>Ahora lo hacemos de verdad. Abre Excel en tu computador y recorre cada punto. Si alguien se atasca, pide ayuda en el chat o a tu pareja.</p>
+    <div class="check" id="tour"></div>
+    <p class="note">Tiempo sugerido: 10 minutos. Al terminar, escribe en el chat qué pestaña de la cinta te llamó más la atención.</p>
+  </div>
+  <div class="pager"><button class="btn ghost" data-go="3" type="button">Anterior</button><button class="btn mag" data-go="5" type="button">Ir a la práctica</button></div>
+</section>
+
+<!-- 6 PRACTICA -->
+<section class="s" id="s5">
+  <div><p class="eyebrow">Estación 5 · 60 min · en parejas</p><h2>Práctica: mi primera hoja de gastos</h2>
+  <p class="lead">Vas a construir una hoja sencilla con los gastos de una semana. No hay fórmulas todavía. La meta es manejar la hoja y escribir cada dato como corresponde.</p></div>
+  <div class="card g">
+    <h3>Los datos</h3>
+    <p class="muted">Escríbelos desde la celda A1. Respeta mayúsculas y signos.</p>
+    <div class="sheet"><table><thead><tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th>Valor</th></tr></thead><tbody>
+      <tr><td>19/10/2026</td><td>Almuerzo</td><td>Alimentación</td><td class="num">18500</td></tr>
+      <tr><td>20/10/2026</td><td>Pasaje metro</td><td>Transporte</td><td class="num">3200</td></tr>
+      <tr><td>21/10/2026</td><td>Cuaderno</td><td>Estudio</td><td class="num">7800</td></tr>
+      <tr><td>22/10/2026</td><td>Mercado</td><td>Alimentación</td><td class="num">64000</td></tr>
+      <tr><td>23/10/2026</td><td>Recarga celular</td><td>Servicios</td><td class="num">10000</td></tr>
+      <tr><td>24/10/2026</td><td>Cine</td><td>Recreación</td><td class="num">22000</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="split">
+    <div class="card m">
+      <h3>Retos</h3>
+      <div class="check" id="chk"></div>
+    </div>
+    <div class="card g">
+      <h3>Tu avance</h3>
+      <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+      <p id="pct" class="muted">0 de 8 retos</p>
+      <h3 style="margin-top:8px">Trabajo en pareja</h3>
+      <ul><li>Una persona comparte pantalla y la otra dicta los pasos. A la mitad se cambian los roles.</li>
+      <li>Antes de preguntar a quien dirige, pregunta a tu pareja y luego a otra pareja.</li>
+      <li>Al terminar, cada pareja muestra una cosa que descubrió y que no estaba en las instrucciones.</li></ul>
+      <p class="note">Reto de extensión: ordena la tabla por Valor de mayor a menor y observa qué pasa con las demás columnas.</p>
+    </div>
+  </div>
+  <div class="pager"><button class="btn ghost" data-go="4" type="button">Anterior</button><button class="btn mag" data-go="6" type="button">Ir al cierre</button></div>
+</section>
+
+<!-- 7 CIERRE -->
+<section class="s" id="s6">
+  <div><p class="eyebrow">Estación 6 · 15 min</p><h2>Cierre de la sesión</h2></div>
+  <div class="split">
+    <div class="card g">
+      <h3>Lo que ya sabes hacer</h3>
+      <ul><li>Reconocer las partes de la interfaz de Excel</li><li>Ubicar una celda y nombrar un rango</li><li>Distinguir texto, número, fecha y fórmula</li><li>Guardar un libro con un nombre claro</li></ul>
+    </div>
+    <div class="card m">
+      <h3>Antes de la sesión 2 · lunes 26 de octubre</h3>
+      <ul><li>Termina tu hoja de gastos y guárdala.</li><li>Practica 30 minutos: agrega 5 gastos más y cámbiale el color al encabezado.</li><li>Sube tu archivo al canal del curso en Teams.</li></ul>
+    </div>
+  </div>
+  <div class="card"><h3>Tres rondas en el chat</h3><ul><li>Una palabra que resuma cómo te sentiste hoy con Excel.</li><li>Lo más útil que aprendiste.</li><li>Una duda que te llevas para la próxima sesión.</li></ul></div>
+  <div class="pager"><button class="btn ghost" data-go="5" type="button">Anterior</button><button class="btn" data-go="1" type="button">Volver al inicio</button></div>
+</section>
+</main>
+
+<script>
+(function(){
+var NAMES=["Bienvenida","Presentación","Programa","Teoría","Práctica","Cierre"];
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s)}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function toast(t){var d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove()},2600)}
+
+/* navegación */
+var nav=$("nav");
+NAMES.forEach(function(n,i){var b=document.createElement("button");b.type="button";b.dataset.n=i+1;b.innerHTML="<b>"+(i+1)+"</b>"+n;b.addEventListener("click",function(){go(i+1)});nav.appendChild(b)});
+function go(n){
+  document.querySelectorAll("section.s").forEach(function(s){s.classList.toggle("on",s.id==="s"+n)});
+  nav.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-current",String(+b.dataset.n===n));if(+b.dataset.n===n)b.scrollIntoView({inline:"center",block:"nearest"})});
+  window.scrollTo(0,0);lsSet("fx_st",String(n));
+  try{history.replaceState(null,"","#e"+n)}catch(e){}
+}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t)go(+t.dataset.go)});
+var start=parseInt((location.hash.match(/^#e(\d)$/)||[])[1]||lsGet("fx_st")||"1",10);if(!(start>=1&&start<=6))start=1;go(start);
+
+/* tema */
+$("theme").addEventListener("click",function(){var r=document.documentElement;var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme: dark)").matches);r.setAttribute("data-theme",dark?"light":"dark")});
+
+/* agenda */
+var AG=[["1","Bienvenida y acuerdos",10],["2","Tarjeta y rompehielo",40],["3","Programa del curso",20],["4","Teoría y paseo por Excel",45],["–","Descanso",10],["5","Práctica en parejas",60],["6","Cierre y tareas",15],["–","Preguntas y margen",10]];
+$("agenda").innerHTML=AG.map(function(a){return '<div><span class="n">'+a[0]+'</span><span>'+a[1]+'</span><span class="t">'+a[2]+' min</span></div>'}).join("");
+
+/* tarjeta */
+var F=["nombre","apellido","ocup","est","exp","niv","meta"];
+var LV={"1":"Nunca lo he usado","2":"Lo he abierto algunas veces","3":"Lo uso de vez en cuando","4":"Lo uso casi todos los días"};
+function read(){var o={};F.forEach(function(k){o[k]=$("f_"+k).value.trim()});return o}
+function cardHTML(o,mine){
+  var lv=+o.niv||1,bars="";for(var i=1;i<=4;i++)bars+='<i class="'+(i<=lv?"on":"")+'"></i>';
+  var div=document.createElement("div");div.className="id";
+  div.innerHTML='<div class="bar"><span>'+(mine?"Mi tarjeta":"Participante")+'</span><span>Excel 1605</span></div><div class="body"><div class="nm"></div><dl><dt>Ocupación</dt><dd data-k="ocup"></dd><dt>Estudios</dt><dd data-k="est"></dd><dt>Experiencia</dt><dd data-k="exp"></dd><dt>Meta</dt><dd data-k="meta"></dd></dl><div class="lvl" title="Nivel con Excel">'+bars+'</div><div class="muted">'+(LV[o.niv]||"")+'</div></div>';
+  div.querySelector(".nm").textContent=((o.nombre||"")+" "+(o.apellido||"")).trim()||"Tu nombre aparece aquí";
+  ["ocup","est","exp","meta"].forEach(function(k){div.querySelector('[data-k="'+k+'"]').textContent=o[k]||"—"});
+  return div;
+}
+function prev(){var p=$("preview"),d=cardHTML(read(),true);p.innerHTML=d.querySelector(".body").innerHTML;p.querySelector(".nm").textContent=d.querySelector(".nm").textContent;["ocup","est","exp","meta"].forEach(function(k){p.querySelector('[data-k="'+k+'"]').textContent=d.querySelector('[data-k="'+k+'"]').textContent})}
+F.forEach(function(k){$("f_"+k).addEventListener("input",prev)});
+try{var sv=JSON.parse(lsGet("fx_card")||"null");if(sv)F.forEach(function(k){if(sv[k]!=null)$("f_"+k).value=sv[k]})}catch(e){}
+prev();
+
+var cards={},dbc=null,myId=lsGet("fx_id");
+if(!myId){myId="l"+Math.random().toString(36).slice(2,10);lsSet("fx_id",myId)}
+function wall(){
+  var w=$("wall");w.innerHTML="";var ids=Object.keys(cards);
+  ids.sort(function(a,b){return (cards[a].ts||0)-(cards[b].ts||0)});
+  ids.forEach(function(id){w.appendChild(cardHTML(cards[id],id===myId))});
+  $("count").textContent=ids.length;
+  $("wallnote").textContent=ids.length?"":"Aún no hay tarjetas publicadas. La tuya puede ser la primera.";
+}
+$("form").addEventListener("submit",function(e){
+  e.preventDefault();var o=read();
+  if(!o.nombre||!o.apellido){$("pubmsg").textContent="Escribe al menos tu nombre y tu apellido.";return}
+  o.ts=Date.now();lsSet("fx_card",JSON.stringify(o));cards[myId]=o;wall();
+  if(dbc){dbc.doc(myId).set(o).then(function(){$("pubmsg").textContent="Publicada en el muro del grupo.";toast("Tarjeta publicada")}).catch(function(){$("pubmsg").textContent="Tu tarjeta quedó solo en tu pantalla. Muéstrala en Teams.";toast("Solo en tu pantalla")})}
+  else{$("pubmsg").textContent="Tu tarjeta quedó en tu pantalla. Muéstrala en Teams.";toast("Tarjeta guardada")}
+});
+wall();
+(async function(){
+  try{
+    if(!window.claude||!claude.use)return;
+    var db=await claude.use("db");if(!db)return;
+    try{var u=await claude.use("user");if(u&&u.id){var id=await u.id();if(id)myId=id}}catch(e){}
+    dbc=db.collection("tarjetas");
+    dbc.onSnapshot(function(s){var m={};s.docs.forEach(function(d){m[d.id]=d.data()||{}});cards=m;wall()},function(){dbc=null});
+  }catch(e){dbc=null}
+})();
+
+/* rompehielo: ruleta de 15 celdas */
+var CELLS=["A1","B1","C1","D1","E1","A2","B2","C2","D2","E2","A3","B3","C3","D3","E3"];
+var QS=["Si tu semana fuera una hoja de Excel, ¿qué dato o cifra sería el más grande?","¿Qué tarea de tu día a día te gustaría que Excel hiciera por ti?","Cuéntanos una lista que lleves (compras, pagos, tareas). ¿Dónde la llevas hoy?","¿Qué pensaste cuando viste Excel por primera vez?","Describe tu trabajo en tres palabras, como si fueran tres encabezados de columna.","¿Qué cifra de tu vida te gustaría entender mejor: gastos, ventas, horas, notas?","¿Qué harías con una hoja en blanco y una hora libre?","Si tu receta o tu equipo favorito fuera una tabla, ¿qué columnas tendría?","¿Cuál ha sido tu mayor equivocación con un archivo del computador?","¿Qué te da más susto de Excel y qué te da más curiosidad?","¿Qué hábito o rutina tuya mejoraría si la anotaras en una tabla?","¿Qué quieres poder hacer el 30 de noviembre que hoy no sabes hacer?","Cuéntanos algo que sepas hacer muy bien y que no tenga que ver con tu trabajo.","¿Qué aplicación de tu celular usas más y para qué?","Si pudieras automatizar una tarea aburrida de tu semana, ¿cuál sería?"];
+var NS="http://www.w3.org/2000/svg",N=CELLS.length,SL=360/N,rot=0,busy=false,cur=-1,passUsed=false;
+function pt(a,r){var x=a*Math.PI/180;return [160+r*Math.cos(x),160+r*Math.sin(x)]}
+(function(){var g=$("wg");
+  for(var i=0;i<N;i++){
+    var a0=i*SL-90,a1=(i+1)*SL-90,p0=pt(a0,150),p1=pt(a1,150);
+    var path=document.createElementNS(NS,"path");
+    path.setAttribute("d","M160 160 L"+p0[0].toFixed(2)+" "+p0[1].toFixed(2)+" A150 150 0 0 1 "+p1[0].toFixed(2)+" "+p1[1].toFixed(2)+" Z");
+    path.setAttribute("fill","hsl("+Math.round(i*SL+4)+",68%,40%)");path.setAttribute("stroke","#fff");path.setAttribute("stroke-width","2");
+    g.appendChild(path);
+    var tx=document.createElementNS(NS,"text");tx.setAttribute("x","252");tx.setAttribute("y","166");tx.setAttribute("fill","#fff");tx.setAttribute("font-family","Montserrat, Segoe UI, sans-serif");tx.setAttribute("font-weight","800");tx.setAttribute("font-size","17");tx.setAttribute("text-anchor","middle");
+    tx.setAttribute("transform","rotate("+(a0+SL/2)+" 160 160)");tx.textContent=CELLS[i];g.appendChild(tx);
+  }
+})();
+var reduce=false;try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){}
+function show(i){$("cellref").textContent=CELLS[i];$("cellq").textContent=QS[i];$("intro").hidden=false;$("pass").hidden=false;$("pass").disabled=passUsed}
+function spinTo(i){
+  busy=true;$("spin").disabled=true;$("pass").disabled=true;
+  var center=i*SL+SL/2;var base=Math.ceil(rot/360)*360;
+  rot=base+4*360+(360-center);
+  var dur=reduce?0:4000;
+  $("wg").style.transitionDuration=reduce?"0s":"4s";
+  $("wg").style.transform="rotate("+rot+"deg)";
+  setTimeout(function(){busy=false;cur=i;$("spin").disabled=false;$("spin").textContent="Siguiente persona: girar de nuevo";show(i)},dur+80);
+}
+$("spin").addEventListener("click",function(){if(busy)return;var i=Math.floor(Math.random()*N);if(i===cur)i=(i+1)%N;passUsed=false;$("cellq").textContent="Girando...";spinTo(i)});
+$("pass").addEventListener("click",function(){if(busy||passUsed)return;passUsed=true;var i=Math.floor(Math.random()*N);if(i===cur)i=(i+1)%N;spinTo(i)});
+
+/* tarjetas de módulo */
+document.querySelectorAll(".flip").forEach(function(b){b.addEventListener("click",function(){var on=b.classList.toggle("on");b.setAttribute("aria-pressed",String(on))})});
+
+/* paseo por la interfaz */
+var TR=["Abre Excel desde el menú Inicio de Windows. Si no lo tienes instalado, entra a office.com y abre Excel en línea.","Elige <b>Libro en blanco</b>.","Recorre las pestañas de la cinta: <b>Inicio</b>, <b>Insertar</b>, <b>Fórmulas</b>, <b>Datos</b> y <b>Vista</b>. Mira qué grupos de botones tiene cada una.","Haz clic en la celda <b>B3</b> y mira el cuadro de nombres a la izquierda de la barra de fórmulas.","Escribe tu nombre en B3, presiona Enter y mira cómo baja la celda activa.","Muévete con las flechas. Prueba <b>Ctrl + flecha</b> y <b>Ctrl + Inicio</b>.","Selecciona el rango <b>B3:D6</b> arrastrando con el mouse y mira el cuadro de nombres.","Abajo, haz clic en el signo <b>+</b> para crear otra hoja y haz doble clic en su pestaña para cambiarle el nombre.","Ajusta el zoom con el control de la esquina inferior derecha."];
+$("tour").innerHTML=TR.map(function(x){return '<label><input type="checkbox"><span>'+x+'</span></label>'}).join("");
+
+/* interfaz */
+var UI={"Cinta de opciones":"Franja superior con pestañas (Inicio, Insertar, Fórmulas...) y los botones de cada una.","Cuadro de nombres":"A la izquierda de la barra de fórmulas. Muestra la celda activa, por ejemplo B3, y sirve para ir a una celda.","Barra de fórmulas":"Muestra lo que hay dentro de la celda activa: texto, número o fórmula.","Celda activa":"La celda con borde verde grueso. Lo que escribas va ahí.","Etiquetas de hoja":"Abajo. Cada pestaña es una hoja. El signo + agrega otra.","Barra de estado":"La franja inferior. Al seleccionar números muestra suma y promedio."};
+$("ui").innerHTML=Object.keys(UI).map(function(k){return '<button type="button">'+k+'</button>'}).join("");
+$("ui").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;$("ui").querySelectorAll("button").forEach(function(x){x.classList.toggle("pick",x===b)});$("uitxt").textContent=b.textContent+": "+UI[b.textContent]});
+
+/* rango */
+var rg=$("rg"),h='<span class="h"></span>';"ABCDEFGH".split("").forEach(function(c){h+='<span class="h">'+c+'</span>'});
+for(var r=1;r<=6;r++){h+='<span class="h">'+r+'</span>';"ABCDEFGH".split("").forEach(function(c,ci){h+='<button type="button" class="c" data-c="'+ci+'" data-r="'+r+'">'+c+r+'</button>'})}
+rg.innerHTML=h;var a1=null;
+rg.addEventListener("click",function(e){
+  var b=e.target.closest(".c");if(!b)return;var c=+b.dataset.c,r=+b.dataset.r,L="ABCDEFGH";
+  if(!a1){a1={c:c,r:r};paint(a1,a1);$("rgout").textContent="Celda "+L[c]+r+". Toca otra para formar un rango."}
+  else{var c1=Math.min(a1.c,c),c2=Math.max(a1.c,c),r1=Math.min(a1.r,r),r2=Math.max(a1.r,r);paint({c:c1,r:r1},{c:c2,r:r2});
+    var n=(c2-c1+1)*(r2-r1+1);$("rgout").textContent="Rango "+L[c1]+r1+":"+L[c2]+r2+" · "+n+(n===1?" celda":" celdas");a1=null}
+});
+function paint(p,q){rg.querySelectorAll(".c").forEach(function(x){var c=+x.dataset.c,r=+x.dataset.r;x.classList.toggle("sel",c>=p.c&&c<=q.c&&r>=p.r&&r<=q.r);x.classList.toggle("act",c===p.c&&r===p.r)})}
+
+/* tipos de datos */
+var TQ=[["Texto","Medellín"],["Número","1250000"],["Fecha","19/10/2026"],["Fórmula","=B2+B3"],["Texto","Cód. 1605"],["Número","3,5"]];
+var order=["Texto","Número","Fecha","Fórmula"],good=0,done={};
+$("tq").innerHTML=TQ.map(function(t,i){return '<div class="tchip" style="cursor:default" data-i="'+i+'"><code></code><span class="opts" style="gap:4px">'+order.map(function(o){return '<button type="button" data-t="'+o+'" style="padding:3px 8px;font-size:.8rem">'+o+'</button>'}).join("")+'</span></div>'}).join("");
+$("tq").querySelectorAll(".tchip").forEach(function(c,i){c.querySelector("code").textContent=TQ[i][1]});
+$("tq").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-t]");if(!b)return;var c=b.closest(".tchip"),i=+c.dataset.i;if(done[i])return;
+  if(b.dataset.t===TQ[i][0]){done[i]=1;good++;c.classList.add("ok");c.querySelectorAll("button").forEach(function(x){x.disabled=true})}
+  else{c.classList.add("bad");setTimeout(function(){c.classList.remove("bad")},600)}
+  $("tqmsg").textContent="Aciertos: "+good+" de 6"+(good===6?". Completo.":"");
+});
+
+/* practica */
+var RT=["Cambia el nombre de la hoja a <b>Gastos</b>.","Escribe los encabezados en A1:D1 y los datos en A2:D7.","Verifica que las fechas se alineen a la derecha. Si quedan a la izquierda, Excel las tomó como texto.","Ensancha las columnas con doble clic en el borde del encabezado.","Pon los encabezados en negrita y con relleno de color.","Aplica formato de moneda a la columna Valor.","Guarda el libro como <b>Gastos_Semana1_TuNombre.xlsx</b>.","En una celda aparte, escribe <b>=SUMA(D2:D7)</b> y cuéntale al grupo qué pasó."];
+var saved=[];try{saved=JSON.parse(lsGet("fx_chk")||"[]")}catch(e){}
+$("chk").innerHTML=RT.map(function(t,i){return '<label><input type="checkbox" data-i="'+i+'"'+(saved.indexOf(i)>-1?" checked":"")+'><span>'+t+'</span></label>'}).join("");
+function upd(){var n=$("chk").querySelectorAll("input:checked").length;$("bar").style.width=(n/RT.length*100)+"%";$("pct").textContent=n+" de "+RT.length+" retos";
+  var a=[];$("chk").querySelectorAll("input").forEach(function(x,i){if(x.checked)a.push(i)});lsSet("fx_chk",JSON.stringify(a))}
+$("chk").addEventListener("change",upd);upd();
+})();
+</script>
+
+</body></html>
