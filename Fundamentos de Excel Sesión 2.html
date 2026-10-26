@@ -1,0 +1,516 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Fundamentos de Excel Sesión 2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: cabecera fija con 7 estaciones; una estación visible a la vez; tarjetas y retos tipo hoja de cálculo */
+:root{
+  --green:#0e803e; --green-ink:#0b6a33; --green-soft:#e4f3ea; --green-line:#b7dcc6;
+  --mag:#e72a77; --mag-ink:#c4175f; --mag-soft:#fde6ef;
+  --bg:#f6faf7; --card:#ffffff; --fg:#14231b; --muted:#506358; --line:#d5e3da; --cell:#f0f6f2;
+  --on-green:#ffffff; --on-mag:#ffffff;
+  --fd:'Montserrat','Segoe UI',Arial,sans-serif; --fb:'Roboto','Segoe UI',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--fb);font-weight:400;font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--green);z-index:30}
+h1,h2,h3{font-family:var(--fd);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(1.9rem,5vw,3rem)} h2{font-size:clamp(1.4rem,3.4vw,2rem)} h3{font-size:1.1rem;font-weight:700}
+p{margin:0} ul{margin:0;padding-left:1.2em;display:grid;gap:.35em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mag);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px))) ;padding-inline:max(16px,env(safe-area-inset-left,0px));color:var(--on-green)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:8px}
+.brand{font-family:var(--fd);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+nav.st{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;padding-block:2px}
+nav.st::-webkit-scrollbar{display:none}
+nav.st button{flex:none;border:0;background:rgba(255,255,255,.14);color:var(--on-green);border-radius:6px;padding:7px 12px;cursor:pointer;font-family:var(--fd);font-weight:700;font-size:.78rem}
+nav.st button[aria-current="true"]{background:var(--mag);color:var(--on-mag)}
+nav.st b{opacity:.75;margin-right:5px}
+.theme{flex:none;border:1px solid rgba(255,255,255,.4);background:transparent;color:var(--on-green);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:.78rem}
+main{padding-block:28px 56px}
+section.s{display:none;gap:22px}
+section.s.on{display:grid}
+.eyebrow{font-family:var(--fd);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mag-ink)}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.hero{display:grid;gap:14px;padding:28px;border-radius:10px;background:var(--green);color:var(--on-green);position:relative;overflow:hidden}
+.hero .eyebrow{color:#ffd3e3}
+.hero p{max-width:58ch;opacity:.95}
+.hero .tag{display:inline-block;background:var(--mag);color:var(--on-mag);font-family:var(--fd);font-weight:700;padding:4px 10px;border-radius:4px;font-size:.8rem;width:fit-content}
+.colhead{display:flex;gap:2px;position:absolute;right:0;top:0;opacity:.18;font-family:var(--fd);font-weight:800;font-size:3.5rem;pointer-events:none}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.card.g{border-top:4px solid var(--green)} .card.m{border-top:4px solid var(--mag)}
+.muted{color:var(--muted);font-size:.92rem}
+.btn{border:0;border-radius:6px;padding:11px 18px;font-family:var(--fd);font-weight:700;font-size:.9rem;cursor:pointer;background:var(--green);color:var(--on-green);width:fit-content}
+.btn.mag{background:var(--mag);color:var(--on-mag)} .btn.ghost{background:transparent;color:var(--green-ink);border:2px solid var(--green)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.agenda{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+.agenda div{display:grid;grid-template-columns:44px 1fr auto;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.agenda div:last-child{border:0}
+.agenda .n{font-family:var(--fd);font-weight:700;color:var(--mag-ink);text-align:center}
+.agenda .t{font-variant-numeric:tabular-nums;font-weight:500;color:var(--green-ink)}
+form.f{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+label{display:grid;gap:4px;font-weight:500;font-size:.9rem}
+input,select,textarea{border:1.5px solid var(--line);background:var(--card);border-radius:6px;padding:9px 11px;width:100%;min-width:0}
+textarea{min-height:76px;resize:vertical}
+.full{grid-column:1/-1}
+.split{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+.id{background:var(--card);border:2px solid var(--green);border-radius:10px;overflow:hidden;min-width:0}
+.id .bar{background:var(--green);color:var(--on-green);padding:8px 14px;font-family:var(--fd);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
+.id .body{padding:14px;display:grid;gap:8px}
+.id .nm{font-family:var(--fd);font-weight:800;font-size:1.25rem;overflow-wrap:anywhere}
+.id dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:.92rem}
+.id dt{color:var(--muted)} .id dd{margin:0;overflow-wrap:anywhere}
+.lvl{display:flex;gap:3px} .lvl i{height:8px;flex:1;border-radius:2px;background:var(--line)} .lvl i.on{background:var(--mag)}
+.wall{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.note{font-size:.86rem;color:var(--muted);background:var(--cell);border-radius:6px;padding:8px 12px}
+.spin{display:grid;gap:14px;justify-items:start}
+.cellbig{font-family:var(--fd);font-weight:800;font-size:2.6rem;border:3px solid var(--green);background:var(--card);padding:6px 20px;border-radius:4px;min-width:110px;text-align:center;font-variant-numeric:tabular-nums}
+.q{font-size:1.25rem;font-weight:500;max-width:46ch;min-height:3.2em}
+.range{display:grid;grid-template-columns:36px repeat(8,1fr);gap:0;border:1px solid var(--line);font-size:.85rem;max-width:560px;user-select:none}
+.range>*{padding:7px 4px;text-align:center;border:.5px solid var(--line);background:var(--card);min-width:0;font-variant-numeric:tabular-nums}
+.range .h{background:var(--cell);color:var(--muted);font-weight:700}
+.range button.c{cursor:pointer;border:.5px solid var(--line);padding:7px 2px}
+.range button.c.sel{background:var(--green-soft);outline:1.5px solid var(--green);outline-offset:-1.5px}
+.range button.c.act{background:var(--mag-soft);outline:2px solid var(--mag);outline-offset:-2px}
+.pill{display:inline-block;font-family:var(--fd);font-weight:700;font-size:.8rem;padding:3px 10px;border-radius:99px;background:var(--green-soft);color:var(--green-ink)}
+.pill.m{background:var(--mag-soft);color:var(--mag-ink)}
+.types{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.tchip{border:2px solid var(--line);background:var(--card);border-radius:8px;padding:10px 12px;cursor:pointer;text-align:left;display:grid;gap:2px}
+.tchip code{font-family:Consolas,monospace;font-size:1rem;color:var(--mag-ink);font-weight:700}
+.tchip.ok{border-color:var(--green);background:var(--green-soft)} .tchip.bad{border-color:var(--mag);background:var(--mag-soft)}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{border:1.5px solid var(--green);background:transparent;color:var(--green-ink);border-radius:6px;padding:6px 12px;cursor:pointer;font-weight:500}
+.opts button.pick{background:var(--green);color:var(--on-green)}
+.sheet{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--green);color:var(--on-green);font-family:var(--fd);font-weight:700;font-size:.8rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.check{display:grid;gap:8px}
+.check label{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-weight:400;font-size:1rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--green);margin-top:2px}
+.prog{height:12px;border-radius:99px;background:var(--line);overflow:hidden} .prog i{display:block;height:100%;background:var(--mag);width:0;transition:width .3s}
+.mod{display:grid;gap:8px;padding:16px;border-radius:8px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--green)}
+.mod.now{border-left-color:var(--mag)}
+.hrs{display:flex;gap:6px;flex-wrap:wrap}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:6px;z-index:40;font-weight:500;max-width:90vw}
+
+.wheelbox{display:grid;gap:14px;justify-items:center}
+.wheelwrap{position:relative;width:min(100%,360px);aspect-ratio:1;max-width:100%}
+.wheelwrap svg{width:100%;height:100%;display:block}
+#wg{transform-origin:160px 160px;transition:transform 4s cubic-bezier(.12,.7,.1,1)}
+.ptr{position:absolute;left:50%;top:-6px;width:0;height:0;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent;border-top:26px solid var(--mag);filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));z-index:2}
+.res{display:grid;gap:8px;justify-items:start;width:100%}
+.intro{background:var(--mag-soft);border-left:5px solid var(--mag);padding:10px 14px;border-radius:6px;font-weight:500}
+.flip{all:unset;box-sizing:border-box;display:grid;cursor:pointer;perspective:1100px;min-width:0;border-radius:10px}
+.flip:focus-visible{outline:3px solid var(--mag);outline-offset:3px}
+.flip .face{grid-area:1/1;display:grid;gap:8px;align-content:start;padding:18px;border-radius:10px;border:1px solid var(--line);background:var(--card);backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s;min-width:0}
+.flip .front{border-left:6px solid var(--green);transform:rotateY(0)}
+.flip .back{background:var(--green);color:var(--on-green);border-color:var(--green);transform:rotateY(180deg)}
+.flip .back li{font-size:.92rem}
+.flip.now .front{border-left-color:var(--mag)}
+.flip.on .front{transform:rotateY(-180deg)} .flip.on .back{transform:rotateY(0)}
+.flip .hint{font-size:.82rem;color:var(--mag-ink);font-weight:500}
+.flip .back .pill{background:rgba(255,255,255,.18);color:var(--on-green)}
+
+.shot{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:100%;background:#fff}
+.shot img{display:block;width:100%;height:auto}
+.hs{position:absolute;transform:translate(-50%,-50%);width:clamp(20px,2.4vw,28px);height:clamp(20px,2.4vw,28px);border-radius:50%;background:var(--mag);color:#fff;border:2px solid #fff;font-family:var(--fd);font-weight:800;font-size:clamp(.62rem,1.1vw,.82rem);display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.hs.pick{background:#0e803e;outline:3px solid #e72a77;z-index:2;transform:translate(-50%,-50%) scale(1.25)}
+.legend{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.legend button,.legend div{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:6px;padding:6px 10px;font-size:.92rem;min-width:0}
+.legend button{cursor:pointer}
+.legend button.pick{border-color:var(--green);background:var(--green-soft)}
+.legend button>b,.legend div>b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--mag);color:#fff;font-family:var(--fd);font-size:.75rem}
+.detail{background:var(--green-soft);border-left:5px solid var(--green);border-radius:6px;padding:10px 14px;min-height:3.4em}
+.rbox{position:absolute;border:3px dashed #e72a77;background:rgba(231,42,119,.1);pointer-events:none}
+.rbox span,.gbox span{position:absolute;left:4px;top:-1px;background:#e72a77;color:#fff;font:700 .72rem var(--fd);padding:1px 6px;border-radius:0 0 4px 4px}
+.gbox{position:absolute;border:3px solid #0e803e;background:rgba(14,128,62,.15);pointer-events:none}
+.gbox span{background:#0e803e;top:auto;bottom:-1px;border-radius:4px 4px 0 0}
+.st{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--card);align-items:start}
+.step.done{border-color:var(--green);background:var(--green-soft)}
+.step input{width:22px;height:22px;accent-color:var(--green);margin-top:3px}
+.step h3{font-size:1.02rem}
+.step .nb{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:50%;background:var(--mag);color:#fff;font-size:.8rem;margin-right:8px;font-family:var(--fd)}
+.step .bd{grid-column:2;display:grid;gap:6px}
+.step ol{margin:0;padding-left:1.3em;display:grid;gap:.3em}
+.see{background:var(--cell);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.kbd{font-family:Consolas,monospace;background:var(--cell);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-size:.88em;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){#wg,.flip .face{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.brand{display:none}.hero{padding:20px}}
+
+.clock .row.now{background:var(--mag-soft)}
+.agenda .row{display:grid;grid-template-columns:78px 1fr auto;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center}
+.agenda .row:last-child{border:0}
+.agenda .hr{font-variant-numeric:tabular-nums;font-weight:700;color:var(--green-ink);font-size:.9rem}
+.agenda .ah{font-family:var(--fd);font-weight:700;font-size:.7rem;background:var(--mag);color:#fff;border-radius:99px;padding:2px 9px}
+.lab{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.lab label{font-size:.82rem}
+.out{font-family:var(--fd);font-weight:800;font-size:1.5rem;color:var(--green-ink);font-variant-numeric:tabular-nums}
+.fx{font-family:Consolas,monospace;background:var(--cell);border:1px solid var(--line);border-radius:4px;padding:2px 8px;color:var(--mag-ink);font-weight:700}
+.pq{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.pq .o{display:flex;gap:8px;flex-wrap:wrap}
+.pq .o button{border:1.5px solid var(--green);background:transparent;color:var(--green-ink);border-radius:6px;padding:7px 14px;cursor:pointer;font-weight:500;font-variant-numeric:tabular-nums}
+.pq .o button.ok{background:var(--green);color:#fff}
+.pq .o button.no{background:var(--mag);border-color:var(--mag);color:#fff}
+.pq .fb{font-size:.92rem;color:var(--muted)}
+.ord{display:grid;gap:6px;counter-reset:o;padding:0;list-style:none}
+.ord li{counter-increment:o;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+.ord li::before{content:counter(o);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-family:var(--fd);font-weight:700;font-size:.8rem}
+pre.pr{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--cell);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0;font-family:Consolas,monospace;font-size:.88rem;user-select:all}
+.cur{background:var(--mag-soft);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.sc{font-family:var(--fd);font-weight:800;font-size:2.2rem}
+
+.anat{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
+.anat>div{display:grid;gap:4px;justify-items:center;text-align:center;min-width:0}
+.anat .pc{font-family:Consolas,monospace;font-weight:700;font-size:1.15rem;border:2px solid var(--green);border-radius:6px;padding:4px 10px;background:var(--card)}
+.anat .pc.o{border-color:var(--mag);color:var(--mag-ink)}
+.anat small{font-size:.74rem;color:var(--muted);max-width:11ch}
+.say{background:var(--green-soft);border-left:4px solid var(--green);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.pbtn{margin-left:auto}
+#pres[hidden]{display:none}
+#pres{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;grid-template-rows:auto 1fr auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#pres .ph{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));background:var(--green);color:var(--on-green);font-family:var(--fd);font-weight:700}
+#pres .pb{overflow:auto;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));display:grid;align-content:center;gap:16px;max-width:900px;width:100%;margin:0 auto}
+#pres h2{font-size:clamp(1.6rem,4vw,2.6rem)}
+#pres ol{font-size:clamp(1.1rem,2.2vw,1.5rem);gap:.6em}
+#pres .see,#pres .say,#pres .cur{font-size:clamp(1rem,1.8vw,1.2rem)}
+#pres .pf{display:flex;justify-content:space-between;gap:10px;padding:12px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));border-top:1px solid var(--line)}
+</style>
+<header class="top"><div class="wrap">
+  <span class="brand">Fundamentos de Excel · S2</span>
+  <nav class="st" id="nav" aria-label="Estaciones"></nav>
+  <button class="theme" id="theme" type="button">Tema</button>
+</div></header>
+<main class="wrap">
+
+<!-- 1 MICROCLASE -->
+<section class="s" id="s1">
+  <div class="hero">
+    <div class="colhead" aria-hidden="true"><span>=</span><span>+</span><span>%</span></div>
+    <span class="tag">Sesión 2 · Lunes 26 de octubre de 2026 · 5:15 a 8:30 pm</span>
+    <h1>Hoy Excel empieza a calcular</h1>
+    <p>Hasta ahora escribiste datos. Hoy vas a ponerlos a trabajar: sumas, descuentos, porcentajes y un presupuesto con cifras en pesos colombianos. Cada práctica alimenta la siguiente, así que lo que construyas en la tienda lo vas a usar en tu presupuesto.</p>
+  </div>
+  <div class="split">
+    <div>
+      <p class="eyebrow" style="margin-bottom:8px">Ruta de hoy · 195 minutos</p>
+      <div class="agenda clock" id="agenda"></div>
+    </div>
+    <div class="card g">
+      <p class="eyebrow">Estación 1 · Micro clase · 25 min</p>
+      <h2>Qué haremos hoy</h2>
+      <ul>
+        <li><b>Cierre del Módulo I:</b> abrir, guardar con otro nombre, organizar en carpetas y acomodar tu espacio de Excel.</li>
+        <li><b>Inicio del Módulo II:</b> tu primera fórmula, los operadores y el orden en que Excel resuelve las cuentas.</li>
+        <li><b>Demostración guiada:</b> una primera fórmula paso a paso, con tu docente.</li>
+        <li><b>Práctica 1:</b> la lista de compras de una tienda de barrio.</li>
+        <li><b>Práctica 2:</b> de tu sueldo a tu presupuesto, con una ayuda de IA.</li>
+        <li><b>Prueba formativa</b> para comprobar lo aprendido.</li>
+      </ul>
+      <p class="note">Antes de empezar, escribe en el chat de Teams una palabra que recuerdes de la sesión pasada.</p>
+    </div>
+  </div>
+
+  <div class="card g">
+    <h2>Idea 1 · Una fórmula siempre empieza con =</h2>
+    <p>Si escribes <span class="fx">500+300</span>, Excel lo toma como texto. Si escribes <span class="fx">=500+300</span>, Excel calcula y muestra <b>800</b>. El signo igual le avisa a Excel que viene una cuenta.</p>
+    <div class="sheet"><table><thead><tr><th>Operador</th><th>Qué hace</th><th>Ejemplo</th><th>Excel muestra</th></tr></thead><tbody><tr><td><span class="fx">+</span></td><td>Suma</td><td><span class="fx">=500+300</span></td><td class="num">800</td></tr><tr><td><span class="fx">-</span></td><td>Resta</td><td><span class="fx">=500-300</span></td><td class="num">200</td></tr><tr><td><span class="fx">*</span></td><td>Multiplicación</td><td><span class="fx">=5*300</span></td><td class="num">1.500</td></tr><tr><td><span class="fx">/</span></td><td>División</td><td><span class="fx">=900/3</span></td><td class="num">300</td></tr><tr><td><span class="fx">%</span></td><td>Porcentaje</td><td><span class="fx">=2400000*4%</span></td><td class="num">96.000</td></tr><tr><td><span class="fx">( )</span></td><td>Paréntesis: mandan primero</td><td><span class="fx">=(2+3)*4</span></td><td class="num">20</td></tr></tbody></table></div>
+  </div>
+
+  <div class="card g">
+    <h2>Idea 2 · Hazle clic a las celdas en vez de escribir los números</h2>
+    <p>En esta mini hoja, cambia la cantidad o el precio y mira el subtotal. La fórmula nunca cambia: <span class="fx">=B2*C2</span>. Por eso Excel se actualiza solo.</p>
+    <div class="lab">
+      <label>Producto<input value="Arroz (kg)" aria-label="Producto" readonly></label>
+      <label>B2 · Cantidad<input id="lq" type="number" min="0" step="1" value="3"></label>
+      <label>C2 · Precio unitario (COP)<input id="lp" type="number" min="0" step="100" value="5200"></label>
+      <div><p class="muted">D2 · Subtotal</p><div class="out" id="lo">$ 15.600</div><p class="muted">IVA 19 % de ese valor: <b id="liva">$ 2.964</b></p></div>
+    </div>
+    <p class="cur"><b>Curiosidad:</b> ¿qué habría pasado si hubieras escrito <span class="fx">=3*5200</span>? Cambia la cantidad a 4 y piensa qué tendrías que hacer en cada caso.</p>
+  </div>
+
+  <div class="card g">
+    <h2>Idea 3 · Excel tiene un orden para resolver</h2>
+    <ol class="ord"><li><span>Lo que está entre <b>paréntesis</b></span></li><li><span>Los <b>porcentajes</b> (%)</span></li><li><span>Las <b>potencias</b> (^)</span></li><li><span>Las <b>multiplicaciones y divisiones</b>, de izquierda a derecha</span></li><li><span>Las <b>sumas y restas</b>, de izquierda a derecha</span></li></ol>
+    <h3 style="margin-top:6px">Predice antes de comprobar</h3>
+    <div id="pred" style="display:grid;gap:10px"></div>
+    <p class="note" id="predsc">Respuestas correctas: 0 de 5</p>
+  </div>
+
+  <div class="card g">
+    <h2>Idea 4 · La sintaxis que usaremos hoy</h2>
+    <p>Una fórmula se lee de izquierda a derecha y tiene partes. Toca cada una con la vista y reconócelas:</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div class="note"><span class="fx">=B2*C2</span>
+        <div class="anat" style="margin-top:8px"><div><span class="pc o">=</span><small>inicio</small></div><div><span class="pc">B2</span><small>celda</small></div><div><span class="pc o">*</span><small>operador</small></div><div><span class="pc">C2</span><small>celda</small></div></div></div>
+      <div class="note"><span class="fx">=D9*5%</span>
+        <div class="anat" style="margin-top:8px"><div><span class="pc o">=</span><small>inicio</small></div><div><span class="pc">D9</span><small>celda</small></div><div><span class="pc o">*</span><small>operador</small></div><div><span class="pc">5%</span><small>número escrito (constante)</small></div></div></div>
+      <div class="note"><span class="fx">=Tienda!D11*4</span>
+        <div class="anat" style="margin-top:8px"><div><span class="pc o">=</span><small>inicio</small></div><div><span class="pc">Tienda</span><small>nombre de la hoja</small></div><div><span class="pc o">!</span><small>separador</small></div><div><span class="pc">D11</span><small>celda de esa hoja</small></div><div><span class="pc o">*4</span><small>operador y constante</small></div></div></div>
+    </div>
+    <div class="sheet"><table><thead><tr><th>Lo que escribo</th><th>Cómo se llama</th><th>Qué significa</th></tr></thead><tbody>
+      <tr><td><span class="fx">=</span></td><td>Signo igual</td><td>Inicia toda fórmula. Sin él, Excel guarda texto.</td></tr>
+      <tr><td><span class="fx">B2</span></td><td>Referencia de celda</td><td>Columna B, fila 2. Toma el valor que esa celda tenga en ese momento.</td></tr>
+      <tr><td><span class="fx">+ - * /</span></td><td>Operadores</td><td>Suman, restan, multiplican y dividen.</td></tr>
+      <tr><td><span class="fx">5%</span></td><td>Porcentaje</td><td>Excel lo entiende como 0,05. Por eso <span class="fx">=D9*5%</span> es el 5 % de D9.</td></tr>
+      <tr><td><span class="fx">( )</span></td><td>Paréntesis</td><td>Lo que va dentro se resuelve primero.</td></tr>
+      <tr><td><span class="fx">Tienda!D11</span></td><td>Referencia a otra hoja</td><td>Nombre de la hoja, signo de admiración y la celda.</td></tr>
+    </tbody></table></div>
+    <h3>Dos ideas más para hoy</h3>
+    <ul>
+      <li><b>Controlador de relleno:</b> el cuadrito en la esquina inferior derecha de una celda. Al arrastrarlo copia la fórmula y Excel ajusta las filas: <span class="fx">=B2*C2</span> pasa a <span class="fx">=B3*C3</span>. Eso se llama referencia <b>relativa</b>. La próxima sesión veremos la absoluta.</li>
+      <li><b>Teclas de hoy:</b> <span class="kbd">Enter</span> confirma y baja, <span class="kbd">Tab</span> confirma y pasa a la derecha, <span class="kbd">F2</span> edita la celda, <span class="kbd">Ctrl + Z</span> deshace y <span class="kbd">Ctrl + G</span> guarda.</li>
+    </ul>
+    <h3>Mensajes de error que vas a encontrar</h3>
+    <div class="sheet"><table><thead><tr><th>Excel muestra</th><th>Qué pasó</th><th>Cómo se arregla</th></tr></thead><tbody>
+      <tr><td><span class="fx">#####</span></td><td>La columna es muy angosta para el número</td><td>Doble clic en el borde del encabezado de la columna</td></tr>
+      <tr><td><span class="fx">#¡DIV/0!</span></td><td>Se dividió entre cero o entre una celda vacía</td><td>Revisa la celda que divide</td></tr>
+      <tr><td><span class="fx">#¡VALOR!</span></td><td>La fórmula intentó operar con texto</td><td>Revisa que las celdas tengan números</td></tr>
+      <tr><td><span class="fx">#¿NOMBRE?</span></td><td>Excel no reconoce una palabra de la fórmula</td><td>Escribe celdas como B2 o clic sobre ellas, sin inventar nombres</td></tr>
+    </tbody></table></div>
+    <h3>Vocabulario de hoy</h3>
+    <p><b>Celda</b>, <b>referencia</b>, <b>operador</b>, <b>constante</b>, <b>fórmula</b>, <b>resultado</b> y <b>controlador de relleno</b>.</p>
+  </div>
+  <div class="pager"><span></span><button class="btn mag" data-go="2" type="button">Ir a la demostración guiada</button></div>
+</section>
+
+<!-- 2 DEMO -->
+<section class="s" id="s2">
+  <div><p class="eyebrow">Estación 2 · 5:50 a 6:20 pm · tu docente guía</p><h2>Demostración guiada: el mercado del sancocho</h2>
+  <p class="lead">Vamos a hacerlo juntos, un paso a la vez. Tu docente explica y tú repites en tu Excel. Con lo que veas aquí podrás hacer solo la práctica de la tienda.</p></div>
+  <div class="card g">
+    <h3>Los datos del caso</h3>
+    <p class="muted">Cuatro personas se reúnen un domingo a hacer un sancocho y van a repartir el costo del mercado.</p>
+    <div class="sheet"><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unitario</th></tr></thead><tbody>
+      <tr><td>Plátano (unidad)</td><td class="num">6</td><td class="num">1500</td></tr>
+      <tr><td>Papa (kg)</td><td class="num">2</td><td class="num">3600</td></tr>
+      <tr><td>Pollo (kg)</td><td class="num">2</td><td class="num">14000</td></tr>
+      <tr><td>Mazorca (unidad)</td><td class="num">4</td><td class="num">2000</td></tr>
+    </tbody></table></div>
+    <p class="note">Precios inventados. Resultados que vamos a obtener: total $52.200, descuento del 10 % por pago en efectivo $5.220, total a pagar $46.980 y $11.745 por persona.</p>
+  </div>
+  <div class="card g" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px"><h3>Avance</h3><div class="prog" aria-hidden="true" style="margin-top:6px"><i id="barD"></i></div><p id="pctD" class="muted"></p></div>
+    <button class="btn mag pbtn" id="presbtn" type="button">Modo presentación</button>
+  </div>
+  <div class="st" id="stepsD"></div>
+  <div class="pager"><button class="btn ghost" data-go="1" type="button">Anterior</button><button class="btn mag" data-go="3" type="button">Ir a la práctica 1: la tienda</button></div>
+</section>
+
+<!-- 3 TIENDA -->
+<section class="s" id="s3">
+  <div><p class="eyebrow">Estación 3 · 6:20 a 7:00 pm · en parejas</p><h2>Práctica 1: la tienda de don Álvaro</h2>
+  <p class="lead">Ahora lo haces tú, con lo que viste en la demostración. Don Álvaro tiene una tienda de barrio en Medellín y quiere saber cuánto cuesta su compra semanal al proveedor. Vas a armar la cuenta en Excel, con precios en pesos colombianos, y a descubrir qué pasa cuando un precio sube.</p></div>
+  <div class="card g">
+    <h3>La lista de compras</h3>
+    <p class="muted">Los vas a escribir en el paso 4. Los precios van sin signo $ ni puntos.</p>
+    <div class="sheet"><table><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unitario</th></tr></thead><tbody>
+      <tr><td>Arroz (kg)</td><td class="num">3</td><td class="num">5200</td></tr>
+      <tr><td>Huevos (cubeta x 30)</td><td class="num">1</td><td class="num">21000</td></tr>
+      <tr><td>Leche (bolsa 900 ml)</td><td class="num">4</td><td class="num">4300</td></tr>
+      <tr><td>Aceite (litro)</td><td class="num">1</td><td class="num">12500</td></tr>
+      <tr><td>Café (libra)</td><td class="num">2</td><td class="num">13500</td></tr>
+      <tr><td>Papa (kg)</td><td class="num">5</td><td class="num">3600</td></tr>
+    </tbody></table></div>
+    <p class="note">Precios inventados para practicar; no son precios de mercado.</p>
+  </div>
+  <div class="card g"><h3>Tu avance en esta estación</h3><div class="prog" aria-hidden="true"><i id="bar2"></i></div><p id="pct2" class="muted"></p>
+    <p class="note"><b>En pareja:</b> una persona comparte pantalla y la otra dicta. Cambien de rol en el paso 6.</p></div>
+  <div class="st" id="steps2"></div>
+  <div class="card m"><h3>Si algo no sale</h3><ul><li><span class="kbd">Ctrl + Z</span> deshace lo último.</li><li>Si ves ##### la columna está angosta: doble clic en el borde de su encabezado.</li><li>Si la fórmula aparece escrita en la celda en vez del resultado, faltó el signo = al inicio.</li></ul></div>
+  <div class="pager"><button class="btn ghost" data-go="2" type="button">Anterior</button><button class="btn mag" data-go="4" type="button">Ir a la práctica 2</button></div>
+</section>
+
+<!-- 4 SUELDO -->
+<section class="s" id="s4">
+  <div><p class="eyebrow">Estación 4 · 7:10 a 8:30 pm</p><h2>Práctica 2: de mi sueldo a mi presupuesto</h2>
+  <p class="lead">Camila acaba de conseguir su primer empleo formal en Medellín. Quiere saber cuánto le llega al mes y cuánto le queda después de pagar sus gastos. Vas a calcularlo, conectarlo con la hoja de la tienda, pedirle a una IA que revise tu trabajo y cerrar con una prueba.</p></div>
+  <div class="card g">
+    <h3>Los datos de Camila</h3>
+    <div class="sheet"><table><thead><tr><th>Celda</th><th>Qué escribir</th></tr></thead><tbody>
+      <tr><td>A1</td><td>Mi sueldo del mes</td></tr>
+      <tr><td>A2 · B2</td><td>Salario básico · <b>2400000</b></td></tr>
+      <tr><td>A3 · B3</td><td>Auxilio de transporte · <b>249095</b></td></tr>
+      <tr><td>A4 · B4</td><td>Total devengado · fórmula</td></tr>
+      <tr><td>A5 · B5</td><td>Aporte a salud (4 %) · fórmula</td></tr>
+      <tr><td>A6 · B6</td><td>Aporte a pensión (4 %) · fórmula</td></tr>
+      <tr><td>A7 · B7</td><td>Sueldo neto · fórmula</td></tr>
+      <tr><td>A9</td><td>Mis gastos del mes</td></tr>
+      <tr><td>A10 · B10</td><td>Arriendo · <b>850000</b></td></tr>
+      <tr><td>A11 · B11</td><td>Servicios públicos · <b>180000</b></td></tr>
+      <tr><td>A12 · B12</td><td>Transporte · <b>150000</b></td></tr>
+      <tr><td>A13 · B13</td><td>Mercado del mes · fórmula conectada con la tienda</td></tr>
+      <tr><td>A14 · B14</td><td>Total gastos · fórmula</td></tr>
+      <tr><td>A16 · B16</td><td>Saldo del mes · fórmula</td></tr>
+      <tr><td>A17 · B17</td><td>Ahorro (10 % del salario básico) · fórmula</td></tr>
+      <tr><td>A18 · B18</td><td>Queda libre · fórmula</td></tr>
+    </tbody></table></div>
+    <p class="note">Cifras ficticias. El salario mínimo mensual de 2026 es $1.750.905 y el auxilio de transporte es $249.095 (decretos 1469 y 1470 de 2025). Fuente: <a href="https://consultorsalud.com/aumento-del-salario-minimo-en-colombia-2026/" target="_blank" rel="noopener">Consultorsalud</a>. El auxilio no hace parte de la base para salud y pensión.</p>
+  </div>
+  <div class="card g"><h3>Tu avance en la práctica</h3><div class="prog" aria-hidden="true"><i id="bar3"></i></div><p id="pct3" class="muted"></p></div>
+  <div class="st" id="steps3"></div>
+
+  <div class="card m">
+    <p class="eyebrow">Con IA · 20 min</p>
+    <h2>Tu tutor de Excel con ChatGPT o Claude</h2>
+    <p>Abre ChatGPT o Claude en otra pestaña. La versión gratuita sirve. Usa la IA como tutor: que te explique y te ponga retos, no que te haga el trabajo.</p>
+    <p class="note"><b>Cuidado:</b> no escribas tu cédula, tu sueldo real ni datos de otras personas. Usa los datos ficticios de Camila.</p>
+    <h3>Prompt 1 · que te explique tu hoja</h3>
+    <pre class="pr" id="pr1">Actúa como tutor de Excel para principiantes en Colombia. Tengo una hoja llamada Presupuesto con estas fórmulas: B4 =B2+B3; B5 =B2*4%; B6 =B2*4%; B7 =B4-B5-B6; B13 =Tienda!D11*4; B14 =B10+B11+B12+B13; B16 =B7-B14; B17 =B2*10%; B18 =B16-B17. Explícame en una frase sencilla qué hace cada una. Luego dime dos errores comunes de un principiante con una hoja como esta. No uses términos técnicos sin explicarlos.</pre>
+    <button class="btn ghost cp" data-t="pr1" type="button">Copiar prompt 1</button>
+    <h3>Prompt 2 · que te ponga retos</h3>
+    <pre class="pr" id="pr2">Créame 3 ejercicios de Excel, de menor a mayor dificultad, con precios en pesos colombianos (tienda de barrio, transporte, servicios públicos). Solo pueden usar suma, resta, multiplicación, división y porcentajes. No me des las respuestas: dámelas cuando yo te escriba mis resultados.</pre>
+    <button class="btn ghost cp" data-t="pr2" type="button">Copiar prompt 2</button>
+    <div class="st" id="steps4" style="margin-top:6px"></div>
+    <p class="cur"><b>Piensa:</b> si la IA y tu hoja dan resultados distintos, ¿a quién le crees? ¿Cómo lo comprobarías con una calculadora?</p>
+  </div>
+
+  <div class="card g">
+    <p class="eyebrow">Prueba formativa · 15 min</p>
+    <h2>¿Qué tanto aprendiste hoy?</h2>
+    <p class="muted">Responde sin mirar los apuntes. Cada respuesta explica por qué. Nadie ve tu puntaje: es para ti.</p>
+    <div id="quiz" style="display:grid;gap:10px"></div>
+    <div class="card" id="qres" hidden aria-live="polite"><div class="sc" id="qsc"></div><p id="qmsg"></p><button class="btn ghost" id="qre" type="button">Intentar de nuevo</button></div>
+  </div>
+
+  <div class="split">
+    <div class="card m"><h3>Tarea para la próxima sesión · lunes 9 de noviembre</h3>
+      <ul><li>Repite la hoja Presupuesto con otro caso ficticio: tu sueldo soñado y tus gastos de un mes.</li>
+      <li>Resuelve el ejercicio 1 que te propuso la IA y guárdalo en una hoja nueva llamada <b>Reto IA</b>.</li>
+      <li>Sube tu archivo Sesion2_TuNombre.xlsx al canal del curso en Teams.</li></ul></div>
+    <div class="card g"><h3>Lo que viene</h3><p>Sumar seis celdas con <span class="fx">+</span> es largo. El 9 de noviembre aprenderás <span class="fx">SUMA</span>, <span class="fx">PROMEDIO</span>, <span class="fx">MAX</span>, <span class="fx">MIN</span> y <span class="fx">CONTAR</span>, y por qué a veces una fórmula copiada se descuadra.</p>
+    <p class="note">Cierre en el chat: una palabra sobre cómo te sentiste hoy, y una duda que te llevas.</p></div>
+  </div>
+  <div class="pager"><button class="btn ghost" data-go="3" type="button">Anterior</button><button class="btn" data-go="1" type="button">Volver al inicio</button></div>
+</section>
+</main>
+<div id="pres" hidden role="dialog" aria-label="Modo presentación">
+  <div class="ph"><span id="pn">Paso 1 de 1</span><button class="btn ghost" id="px" type="button" style="color:#fff;border-color:#fff">Cerrar (Esc)</button></div>
+  <div class="pb" id="pc"></div>
+  <div class="pf"><button class="btn ghost" id="pp" type="button">Anterior</button><button class="btn mag" id="pnx" type="button">Siguiente</button></div>
+</div>
+<script>
+(function(){
+var NAMES=["Micro clase","Demo guiada","La tienda","Sueldo, IA y prueba"];
+function $(i){return document.getElementById(i)}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function toast(t){var d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove()},2200)}
+var nav=$("nav");
+NAMES.forEach(function(n,i){var b=document.createElement("button");b.type="button";b.dataset.n=i+1;b.innerHTML="<b>"+(i+1)+"</b>"+n;b.addEventListener("click",function(){go(i+1)});nav.appendChild(b)});
+function go(n){document.querySelectorAll("section.s").forEach(function(s){s.classList.toggle("on",s.id==="s"+n)});
+  nav.querySelectorAll("button").forEach(function(b){b.setAttribute("aria-current",String(+b.dataset.n===n))});
+  window.scrollTo(0,0);lsSet("fx2_st",String(n));try{history.replaceState(null,"","#e"+n)}catch(e){}}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t)go(+t.dataset.go)});
+var start=parseInt((location.hash.match(/^#e(\d)$/)||[])[1]||lsGet("fx2_st")||"1",10);if(!(start>=1&&start<=4))start=1;go(start);
+$("theme").addEventListener("click",function(){var r=document.documentElement;var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme: dark)").matches);r.setAttribute("data-theme",dark?"light":"dark")});
+
+/* agenda con reloj */
+var AG=[["5:15",17*60+15,10,"Apertura y repaso"],["5:25",17*60+25,25,"Micro clase (estación 1)"],["5:50",17*60+50,30,"Demostración guiada (estación 2)"],["6:20",18*60+20,40,"Práctica 1: la tienda (estación 3)"],["7:00",19*60,10,"Descanso"],["7:10",19*60+10,35,"Práctica 2: sueldo y presupuesto"],["7:45",19*60+45,15,"Tutor de Excel con IA"],["8:00",20*60,15,"Prueba formativa"],["8:15",20*60+15,15,"Cierre y tarea"]];
+AG[0][1]=17*60+15;
+$("agenda").innerHTML=AG.map(function(a,i){return '<div class="row" data-i="'+i+'"><span class="hr">'+a[0]+' pm</span><span>'+a[3]+'</span><span class="muted">'+a[2]+' min</span></div>'}).join("");
+function tick(){try{var d=new Date(),m=d.getHours()*60+d.getMinutes();document.querySelectorAll("#agenda .row").forEach(function(r,i){var on=m>=AG[i][1]&&m<AG[i][1]+AG[i][2];r.classList.toggle("now",on);var h=r.querySelector(".ah");if(on&&!h){var s=document.createElement("span");s.className="ah";s.textContent="Ahora";r.lastElementChild.replaceWith(s)}else if(!on&&h){var s2=document.createElement("span");s2.className="muted";s2.textContent=AG[i][2]+" min";h.replaceWith(s2)}})}catch(e){}}
+tick();setInterval(tick,60000);
+
+/* laboratorio */
+var nf=new Intl.NumberFormat("es-CO");
+function cop(n){return "$ "+nf.format(Math.round(n))}
+function lab(){var q=parseFloat($("lq").value)||0,p=parseFloat($("lp").value)||0;$("lo").textContent=cop(q*p);$("liva").textContent=cop(q*p*0.19)}
+$("lq").addEventListener("input",lab);$("lp").addEventListener("input",lab);lab();
+
+/* predicciones */
+var PR=[["=2+3*4",["20","14","24"],1,"Primero la multiplicación: 3*4 = 12. Luego 2+12 = 14."],["=(2+3)*4",["20","14","9"],0,"Los paréntesis mandan: 2+3 = 5. Luego 5*4 = 20."],["=100000+100000*19%",["38.000","119.000","100.019"],1,"Primero el porcentaje: 100.000*19% = 19.000. Luego se suma: 119.000. Es un precio con IVA del 19 %."],["=(100000+100000)*19%",["38.000","119.000","200.019"],0,"Los paréntesis suman primero: 200.000. Luego el 19 % de 200.000 es 38.000. Mismos números, distinto resultado."],["=120000/4-5000",["25.000","6.250","30.000"],0,"Primero la división: 120.000/4 = 30.000. Luego la resta: 25.000."]];
+var pc=0,pa=0;
+$("pred").innerHTML=PR.map(function(q,i){return '<div class="pq" data-i="'+i+'"><div>¿Qué mostrará Excel? <span class="fx">'+q[0]+'</span></div><div class="o">'+q[1].map(function(o,j){return '<button type="button" data-j="'+j+'">'+o+'</button>'}).join("")+'</div><div class="fb"></div></div>'}).join("");
+$("pred").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var d=b.closest(".pq"),i=+d.dataset.i;if(d.dataset.done)return;d.dataset.done=1;var j=+b.dataset.j,ok=j===PR[i][2];
+  d.querySelectorAll("button").forEach(function(x,k){x.disabled=true;if(k===PR[i][2])x.classList.add("ok")});if(!ok)b.classList.add("no");
+  d.querySelector(".fb").textContent=(ok?"Correcto. ":"Casi. ")+PR[i][3];pa++;if(ok)pc++;$("predsc").textContent="Respuestas correctas: "+pc+" de 5"+(pa===5?". Terminaste.":"")});
+
+/* pasos */
+function build(id,STEPS,key,bar,pct){
+  var saved=[];try{saved=JSON.parse(lsGet(key)||"[]")}catch(e){}
+  var box=$(id);
+  box.innerHTML=STEPS.map(function(s,i){var on=saved.indexOf(i)>-1;return '<div class="step'+(on?' done':'')+'" data-i="'+i+'"><input type="checkbox" id="'+id+'_'+i+'" aria-label="Paso '+(i+1)+' terminado"'+(on?' checked':'')+'><h3><span class="nb">'+(i+1)+'</span>'+s[0]+'</h3><div class="bd"><ol>'+s[1].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ol><div class="see"><b>Debes ver:</b> '+s[2]+'</div>'+(s[4]?'<div class="say"><b>Para explicar:</b> '+s[4]+'</div>':'')+(s[3]?'<div class="cur"><b>Pregunta al grupo:</b> '+s[3]+'</div>':'')+'</div></div>'}).join("");
+  function upd(){var a=[];box.querySelectorAll(".step").forEach(function(d,i){var c=d.querySelector("input").checked;d.classList.toggle("done",c);if(c)a.push(i)});
+    if(bar){$(bar).style.width=(a.length/STEPS.length*100)+"%";$(pct).textContent=a.length+" de "+STEPS.length+" pasos"}lsSet(key,JSON.stringify(a))}
+  box.addEventListener("change",upd);upd();
+}
+var K=function(x){return "<span class='kbd'>"+x+"</span>"};
+var DEMO=[["Abre tu archivo y guárdalo con otro nombre", ["Abre Excel y busca tu archivo <b>Gastos_Semana1_TuNombre</b> en <b>Recientes</b>. Si no aparece: <b>Archivo</b>, <b>Abrir</b>, <b>Examinar</b>.", "Ve a <b>Archivo</b>, <b>Guardar como</b>, <b>Examinar</b>.", "Pulsa <b>Nueva carpeta</b>, llámala <b>Curso Excel</b> y entra en ella.", "En Nombre escribe <b>Sesion2_TuNombre</b> y pulsa <b>Guardar</b>."], "En la barra de título aparece Sesion2_TuNombre. Tu archivo de la sesión 1 sigue intacto.", "¿Por qué conviene usar Guardar como en lugar de trabajar sobre el archivo anterior?", "Guardar como crea una copia con otro nombre o lugar. El original queda a salvo. Mostrar la diferencia entre Guardar (Ctrl + G) y Guardar como."], ["Arma tu espacio de trabajo", ["Arriba a la izquierda, abre la flecha de la <b>Barra de herramientas de acceso rápido</b> y marca <b>Nuevo</b> y <b>Abrir</b>.", "Abajo a la derecha, mueve el zoom hasta <b>120 %</b>.", "Pestaña <b>Vista</b>: desmarca <b>Líneas de cuadrícula</b> y mira la hoja. Vuelve a marcarlas.", "Opcional: <b>Archivo</b>, <b>Cuenta</b>, <b>Tema de Office</b>."], "Dos botones nuevos arriba a la izquierda y la hoja un poco más grande.", "", "Cierra el Módulo I: cada persona acomoda Excel a su comodidad. Las opciones están en Archivo, Opciones."], ["Crea la hoja Demo y escribe los datos", ["Pulsa el signo <b>+</b> abajo, haz doble clic en la pestaña nueva y escríbele <b>Demo</b>.", "En A1 escribe, con <span class='kbd'>Tab</span> entre ellos: <b>Producto</b>, <b>Cantidad</b>, <b>Precio unitario</b>, <b>Subtotal</b>.", "Desde A2 escribe los cuatro productos con su cantidad y precio. Los precios sin signo $ ni puntos. D queda vacía."], "Datos en A2:C5. Números a la derecha, texto a la izquierda.", "", "Recordar la sesión 1: texto a la izquierda, números a la derecha. Si un número queda a la izquierda, Excel lo tomó como texto."], ["Primera fórmula: el subtotal", ["Haz clic en <b>D2</b> y escribe <b>=</b>.", "Haz clic en la celda <b>B2</b>. Excel escribe la referencia por ti.", "Escribe <b>*</b> y haz clic en <b>C2</b>. Presiona <span class='kbd'>Enter</span>."], "D2 muestra 9000. Al hacer clic de nuevo en D2, la barra de fórmulas dice =B2*C2.", "¿Por qué no escribimos 6*1500 directamente?", "Mostrar la fórmula completa en la barra. Resaltar que el resultado se ve en la celda y la fórmula se ve en la barra. Si cambio B2, D2 se recalcula."], ["Copia la fórmula con el controlador de relleno", ["Haz clic en D2 y ubica el cuadrito de la esquina inferior derecha.", "Cuando el cursor sea una cruz negra, arrastra hasta <b>D5</b>.", "Haz clic en D4 y mira la barra de fórmulas."], "Subtotales: 9000, 7200, 28000 y 8000. En D4 la fórmula es =B4*C4.", "¿Quién puede explicar por qué D4 no dice =B2*C2?", "Referencia relativa: al copiar hacia abajo, Excel sube un número en cada fila. Es el comportamiento normal y casi siempre el que queremos."], ["Suma con + y calcula un porcentaje", ["En <b>C7</b> escribe <b>Total</b>. En <b>D7</b> escribe <b>=</b>, clic en D2, <b>+</b>, clic en D3, y así hasta D5. Presiona <span class='kbd'>Enter</span>.", "En <b>C8</b> escribe <b>Descuento efectivo 10 %</b>. En <b>D8</b>: <b>=D7*10%</b>.", "En <b>C9</b> escribe <b>Total a pagar</b>. En <b>D9</b>: <b>=D7-D8</b>."], "D7 muestra 52200, D8 muestra 5220 y D9 muestra 46980.", "", "Mostrar que %: 10% es lo mismo que 0,1. La suma con + es larga a propósito; en la próxima sesión viene la función SUMA."], ["Divide entre cuatro personas", ["En <b>C10</b> escribe <b>Cada persona paga (4)</b>.", "En <b>D10</b> escribe <b>=D9/4</b>."], "D10 muestra 11745.", "", "Cada operador cumple un rol. Pedir a un estudiante que dicte la fórmula completa en voz alta."], ["Provoca errores a propósito", ["En <b>E2</b> escribe <b>=A2*B2</b> (A2 es texto) y observa el mensaje.", "En <b>E3</b> escribe <b>=B3/0</b> y observa el mensaje.", "En <b>E4</b> escribe <b>=Total*2</b> y observa el mensaje.", "Ensancha mucho la columna D y luego estréchala hasta que aparezca <b>#####</b>.", "Borra la columna E con <span class='kbd'>Ctrl + Z</span> o seleccionando y presionando Suprimir."], "Mensajes #¡VALOR!, #¡DIV/0! y #¿NOMBRE?, y el #### al estrechar la columna. Después, la hoja limpia.", "¿Qué pista te da cada mensaje sobre qué revisar?", "Perder el miedo a los errores: no rompen nada y dicen qué revisar. Volver a la tabla de errores de la micro clase."], ["Formato de moneda y guardado", ["Selecciona <b>D2:D10</b> arrastrando con el mouse.", "Pestaña <b>Inicio</b>, grupo <b>Número</b>: pulsa el botón <b>$</b> y quita los decimales.", "Ensancha las columnas con doble clic en el borde de sus encabezados.", "Guarda con <span class='kbd'>Ctrl + G</span>."], "Valores con signo $ y puntos de miles, por ejemplo $ 46.980. Todo guardado.", "¿Cambió el valor o solo la forma de verlo?", "El formato cambia la presentación, no el número. Esto lo aprovecharemos más adelante."]];
+build("stepsD",DEMO,"fx2_sd","barD","pctD");
+build("steps2",[
+["Crea la hoja Tienda",["Abajo, pulsa el signo <b>+</b> para agregar una hoja.","Haz doble clic en la pestaña nueva, escribe <b>Tienda</b> y presiona "+K("Enter")+"."],"Una pestaña llamada Tienda, activa y vacía, dentro de tu archivo Sesion2_TuNombre."],
+["Escribe la lista de compras",["En A1 escribe los encabezados con "+K("Tab")+" entre ellos: <b>Producto</b>, <b>Cantidad</b>, <b>Precio unitario</b>, <b>Subtotal</b>.","Desde A2, escribe los seis productos con su cantidad y su precio, como en la tabla de arriba. La columna D queda vacía por ahora."],"Datos en A2:C7. Los números a la derecha y el texto a la izquierda."],
+["Tu primera fórmula: el subtotal",["Haz clic en <b>D2</b> y escribe <b>=</b>.","Haz clic en la celda <b>B2</b> (Excel la escribe por ti), escribe <b>*</b> y haz clic en <b>C2</b>.","Presiona "+K("Enter")+"."],"En D2 aparece 15600. Si haces clic de nuevo en D2, la barra de fórmulas dice =B2*C2.","¿Por qué hicimos clic en las celdas en vez de escribir 3*5200?"],
+["Copia la fórmula hacia abajo",["Haz clic en D2. En la esquina inferior derecha de la celda hay un cuadrito: el <b>controlador de relleno</b>.","Ponle el mouse encima hasta que el cursor sea una cruz negra y arrastra hasta <b>D7</b>.","Haz clic en D5 y mira la barra de fórmulas."],"Subtotales: 15600, 21000, 17200, 12500, 27000 y 18000. En D5 la fórmula es =B5*C5: Excel ajustó los números de fila solo.","Cambien de rol con su pareja a partir de aquí."],
+["Suma la compra con +",["En <b>C9</b> escribe <b>Total compra</b>.","En <b>D9</b> escribe <b>=</b>, haz clic en D2, escribe <b>+</b>, haz clic en D3, y así hasta D7. Presiona "+K("Enter")+"."],"En D9 aparece 111300.","La fórmula quedó larga a propósito. El 9 de noviembre veremos cómo hacerla en un segundo."],
+["Descuento y total a pagar",["En <b>C10</b> escribe <b>Descuento cliente frecuente 5 %</b>. En <b>D10</b> escribe <b>=D9*5%</b>.","En <b>C11</b> escribe <b>Total a pagar</b>. En <b>D11</b> escribe <b>=D9-D10</b>."],"D10 muestra 5565 y D11 muestra 105735."],
+["Divide entre tres compañeros",["En <b>C12</b> escribe <b>Cada compañero paga (3)</b>.","En <b>D12</b> escribe <b>=D11/3</b>."],"D12 muestra 35245."],
+["Formato de moneda y guardado",["Selecciona <b>D2:D12</b> arrastrando con el mouse.","Pestaña <b>Inicio</b>, grupo <b>Número</b>: pulsa el botón <b>$</b> y quita los decimales con el botón de disminuir decimales.","Ensancha las columnas con doble clic en el borde de sus encabezados.","Guarda con "+K("Ctrl + G")+"."],"Todos los valores con signo $ y puntos de miles, por ejemplo $ 105.735."],
+["Experimento: sube el arroz",["Cambia el precio del arroz en <b>C2</b> a <b>6000</b>. No toques ninguna fórmula.","Mira D2, D9, D10, D11 y D12.","Cuando termines, presiona "+K("Ctrl + Z")+" para devolver el precio a 5200."],"Con 6000: D2 18000, D9 113700, D10 5685, D11 108015 y D12 36005.","¿Por qué cambió todo si solo modificaste una celda? Cuéntalo en el chat con tus palabras."]
+],"fx2_s2","bar2","pct2");
+build("steps3",[
+["Crea la hoja Presupuesto",["Pulsa el signo <b>+</b> abajo y cambia el nombre de la hoja nueva a <b>Presupuesto</b>."],"Una pestaña nueva llamada Presupuesto, junto a las demás hojas de tu libro."],
+["Calcula el sueldo neto de Camila",["Escribe los textos y los datos de A1 a A7 y de B2 y B3, según la tabla de arriba.","En <b>B4</b>: <b>=B2+B3</b>.","En <b>B5</b>: <b>=B2*4%</b>. En <b>B6</b>: <b>=B2*4%</b>.","En <b>B7</b>: <b>=B4-B5-B6</b>."],"B4 2649095, B5 96000, B6 96000 y B7 2457095.","¿Por qué B5 multiplica B2 y no B4? Pista: el auxilio de transporte no se usa para calcular salud y pensión."],
+["Escribe los gastos",["En A9 escribe el título. De A10 a A12 escribe arriendo, servicios públicos y transporte, con sus valores en B.","En A13 escribe <b>Mercado del mes</b> y deja B13 vacía por ahora."],"Tres gastos escritos y una fila esperando el mercado."],
+["Conecta con la hoja Tienda",["Haz clic en <b>B13</b> y escribe <b>=</b>.","Haz clic en la pestaña <b>Tienda</b>, luego en la celda <b>D11</b> (el total a pagar).","Escribe <b>*4</b> (cuatro semanas) y presiona "+K("Enter")+"."],"B13 muestra 422940. Al hacer clic en B13, la barra de fórmulas dice =Tienda!D11*4.","Vuelve a Tienda, cambia el precio del arroz y regresa a Presupuesto. ¿Qué pasó con el mercado? Regresa el arroz a 5200 después."],
+["Total de gastos y saldo",["En A14 escribe <b>Total gastos</b> y en <b>B14</b>: <b>=B10+B11+B12+B13</b>.","En A16 escribe <b>Saldo del mes</b> y en <b>B16</b>: <b>=B7-B14</b>.","En A17 escribe <b>Ahorro (10 % del salario básico)</b> y en <b>B17</b>: <b>=B2*10%</b>.","En A18 escribe <b>Queda libre</b> y en <b>B18</b>: <b>=B16-B17</b>."],"B14 1602940, B16 854155, B17 240000 y B18 614155."],
+["Formato y guardado",["Selecciona <b>B2:B18</b> y aplica el formato <b>$</b>.","Pon en negrita los títulos A1, A9 y las filas de resultado.","Ensancha las columnas y guarda con "+K("Ctrl + G")+"."],"Una hoja ordenada, con valores en pesos y todo guardado."],
+["Experimento: otro sueldo",["Cambia B2 a <b>3000000</b>.","Observa B4, B5, B6, B7, B16, B17 y B18.","Presiona "+K("Ctrl + Z")+" para volver a 2400000."],"Con 3000000: B4 3249095, B5 y B6 120000, B7 3009095, B16 1406155, B17 300000 y B18 1106155."]
+],"fx2_s3","bar3","pct3");
+build("steps4",[
+["Abre tu tutor",["Abre <b>ChatGPT</b> o <b>Claude</b> en otra pestaña e inicia un chat nuevo."],"Una conversación vacía lista para escribir."],
+["Pega el prompt 1 y lee la respuesta",["Pulsa <b>Copiar prompt 1</b>, pégalo en el chat y envíalo.","Compara cada explicación con lo que ves en tu hoja."],"Una explicación de cada fórmula y dos errores comunes de principiantes."],
+["Pega el prompt 2 y resuelve el primer reto",["Copia el prompt 2 y envíalo.","Crea una hoja nueva llamada <b>Reto IA</b> y resuelve el ejercicio 1 con fórmulas.","Escríbele tu resultado a la IA y mira si te lo confirma."],"Tres ejercicios con pesos colombianos y la respuesta del primero verificada."],
+["Comprueba a la IA",["Pregúntale: <b>¿Cuál es el salario mínimo mensual de 2026 en Colombia y cuál es el auxilio de transporte?</b>","Compara con los valores de la nota de arriba: $1.750.905 y $249.095."],"Una respuesta que puedes verificar con una fuente oficial.","Cuéntale al grupo si acertó. ¿Por qué conviene verificar lo que dice una IA?"]
+],"fx2_s4",null,null);
+
+var pi=0;
+function pshow(){var s=DEMO[pi];$("pn").textContent="Paso "+(pi+1)+" de "+DEMO.length;
+  $("pc").innerHTML='<h2>'+s[0]+'</h2><ol>'+s[1].map(function(x){return '<li>'+x+'</li>'}).join("")+'</ol><div class="see"><b>Debes ver:</b> '+s[2]+'</div>'+(s[4]?'<div class="say"><b>Para explicar:</b> '+s[4]+'</div>':'')+(s[3]?'<div class="cur"><b>Pregunta al grupo:</b> '+s[3]+'</div>':'');
+  $("pp").disabled=pi===0;$("pnx").disabled=pi===DEMO.length-1;$("pc").scrollTop=0}
+function popen(){$("pres").hidden=false;pshow();$("pnx").focus()}
+function pclose(){$("pres").hidden=true;$("presbtn").focus()}
+$("presbtn").addEventListener("click",popen);$("px").addEventListener("click",pclose);
+$("pp").addEventListener("click",function(){if(pi>0){pi--;pshow()}});$("pnx").addEventListener("click",function(){if(pi<DEMO.length-1){pi++;pshow()}});
+document.addEventListener("keydown",function(e){if($("pres").hidden)return;if(e.key==="Escape")pclose();else if(e.key==="ArrowRight"||e.key==="PageDown"){if(pi<DEMO.length-1){pi++;pshow()}}else if(e.key==="ArrowLeft"||e.key==="PageUp"){if(pi>0){pi--;pshow()}}});
+document.querySelectorAll(".cp").forEach(function(b){b.addEventListener("click",function(){var el=$(b.dataset.t),tx=el.textContent;
+  function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
+  try{navigator.clipboard.writeText(tx).then(function(){toast("Prompt copiado")},function(){sel();toast("Selecciónalo y copia con Ctrl + C")})}catch(e){sel();toast("Selecciónalo y copia con Ctrl + C")}})});
+
+/* prueba formativa */
+var QZ=[["¿Con qué debe empezar una fórmula en Excel?",["Con el signo =","Con una letra","Con un punto"],0,"El signo igual le avisa a Excel que viene un cálculo."],
+["¿Qué muestra Excel en =3+4*2?",["14","11","24"],1,"Primero 4*2 = 8 y luego 3+8 = 11."],
+["¿Qué muestra Excel en =(3+4)*2?",["11","14","9"],1,"Los paréntesis suman primero: 7. Luego 7*2 = 14."],
+["En D2 está =B2*C2. Si la copias a D3 arrastrando, ¿qué fórmula queda en D3?",["=B2*C2","=B3*C3","=D2*D3"],1,"Al copiar hacia abajo, Excel sube un número de fila: B3*C3."],
+["Si B2 vale 2.400.000, ¿qué calcula =B2*4%?",["El 4 % de 2.400.000, o sea 96.000","2.400.004","El 40 % de 2.400.000"],0,"El 4 % de 2.400.000 es 96.000."],
+["¿Por qué es mejor escribir =B2*C2 que =3*5200?",["Porque se ve más bonito","Porque si cambia el dato, el resultado se actualiza solo","Porque Excel no acepta números dentro de fórmulas"],1,"Al referenciar celdas, un cambio en el dato recalcula todo."],
+["¿Cómo traes a Presupuesto el valor de D11 de la hoja Tienda?",["=Tienda!D11","=D11","=Tienda+D11"],0,"El nombre de la hoja, un signo de admiración y la celda: =Tienda!D11."],
+["Una celda con un número muestra #####. ¿Qué pasa?",["La fórmula está mal","La columna es muy angosta","El archivo se dañó"],1,"Se arregla ensanchando la columna con doble clic en el borde de su encabezado."]];
+var qa=0,qc=0;
+function quiz(){qa=0;qc=0;$("qres").hidden=true;$("quiz").innerHTML=QZ.map(function(q,i){return '<div class="pq" data-i="'+i+'"><div><b>'+(i+1)+'.</b> '+q[0]+'</div><div class="o">'+q[1].map(function(o,j){return '<button type="button" data-j="'+j+'">'+o+'</button>'}).join("")+'</div><div class="fb"></div></div>'}).join("")}
+quiz();
+$("quiz").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var d=b.closest(".pq"),i=+d.dataset.i;if(d.dataset.done)return;d.dataset.done=1;var ok=+b.dataset.j===QZ[i][2];
+  d.querySelectorAll("button").forEach(function(x,k){x.disabled=true;if(k===QZ[i][2])x.classList.add("ok")});if(!ok)b.classList.add("no");d.querySelector(".fb").textContent=(ok?"Correcto. ":"Revisa esto: ")+QZ[i][3];qa++;if(ok)qc++;
+  if(qa===QZ.length){$("qsc").textContent=qc+" de "+QZ.length;$("qmsg").textContent=qc>=7?"Excelente. Estás listo para las funciones de la próxima sesión.":qc>=5?"Vas bien. Repasa las preguntas en las que fallaste y pregunta en el chat.":"Hoy aprendiste mucho, pero conviene repasar. Repite las prácticas con calma y escribe tus dudas en el chat.";$("qres").hidden=false;$("qres").scrollIntoView({block:"nearest"})}});
+$("qre").addEventListener("click",quiz);
+})();
+</script>
+
+</body></html>
