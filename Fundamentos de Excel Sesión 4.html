@@ -1,0 +1,576 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Fundamentos de Excel Sesión 4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: cabecera fija con 7 estaciones; una estación visible a la vez; tarjetas y retos tipo hoja de cálculo */
+:root{
+  --green:#0e803e; --green-ink:#0b6a33; --green-soft:#e4f3ea; --green-line:#b7dcc6;
+  --mag:#e72a77; --mag-ink:#c4175f; --mag-soft:#fde6ef;
+  --bg:#f6faf7; --card:#ffffff; --fg:#14231b; --muted:#506358; --line:#d5e3da; --cell:#f0f6f2;
+  --on-green:#ffffff; --on-mag:#ffffff;
+  --fd:'Montserrat','Segoe UI',Arial,sans-serif; --fb:'Roboto','Segoe UI',Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --green:#17a355; --green-ink:#4fd18a; --green-soft:#12301f; --green-line:#24553a;
+  --mag:#e72a77; --mag-ink:#ff6aa3; --mag-soft:#3a1426;
+  --bg:#0d1711; --card:#14231a; --fg:#e8f3ec; --muted:#9db3a5; --line:#254233; --cell:#1a2d21; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--fb);font-weight:400;font-size:16px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--green);z-index:30}
+h1,h2,h3{font-family:var(--fd);font-weight:800;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(1.9rem,5vw,3rem)} h2{font-size:clamp(1.4rem,3.4vw,2rem)} h3{font-size:1.1rem;font-weight:700}
+p{margin:0} ul{margin:0;padding-left:1.2em;display:grid;gap:.35em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mag);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--green);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding-inline:max(16px,env(safe-area-inset-left,0px));color:var(--on-green)}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-block:8px}
+.brand{font-family:var(--fd);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+nav.st{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;padding-block:2px}
+nav.st::-webkit-scrollbar{display:none}
+nav.st button{flex:none;border:0;background:rgba(255,255,255,.14);color:var(--on-green);border-radius:6px;padding:7px 12px;cursor:pointer;font-family:var(--fd);font-weight:700;font-size:.78rem}
+nav.st button[aria-current="true"]{background:var(--mag);color:var(--on-mag)}
+nav.st button.sealed::after{content:" ✓"}
+nav.st b{opacity:.75;margin-right:5px}
+.sellos{flex:none;font-family:var(--fd);font-weight:700;font-size:.74rem;border:1px solid rgba(255,255,255,.5);border-radius:99px;padding:4px 10px;white-space:nowrap}
+.theme{flex:none;border:1px solid rgba(255,255,255,.4);background:transparent;color:var(--on-green);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:.78rem}
+main{padding-block:28px 56px}
+section.s{display:none;gap:22px}
+section.s.on{display:grid}
+.eyebrow{font-family:var(--fd);font-weight:700;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mag-ink)}
+.lead{font-size:1.1rem;color:var(--muted);max-width:64ch}
+.hero{display:grid;gap:14px;padding:28px;border-radius:10px;background:var(--green);color:var(--on-green);position:relative;overflow:hidden}
+.hero .eyebrow{color:#ffd3e3}.hero p{max-width:60ch;opacity:.95}
+.hero .tag{display:inline-block;background:var(--mag);color:var(--on-mag);font-family:var(--fd);font-weight:700;padding:4px 10px;border-radius:4px;font-size:.8rem;width:fit-content}
+.colhead{display:flex;gap:2px;position:absolute;right:8px;top:0;opacity:.18;font-family:var(--fd);font-weight:800;font-size:3.5rem;pointer-events:none}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.split{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.card.g{border-top:4px solid var(--green)}.card.m{border-top:4px solid var(--mag)}
+.muted{color:var(--muted);font-size:.92rem}
+.btn{border:0;border-radius:6px;padding:11px 18px;font-family:var(--fd);font-weight:700;font-size:.9rem;cursor:pointer;background:var(--green);color:var(--on-green);width:fit-content}
+.btn.mag{background:var(--mag);color:var(--on-mag)}.btn.ghost{background:transparent;color:var(--green-ink);border:2px solid var(--green)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.sm{padding:7px 12px;font-size:.8rem}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:6px;align-items:center}
+.pill{display:inline-block;font-family:var(--fd);font-weight:700;font-size:.8rem;padding:3px 10px;border-radius:99px;background:var(--green-soft);color:var(--green-ink)}
+.pill.m{background:var(--mag-soft);color:var(--mag-ink)}
+.note{font-size:.88rem;color:var(--muted);background:var(--cell);border-radius:6px;padding:8px 12px}
+.sheet{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--green);color:var(--on-green);font-family:var(--fd);font-weight:700;font-size:.8rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.agenda{display:grid;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+.agenda .row{display:grid;grid-template-columns:78px 1fr auto;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);align-items:center}
+.agenda .row:last-child{border:0}.agenda .row.now{background:var(--mag-soft)}
+.agenda .hr{font-variant-numeric:tabular-nums;font-weight:700;color:var(--green-ink);font-size:.9rem}
+.ah{font-family:var(--fd);font-weight:700;font-size:.7rem;background:var(--mag);color:#fff;border-radius:99px;padding:2px 9px}
+.fx{font-family:Consolas,monospace;background:var(--cell);border:1px solid var(--line);border-radius:4px;padding:1px 7px;color:var(--mag-ink);font-weight:700;overflow-wrap:anywhere}
+.kbd{font-family:Consolas,monospace;background:var(--cell);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-size:.88em;white-space:nowrap}
+.prog{height:12px;border-radius:99px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--mag);width:0;transition:width .3s}
+.st{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;padding:14px;border:1px solid var(--line);border-radius:8px;background:var(--card);align-items:start}
+.step.done{border-color:var(--green);background:var(--green-soft)}
+.step input[type=checkbox]{width:22px;height:22px;accent-color:var(--green);margin-top:3px}
+.step h3{font-size:1.02rem}
+.step .nb{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:50%;background:var(--mag);color:#fff;font-size:.8rem;margin-right:8px;font-family:var(--fd)}
+.step .bd{grid-column:2;display:grid;gap:6px;min-width:0}
+.step ol{margin:0;padding-left:1.3em;display:grid;gap:.3em}
+.see{background:var(--cell);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.say{background:var(--green-soft);border-left:4px solid var(--green);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.cur{background:var(--mag-soft);border-radius:6px;padding:7px 12px;font-size:.92rem}
+.pq{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.pq .o{display:flex;gap:8px;flex-wrap:wrap}
+.pq .o button,.opts button{border:1.5px solid var(--green);background:transparent;color:var(--green-ink);border-radius:6px;padding:7px 14px;cursor:pointer;font-weight:500}
+.pq .o button.ok,.opts button.pick{background:var(--green);color:#fff}
+.pq .o button.no{background:var(--mag);border-color:var(--mag);color:#fff}
+.pq .fb{font-size:.92rem;color:var(--muted)}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.sc{font-family:var(--fd);font-weight:800;font-size:2.2rem}
+pre.pr{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--cell);border:1px solid var(--line);border-radius:6px;padding:12px;margin:0;font-family:Consolas,monospace;font-size:.88rem}
+textarea,input[type=text],select,input[type=number]{border:1.5px solid var(--line);background:var(--card);border-radius:6px;padding:9px 11px;width:100%;min-width:0}
+textarea{min-height:72px;resize:vertical}
+label{display:grid;gap:4px;font-weight:500;font-size:.9rem}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:6px;z-index:40;font-weight:500;max-width:90vw}
+.stampbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 18px;border:2px dashed var(--mag);border-radius:10px}
+.stampbar.on{border-style:solid;background:var(--mag-soft)}
+.charts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.ch{display:grid;gap:8px;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--card);min-width:0}
+.ch svg{width:100%;height:auto;display:block}
+.ch .verd{display:grid;gap:6px;font-size:.92rem}
+.verd[hidden]{display:none}
+.out{font-family:var(--fd);font-weight:800;font-size:1.3rem;color:var(--green-ink)}
+.fields{display:grid;gap:10px}
+.meter{display:flex;gap:4px}.meter i{flex:1;height:8px;border-radius:3px;background:var(--line)}.meter i.on{background:var(--mag)}
+.case{border:2px solid var(--line);border-radius:8px;background:var(--card);padding:12px;text-align:left;cursor:pointer;display:grid;gap:4px;min-width:0}
+.case.pick{border-color:var(--green);background:var(--green-soft)}
+.rub{display:grid;gap:8px}
+.rub label{grid-template-columns:auto 1fr auto;align-items:start;gap:10px;font-weight:400;font-size:.95rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer}
+.rub input{width:20px;height:20px;accent-color:var(--green);margin-top:2px}
+.rub .pt{font-family:var(--fd);font-weight:700;color:var(--mag-ink);white-space:nowrap}
+.tl{display:grid;gap:10px}
+.tl>div{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:10px 12px;border-left:5px solid var(--green);background:var(--card);border-radius:0 8px 8px 0;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tl>div.m{border-left-color:var(--mag)}
+.tl b{font-family:var(--fd);font-size:.85rem;color:var(--green-ink)}
+#pres[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.brand{display:none}.hero{padding:20px}.tl>div{grid-template-columns:1fr}}
+#dt{min-width:0}#dt th,#dt td{padding:6px 8px}
+</style>
+<header class="top"><div class="wrap">
+<span class="brand">Excel · Sesión 4</span>
+<nav class="st" id="nav" aria-label="Estaciones"></nav>
+<span class="sellos" id="sellos">Sellos 0/6</span>
+<button class="theme" id="thm" aria-label="Cambiar tema">Tema</button>
+</div></header>
+<main class="wrap">
+
+<section class="s on" id="s0">
+<div class="hero"><div class="colhead" aria-hidden="true"><span>A</span><span>B</span><span>C</span></div>
+<span class="eyebrow">Fundamentos de Excel · Sesión 4 de 5 · Lunes 23/11/2026</span>
+<h1>De los números a las decisiones</h1>
+<p>Hoy cambia la dinámica: menos explicación, más laboratorio. Trabajan en equipo, se equivocan a propósito, le piden ayuda a una IA y construyen su proyecto final: el <b>Excel Lab</b>.</p>
+<span class="tag">Penúltima clase · 5:15 a 8:30 pm · Teams</span></div>
+
+<div class="split">
+<div class="card g"><h2>Qué corresponde hoy según el programa</h2>
+<ul>
+<li><b>Cierre del Módulo II:</b> formato numérico y validación de resultados.</li>
+<li><b>Inicio del Módulo III:</b> principios de visualización, tipos de gráficos (columnas, líneas, circulares, combinados) y creación paso a paso.</li>
+<li><b>Refuerzo transversal:</b> la IA como asistente en Excel y cómo escribir buenos prompts.</li>
+<li><b>Proyecto final:</b> Excel Lab, que se socializa el 30/11.</li>
+</ul>
+<p class="muted">El lunes 30/11 queda para personalización de gráficos, objetos visuales, exportación e impresión, y la socialización.</p></div>
+<div class="card m"><h2>Cómo es distinta esta clase</h2>
+<ul>
+<li><b>Primero el error, luego la regla:</b> descubren qué gráfico engaña antes de que se les explique.</li>
+<li><b>Salas de trabajo</b> con roles que rotan: quien guía, quien digita.</li>
+<li><b>La IA propone, ustedes validan:</b> nada se acepta sin revisar el resultado.</li>
+<li><b>Cierran creando</b>, no solo practicando.</li>
+</ul></div></div>
+
+<h2>Ruta de la sesión</h2>
+<div class="agenda" id="agenda"></div>
+<div class="card"><h3>Pasaporte de sellos</h3><p class="muted">Cada estación se sella al terminar. Seis sellos y el Excel Lab queda habilitado para entregar.</p>
+<div class="prog"><i id="pbar"></i></div></div>
+<div class="pager"><span></span><button class="btn mag" data-go="1">Comenzar: Micro clase →</button></div>
+</section>
+
+<section class="s" id="st0">
+<div><span class="eyebrow">Micro clase · 15 min · Antes de ir a las salas</span><h2>Cuatro ideas y los conceptos que las sostienen</h2>
+<p class="lead">Escuchen, miren los ejemplos y luego lo practican en sala de trabajo. Todo lo de abajo lo van a usar hoy.</p></div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
+<div class="card g"><span class="pill" style="justify-self:start">1 · Formato</span><h3>El número se ve distinto, pero vale igual</h3>
+<p>Una celda con <b>3500</b> puede verse <b>$&nbsp;3.500</b> (moneda), o <b>0,255</b> verse <b>25,5&nbsp;%</b>. Y la fecha <b>23/11/2026</b> puede verse «lunes, 23 de noviembre de 2026».</p>
+<p class="say"><span class="kbd">Ctrl</span>+<span class="kbd">1</span> abre <b>Formato de celdas</b>. El valor real se ve en la barra de fórmulas.</p></div>
+<div class="card m"><span class="pill m" style="justify-self:start">2 · Validar</span><h3>No se confíe: compruebe</h3>
+<p>Como cuando revisa la factura del supermercado antes de pagar: ¿el total cuadra? En Excel se valida con una <b>cuenta a mano</b>, con la <b>barra de estado</b> (seleccione celdas y vea la suma) o con una segunda fórmula.</p>
+<p class="say">Ejemplo: 25 tintos × $ 2.000 = $ 50.000. Si Excel dice otra cosa, hay un error.</p></div>
+<div class="card g"><span class="pill" style="justify-self:start">3 · Gráficos</span><h3>La pregunta decide el gráfico</h3>
+<ul>
+<li><b>¿Cuánto vendió cada sede?</b> → columnas</li>
+<li><b>¿Cómo cambió mi factura de EPM mes a mes?</b> → líneas</li>
+<li><b>¿En qué se va mi presupuesto del mes?</b> → circular (máx. 5 porciones)</li>
+<li><b>¿Cumplí la meta de ventas?</b> → combinado: columnas más línea de meta</li></ul>
+<p class="say">Todo gráfico lleva <b>título</b>, <b>ejes rotulados</b> y <b>leyenda</b> si hay varias series.</p></div>
+<div class="card m"><span class="pill m" style="justify-self:start">4 · IA</span><h3>La IA es su ayudante, no su jefe</h3>
+<p>Entre mejor la pregunta, mejor la respuesta. Use la receta: <b>rol, contexto, tarea, formato, restricciones</b>.</p>
+<pre class="pr">Actúa como tutor de Excel. Tengo ventas de una cafetería en columnas A, B y C. Quiero el total por producto. Dame la fórmula en 3 pasos cortos.</pre>
+<p class="say">Siempre verifique la respuesta en su hoja. Nunca pegue cédulas ni datos de clientes.</p></div>
+</div>
+<style>.gl{display:grid;gap:8px}.gl details{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 14px}.gl summary{cursor:pointer;font-family:var(--fd);font-weight:700;font-size:.95rem;color:var(--green-ink)}.gl details[open]{border-color:var(--green);background:var(--green-soft)}.gl p{margin-top:6px;font-size:.95rem}.gl .ej{color:var(--mag-ink);font-weight:500}</style>
+<div class="card g"><h3>Conceptos clave: la base de la clase</h3><p class="muted">Toque un concepto para abrirlo. Son las palabras que oirán y usarán hoy.</p>
+<div class="gl">
+<details><summary>Valor y formato de una celda</summary><p>El <b>valor</b> es lo que Excel guarda; el <b>formato</b> es cómo lo muestra. Cambiar el formato no cambia el valor.</p><p class="ej">Ejemplo: 0,255 guardado, mostrado como 25,5 %.</p></details>
+<details><summary>Tipos de dato: número, texto y fecha</summary><p>Excel trata distinto cada tipo. Los números se alinean a la derecha y se pueden calcular; el texto, a la izquierda. Una fecha es en realidad un número que Excel muestra con formato de fecha.</p><p class="ej">Si «3500» queda a la izquierda, es texto y no sumará.</p></details>
+<details><summary>Formato de moneda, porcentaje y fecha</summary><p><b>Moneda</b> agrega símbolo y separador de miles; <b>porcentaje</b> multiplica por 100 al mostrar; <b>fecha</b> muestra el número de serie como día, mes y año.</p><p class="ej">En Colombia: $ 1.250.000 y 23/11/2026.</p></details>
+<details><summary>Referencia relativa y absoluta (repaso)</summary><p>La <b>relativa</b> (D2) cambia al copiar la fórmula. La <b>absoluta</b> ($D$10) se queda fija. Se usa absoluta para el total cuando calculamos el porcentaje de cada fila.</p><p class="ej">=D2/$D$10 copiada hacia abajo divide siempre entre el mismo total.</p></details>
+<details><summary>Validación de resultados</summary><p>Comprobar que un cálculo es correcto contrastándolo con otra fuente: una cuenta a mano, la barra de estado o una fórmula de control.</p><p class="ej">Los porcentajes de participación deben sumar 100 %.</p></details>
+<details><summary>Validación de datos</summary><p>Una regla de Excel que impide escribir valores incorrectos en una celda. No es lo mismo que validar resultados: una previene, la otra comprueba.</p><p class="ej">Aceptar solo enteros entre 0 y 200 en la columna Unidades.</p></details>
+<details><summary>Anatomía de un gráfico</summary><p><b>Serie:</b> el conjunto de valores que se grafica. <b>Categorías:</b> las etiquetas (meses, productos). <b>Ejes:</b> vertical para valores, horizontal para categorías. <b>Leyenda:</b> explica qué es cada serie. <b>Título:</b> dice qué se muestra.</p><p class="ej">Ventas (serie) por mes (categorías), con meta como segunda serie.</p></details>
+<details><summary>Datos de origen y rango</summary><p>Un gráfico se construye sobre un <b>rango</b> de celdas. Si se cambia un dato de la tabla, el gráfico se actualiza solo. Seleccione siempre los encabezados junto con los datos.</p><p class="ej">A1:B6 incluye la fila de encabezados.</p></details>
+<details><summary>Prompt</summary><p>La instrucción que se le da a una IA. Un buen prompt tiene <b>rol, contexto, tarea, formato y restricciones</b>. La IA puede equivocarse: siempre se verifica.</p><p class="ej">«Actúa como tutor de Excel… dame la fórmula en 3 pasos».</p></details>
+</div></div>
+<div class="card m"><span class="pill m" style="justify-self:start">Ejercicio demo · 5 min</span><h3>La tienda de barrio: de la tabla al gráfico</h3>
+<p class="muted">El docente lo hace en vivo y los estudiantes lo siguen en su Excel. Es el recorrido completo de hoy en miniatura.</p>
+<div class="sheet"><table style="min-width:0"><thead><tr><th>Producto</th><th>Unidades</th><th>Precio</th></tr></thead><tbody><tr><td>Arepas</td><td class="num">10</td><td class="num">2500</td></tr><tr><td>Gaseosa</td><td class="num">6</td><td class="num">3000</td></tr><tr><td>Huevos</td><td class="num">12</td><td class="num">700</td></tr></tbody></table></div>
+<ol style="display:grid;gap:6px">
+<li>Escriba la tabla en <b>A1:C4</b> con los encabezados en la fila 1.</li>
+<li>En <b>D1</b> escriba <b>Total</b>. En <b>D2</b>: <span class="fx">=B2*C2</span> y arrastre hasta D4.</li>
+<li>En <b>D5</b>: <span class="fx">=SUMA(D2:D4)</span>.</li>
+<li>Seleccione C2:D5 → <span class="kbd">Ctrl</span>+<span class="kbd">1</span> → <b>Moneda</b>, 0 decimales.</li>
+<li>Seleccione A1:A4 y D1:D4 (mantenga <span class="kbd">Ctrl</span>) → <b>Insertar</b> → <b>Columna agrupada</b> y póngale título.</li></ol>
+<p class="say"><b>Valide:</b> los totales deben ser $ 25.000, $ 18.000 y $ 8.400; el total general, <b>$ 51.400</b>. Cuenta a mano: 12 × 700 = 8.400.</p></div>
+<style>.an{display:grid;gap:10px}.an .r{display:grid;grid-template-columns:150px 1fr;gap:10px 14px;align-items:stretch}.an .b{display:grid;gap:2px;align-content:center;padding:10px 12px;border-radius:8px;color:#fff;font-family:var(--fd)}.an .b i{font-style:normal;font-weight:800;font-size:1.4rem;line-height:1}.an .b b{font-size:.95rem}.an .t{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:10px 14px;display:grid;gap:4px;min-width:0}.an .t q{quotes:none;font-weight:500}.an .t span{font-size:.88rem;color:var(--muted)}.an .c1{background:var(--green)}.an .c2{background:var(--mag)}.an .c3{background:var(--green-ink)}.an .c4{background:var(--mag-ink)}.an .arrow{text-align:center;font-family:var(--fd);font-weight:700;color:var(--muted);font-size:.85rem}.an .t .hl{font-size:1rem;color:var(--fg)}.hl{padding:1px 4px;border-radius:4px;border-bottom:3px solid}.hl.c1{background:var(--green-soft);border-color:var(--green)}.hl.c2{background:var(--mag-soft);border-color:var(--mag)}.hl.c3{background:var(--green-soft);border-color:var(--green-ink)}.hl.c4{background:var(--mag-soft);border-color:var(--mag-ink)}@media(max-width:520px){.an .r{grid-template-columns:1fr}.an .b{grid-template-columns:auto 1fr;align-items:center;gap:10px}}</style>
+<div class="card g"><span class="pill" style="justify-self:start">Infografía</span><h3>Anatomía de un prompt</h3>
+<p class="muted">Un buen prompt se arma con cuatro piezas. Con ellas, la IA deja de adivinar y empieza a ayudar.</p>
+<div class="an" role="img" aria-label="Anatomía de un prompt: rol, contexto, tarea y formato">
+<div class="r"><div class="b c1"><i>1</i><b>ROL</b></div><div class="t"><q>Actúa como tutor de Excel para principiantes.</q><span>¿Quién debe ser la IA? Define el nivel y el tono de la respuesta.</span></div></div>
+<div class="r"><div class="b c2"><i>2</i><b>CONTEXTO</b></div><div class="t"><q>Tengo las ventas de una tienda de barrio: producto en A, unidades en B, precio en C.</q><span>¿Qué situación y qué datos tengo? Evita que la IA invente.</span></div></div>
+<div class="r"><div class="b c3"><i>3</i><b>TAREA</b></div><div class="t"><q>Quiero el total por producto y el total general.</q><span>¿Qué necesito exactamente? Una sola cosa, clara y concreta.</span></div></div>
+<div class="r"><div class="b c4"><i>4</i><b>FORMATO</b></div><div class="t"><q>Respóndeme en pasos numerados cortos, con fórmulas de Excel en español.</q><span>¿Cómo quiero la respuesta? Pasos, tabla, solo la fórmula…</span></div></div>
+<div class="arrow">↓ se unen en un solo mensaje ↓</div>
+<div class="t" style="display:block;line-height:2"><span class="hl c1">Actúa como tutor de Excel para principiantes.</span> <span class="hl c2">Tengo las ventas de una tienda de barrio: producto en A, unidades en B, precio en C.</span> <span class="hl c3">Quiero el total por producto y el total general.</span> <span class="hl c4">Respóndeme en pasos numerados cortos, con fórmulas de Excel en español.</span></div>
+</div>
+<p class="note">Pieza opcional: <b>Restricciones</b> (por ejemplo, «sin macros» o «explica cada argumento»). Se agrega al final si la necesita.</p></div>
+
+<div class="card m"><span class="pill m" style="justify-self:start">Ejercicio con IA · 5 min</span><h3>Mi primer prompt de cuatro piezas</h3>
+<ol style="display:grid;gap:6px">
+<li>Abra su asistente de IA (ChatGPT, Claude o Copilot).</li>
+<li>Copie el prompt de abajo y péguelo. Identifique en él las cuatro piezas.</li>
+<li>Lea la respuesta y póngala a prueba en su Excel: la fórmula del total de arepas debe dar <b>25.000</b>.</li>
+<li>Mejórelo: agregue una pieza (por ejemplo, «explica cada fórmula en una línea») y compare las dos respuestas.</li></ol>
+<pre class="pr">Actúa como tutor de Excel para principiantes. Tengo las ventas de una tienda de barrio en Colombia: producto en A, unidades en B, precio en C. Fila 2: arepas, 10 unidades, 2500. Fila 3: gaseosa, 6 unidades, 3000. Fila 4: huevos, 12 unidades, 700. Quiero el total por producto, el total general y saber qué gráfico usar para comparar los productos. Respóndeme en pasos numerados cortos, con fórmulas de Excel en español.</pre>
+<button class="btn sm" data-cp="Actúa como tutor de Excel para principiantes. Tengo las ventas de una tienda de barrio en Colombia: producto en A, unidades en B, precio en C. Fila 2: arepas, 10 unidades, 2500. Fila 3: gaseosa, 6 unidades, 3000. Fila 4: huevos, 12 unidades, 700. Quiero el total por producto, el total general y saber qué gráfico usar para comparar los productos. Respóndeme en pasos numerados cortos, con fórmulas de Excel en español.">Copiar prompt</button>
+<p class="say"><b>Para comentar:</b> ¿La IA usó el separador correcto («;» o «,»)? ¿Recomendó columnas para comparar productos? Si algo no cuadra, pídale que lo corrija y diga qué le falló.</p></div>
+<div class="card"><h3>Cómo trabajamos en las salas</h3>
+<ul>
+<li>Cada sala elige quién <b>comparte pantalla</b> primero y rota en cada estación.</li>
+<li>Quien guía lee el paso; quien digita lo ejecuta. Nadie sigue sin que el resto lo vea.</li>
+<li>Si la sala se atasca más de 3 minutos, usen el botón de ayuda de Teams para llamar al docente.</li>
+<li>Marquen cada paso con la casilla: así saben dónde van.</li></ul></div>
+<div class="pager"><button class="btn ghost" data-go="0">← Ruta</button><button class="btn" data-go="2">Estación 1 →</button></div>
+</section>
+
+<section class="s" id="s1">
+<div><span class="eyebrow">Estación 1 · 15 min · Ojo crítico</span><h2>¿Qué gráfico miente?</h2>
+<p class="lead">Antes de aprender a graficar, aprendan a desconfiar. En sala de trabajo: miren cada gráfico 20 segundos y escriban en el chat de Teams qué les parece raro. Luego revelen el veredicto.</p></div>
+<div class="charts">
+
+<div class="ch"><h3>Gráfico A · Ventas por sede</h3>
+<svg viewBox="0 0 260 170" role="img" aria-label="Barras con eje que empieza en 90">
+<line x1="30" y1="140" x2="250" y2="140" stroke="var(--muted)"/>
+<text x="4" y="143" font-size="9" fill="var(--muted)">90</text><text x="4" y="25" font-size="9" fill="var(--muted)">100</text>
+<rect x="55" y="110" width="50" height="30" fill="var(--green)"/><rect x="150" y="30" width="50" height="110" fill="var(--mag)"/>
+<text x="62" y="158" font-size="10" fill="var(--fg)">Sede Sur</text><text x="152" y="158" font-size="10" fill="var(--fg)">Sede Centro</text>
+<text x="68" y="104" font-size="10" fill="var(--fg)">94</text><text x="165" y="24" font-size="10" fill="var(--fg)">99</text></svg>
+<button class="btn ghost sm" data-rev="ra">Revelar veredicto</button>
+<div class="verd" id="ra" hidden><b style="color:var(--mag-ink)">Engaña.</b><span>El eje empieza en 90, no en 0. Una diferencia de 5 unidades parece que la Sede Centro vende casi 4 veces más.</span><span class="cur"><b>Regla:</b> en columnas, el eje arranca en cero.</span></div></div>
+
+<div class="ch"><h3>Gráfico B · Gastos del mes</h3>
+<svg viewBox="0 0 260 170" role="img" aria-label="Pastel con ocho porciones parecidas y sin etiquetas">
+<g transform="translate(130 85)" id="pieB"></g></svg>
+<button class="btn ghost sm" data-rev="rb">Revelar veredicto</button>
+<div class="verd" id="rb" hidden><b style="color:var(--mag-ink)">No comunica.</b><span>Ocho porciones casi iguales, sin etiquetas ni porcentajes. El ojo humano no compara bien ángulos parecidos.</span><span class="cur"><b>Regla:</b> el circular sirve con pocas categorías (máx. 5) que sumen un todo. Si son muchas, use columnas.</span></div></div>
+
+<div class="ch"><h3>Gráfico C · Evolución</h3>
+<svg viewBox="0 0 260 170" role="img" aria-label="Línea sin títulos ni ejes rotulados">
+<polyline fill="none" stroke="var(--green)" stroke-width="3" points="15,130 55,120 95,100 135,60 175,40 215,20"/>
+<polyline fill="none" stroke="var(--mag)" stroke-width="3" points="15,20 55,35 95,60 135,100 175,125 215,140"/></svg>
+<button class="btn ghost sm" data-rev="rc">Revelar veredicto</button>
+<div class="verd" id="rc" hidden><b style="color:var(--mag-ink)">Incompleto.</b><span>Sin título, sin rótulos de eje, sin leyenda: no se sabe qué se mide, en qué unidad ni cuál línea es cuál.</span><span class="cur"><b>Regla:</b> todo gráfico lleva título, ejes rotulados y leyenda cuando hay más de una serie.</span></div></div>
+</div>
+
+<div class="card g"><h3>Tres principios para llevarse</h3>
+<div class="grid">
+<div><span class="pill">1 · Un mensaje</span><p class="muted">Cada gráfico responde una sola pregunta.</p></div>
+<div><span class="pill">2 · Tipo correcto</span><p class="muted">Comparar → columnas. Evolución → líneas. Partes de un todo → circular.</p></div>
+<div><span class="pill">3 · Sin ruido</span><p class="muted">Título claro, ejes rotulados, pocos colores.</p></div></div></div>
+
+<div class="card m"><h3>Pregunta de cierre para el equipo</h3><p>Si tuvieran que mostrar las ventas de enero a diciembre de su negocio, ¿qué tipo de gráfico elegirían y por qué? Respondan en el chat con una frase.</p></div>
+<div class="stampbar" id="sb1"><span><b>Sello 1</b> · Ojo crítico</span><button class="btn mag" data-stamp="1">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="1">← Ruta</button><button class="btn" data-go="3">Estación 2 →</button></div>
+</section>
+
+<section class="s" id="s2">
+<div><span class="eyebrow">Estación 2 · 40 min · Cierre del Módulo II</span><h2>Cirugía de datos: formato y validación</h2>
+<p class="lead">La cafetería Aroma (Laureles, Medellín) cerró su día de ventas, pero la hoja es un desastre: números sin formato y sin comprobar. Ustedes son el equipo de cirugía. Roles: <b>Cirujano/a</b> (digita) y <b>Instrumentador/a</b> (lee los pasos y verifica). Cambian de rol en el paso 5.</p></div>
+
+<div class="split">
+<div class="card g"><h3>Paciente: datos del día</h3>
+<div class="sheet"><table id="dt"><thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><th></th><th>Producto</th><th>Unidades</th><th>Precio</th><th>Total</th></tr></thead><tbody></tbody></table></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm" id="cpTsv">Copiar datos (para pegar en A1)</button><span class="muted" id="cpmsg"></span></div>
+<p class="note">Pegue en la celda A1 de una hoja nueva. Excel separa las columnas solo. Los encabezados quedan en la fila 1 y los datos en las filas 2 a 9.</p></div>
+<div class="card m"><h3>Mini clase en 60 segundos</h3>
+<ul>
+<li><b>Formato de celda:</b> cambia cómo se ve el número, no su valor. <span class="kbd">Ctrl</span>+<span class="kbd">1</span> abre Formato de celdas.</li>
+<li><b>Moneda colombiana:</b> sin decimales y con punto de miles: $ 3.500.</li>
+<li><b>Porcentaje:</b> <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">%</span>. El valor 0,25 se ve como 25 %.</li>
+<li><b>Validar:</b> comparar el resultado con una cuenta hecha a mano o con otra fórmula.</li>
+</ul>
+<p class="note">Sintaxis de hoy: <span class="fx">=B2*C2</span> · <span class="fx">=SUMA(D2:D9)</span> · <span class="fx">=D2/$D$10</span></p></div></div>
+
+<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Procedimiento</h3><span class="muted" id="t2n">0 de 7 pasos</span></div><div class="prog"><i id="p2"></i></div></div>
+<div class="st" id="st2"></div>
+
+<div class="card g"><h3>Validador: ¿cuánto debe dar?</h3>
+<p class="muted">Escriba el total que obtuvo en D10 (solo números) y compruebe si coincide.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><input type="number" id="vin" placeholder="Ej.: 400600" style="max-width:220px"><button class="btn sm" id="vbtn">Validar</button></div>
+<p id="vout" class="out"></p></div>
+<div class="stampbar" id="sb2"><span><b>Sello 2</b> · Datos validados</span><button class="btn mag" data-stamp="2">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="2">← Estación 1</button><button class="btn" data-go="4">Estación 3 →</button></div>
+</section>
+
+<section class="s" id="s3">
+<div><span class="eyebrow">Estación 3 · 45 min · Inicio del Módulo III</span><h2>Gráficos paso a paso</h2>
+<p class="lead">Con los datos de Aroma ya listos, ahora toca contar la historia. Construirán tres gráficos y cada uno responde una pregunta distinta del negocio.</p></div>
+
+<div class="card g"><h3>¿Qué gráfico elijo?</h3>
+<div class="opts" id="ctype"></div>
+<p id="cres" class="cur"></p></div>
+
+<div class="split">
+<div class="card"><h3>Datos A · Ventas por categoría, noviembre</h3>
+<div class="sheet"><table><thead><tr><th>Categoría</th><th>Ventas (COP)</th></tr></thead><tbody>
+<tr><td>Bebidas calientes</td><td class="num">3.200.000</td></tr><tr><td>Panadería</td><td class="num">5.800.000</td></tr><tr><td>Almuerzos</td><td class="num">4.500.000</td></tr><tr><td>Bebidas frías</td><td class="num">2.900.000</td></tr><tr><td>Postres</td><td class="num">5.600.000</td></tr></tbody></table></div>
+<button class="btn sm" data-copy="Categoría\tVentas\nBebidas calientes\t3200000\nPanadería\t5800000\nAlmuerzos\t4500000\nBebidas frías\t2900000\nPostres\t5600000">Copiar datos A</button></div>
+<div class="card"><h3>Datos B · Ventas mensuales y meta</h3>
+<div class="sheet"><table><thead><tr><th>Mes</th><th>Ventas (millones)</th><th>Meta</th></tr></thead><tbody>
+<tr><td>Agosto</td><td class="num">18</td><td class="num">20</td></tr><tr><td>Septiembre</td><td class="num">19</td><td class="num">20</td></tr><tr><td>Octubre</td><td class="num">21</td><td class="num">20</td></tr><tr><td>Noviembre</td><td class="num">22</td><td class="num">20</td></tr></tbody></table></div>
+<button class="btn sm" data-copy="Mes\tVentas\tMeta\nAgosto\t18\t20\nSeptiembre\t19\t20\nOctubre\t21\t20\nNoviembre\t22\t20">Copiar datos B</button></div></div>
+
+<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Procedimiento</h3><span class="muted" id="t3n">0 de 8 pasos</span></div><div class="prog"><i id="p3"></i></div></div>
+<div class="st" id="st3"></div>
+<div class="stampbar" id="sb3"><span><b>Sello 3</b> · Tres gráficos creados</span><button class="btn mag" data-stamp="3">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="3">← Estación 2</button><button class="btn" data-go="5">Estación 4 →</button></div>
+</section>
+
+<section class="s" id="s4">
+<div><span class="eyebrow">Estación 4 · 30 min · Copiloto IA</span><h2>La IA como asistente de Excel</h2>
+<p class="lead">ChatGPT, Claude o Copilot pueden explicar una fórmula, corregir un error o sugerir un gráfico. Pero responden tan bien como les pregunten. Aquí aprenden a preguntar.</p></div>
+
+<div class="split">
+<div class="card m"><h3>Una receta de 5 ingredientes</h3>
+<ul>
+<li><b>1. Rol:</b> «Actúa como tutor de Excel para principiantes».</li>
+<li><b>2. Contexto:</b> qué negocio, qué datos, qué versión de Excel.</li>
+<li><b>3. Tarea:</b> una sola cosa concreta.</li>
+<li><b>4. Formato:</b> «en pasos numerados», «una tabla», «solo la fórmula».</li>
+<li><b>5. Restricciones:</b> «sin macros», «en español», «explícame cada argumento».</li>
+</ul></div>
+<div class="card g"><h3>Débil frente a fuerte</h3>
+<p class="muted">Prompt débil</p><pre class="pr">Ayúdame con mi Excel</pre>
+<p class="muted">Prompt fuerte</p><pre class="pr">Actúa como tutor de Excel para principiantes. Tengo una hoja de ventas de una cafetería en Medellín: producto en A, unidades en B, precio en C. Quiero el total por producto y el total general. Dame las fórmulas en pasos numerados y explica qué hace cada una. Usa Excel en español.</pre></div></div>
+
+<div class="card"><h3>Reglas de oro</h3>
+<div class="grid">
+<div><span class="pill">Verifique</span><p class="muted">Pruebe la fórmula con un dato que usted pueda calcular a mano.</p></div>
+<div><span class="pill m">Privacidad</span><p class="muted">No pegue datos reales de clientes, cédulas ni cuentas bancarias. Use ejemplos inventados.</p></div>
+<div><span class="pill">Itere</span><p class="muted">Si no sirvió, diga qué falló y pida otra versión.</p></div>
+<div><span class="pill m">Separador</span><p class="muted">En Colombia Excel usa «;» en fórmulas en muchas configuraciones. Si una fórmula da error, pruebe cambiar «,» por «;».</p></div></div></div>
+
+<div class="card g"><h3>Constructor de prompts</h3>
+<div class="fields">
+<label>Rol<input type="text" id="f1" value="Actúa como tutor de Excel para principiantes."></label>
+<label>Contexto<textarea id="f2" placeholder="Ej.: Tengo una hoja con las ventas de mi emprendimiento de arepas en Bello…"></textarea></label>
+<label>Tarea<textarea id="f3" placeholder="Ej.: Quiero un gráfico que compare las ventas de cada producto."></textarea></label>
+<label>Formato de respuesta<input type="text" id="f4" value="Respóndeme en pasos numerados y cortos."></label>
+<label>Restricciones<input type="text" id="f5" value="Usa Excel en español y explica cada paso."></label></div>
+<div class="meter" id="meter"><i></i><i></i><i></i><i></i><i></i></div><p class="muted" id="mtxt">Complete los 5 ingredientes.</p>
+<pre class="pr" id="pout">Su prompt aparecerá aquí.</pre>
+<button class="btn" id="cpP">Copiar prompt</button></div>
+
+<div class="card"><h3>Tres misiones con IA</h3><p class="muted">Copie, pegue en su asistente de IA y revise la respuesta con ojo crítico.</p>
+<div class="st" id="st4"></div></div>
+
+<div class="card m"><h3>Bitácora IA</h3><p class="muted">Anote qué le pidió y qué tuvo que corregir. Se guarda en este dispositivo.</p>
+<label>¿Qué prompt funcionó mejor y por qué?<textarea id="bit1"></textarea></label>
+<label>¿Qué error de la IA detectó y cómo lo corrigió?<textarea id="bit2"></textarea></label></div>
+<div class="stampbar" id="sb4"><span><b>Sello 4</b> · Copiloto activado</span><button class="btn mag" data-stamp="4">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="4">← Estación 3</button><button class="btn" data-go="6">Estación 5 →</button></div>
+</section>
+
+<section class="s" id="s5">
+<div><span class="eyebrow">Estación 5 · 10 min · Chequeo rápido</span><h2>¿Qué tanto se llevaron?</h2>
+<p class="lead">Ocho preguntas. Respondan solos, y si fallan lean la explicación.</p></div>
+<div class="st" id="quiz"></div>
+<div class="card g"><div class="sc" id="score">0 / 8</div><p class="muted" id="sctxt">Responda para ver su resultado.</p></div>
+<div class="stampbar" id="sb5"><span><b>Sello 5</b> · Chequeo completado</span><button class="btn mag" data-stamp="5">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="5">← Estación 4</button><button class="btn" data-go="7">Excel Lab →</button></div>
+</section>
+
+<section class="s" id="s6">
+<div class="hero"><span class="eyebrow">Estación 6 · 35 min · Proyecto final</span><h2>Excel Lab</h2>
+<p>Una pequeña práctica que reúne todo el curso. La construyen hoy en equipo y la socializan el <b>lunes 30 de noviembre</b>, en la última sesión.</p></div>
+
+<div class="card g"><h3>1. Elijan un caso</h3>
+<div class="grid" id="cases"></div></div>
+
+<div class="card"><h3>2. Requisitos mínimos</h3>
+<ul>
+<li>Datos propios o inventados, con <b>mínimo 8 filas</b> y al menos 4 columnas.</li>
+<li>Una columna calculada con <span class="fx">=B2*C2</span> o similar, y totales con <span class="fx">=SUMA()</span> o <span class="fx">=PROMEDIO()</span>.</li>
+<li>Referencia absoluta en al menos una fórmula, por ejemplo la participación <span class="fx">=D2/$D$10</span>.</li>
+<li>Formato numérico correcto: moneda, porcentaje o fecha.</li>
+<li><b>Dos gráficos</b> de tipo distinto, cada uno con título y ejes rotulados.</li>
+<li>Una consulta a la IA documentada: qué pidieron y qué corrigieron.</li>
+</ul></div>
+
+<div class="card m"><h3>3. Autoevaluación (100 puntos)</h3><div class="rub" id="rub"></div>
+<div class="sc" id="rtot">0 / 100</div><div class="prog"><i id="rbar"></i></div></div>
+
+<div class="card g"><h3>4. Plan de equipo · roles que desarrollan liderazgo</h3>
+<p class="muted">Cada integrante lidera una parte y acompaña otra. Quien lidera explica a los demás, así el liderazgo se practica y no se delega.</p>
+<div class="grid">
+<div><span class="pill">Líder de datos</span><p class="muted">Organiza la tabla y valida los totales.</p></div>
+<div><span class="pill m">Líder de gráficos</span><p class="muted">Elige el tipo correcto y lo justifica.</p></div>
+<div><span class="pill">Líder de IA</span><p class="muted">Formula el prompt y verifica la respuesta.</p></div>
+<div><span class="pill m">Líder de relato</span><p class="muted">Prepara y modera la presentación.</p></div></div>
+<label>Escriba quién lidera qué (opcional, se guarda aquí)<textarea id="plan"></textarea></label></div>
+
+<div class="card"><h3>5. Guion de 3 minutos para el 30/11</h3>
+<div class="tl">
+<div><b>0:00–0:30</b><span>¿Qué problema resolvieron y para quién?</span></div>
+<div class="m"><b>0:30–1:30</b><span>Muestren la hoja: una fórmula, un formato y una validación.</span></div>
+<div><b>1:30–2:15</b><span>Muestren sus dos gráficos y expliquen por qué ese tipo.</span></div>
+<div class="m"><b>2:15–3:00</b><span>La IA: qué le pidieron, qué corrigieron y un aprendizaje.</span></div></div></div>
+
+<div class="card g"><h3>6. Ruta hasta la entrega</h3>
+<div class="tl">
+<div><b>Hoy 23/11</b><span>Caso elegido, datos, fórmulas y primer gráfico.</span></div>
+<div class="m"><b>24–29/11</b><span>Segundo gráfico, ajustes y ensayo del guion (trabajo autónomo).</span></div>
+<div><b>30/11</b><span>Socialización. Entrega del archivo <span class="fx">ExcelLab_Nombres.xlsx</span> por Teams.</span></div></div></div>
+<div class="stampbar" id="sb6"><span><b>Sello 6</b> · Excel Lab en marcha</span><button class="btn mag" data-stamp="6">Sellar estación</button></div>
+<div class="pager"><button class="btn ghost" data-go="6">← Estación 5</button><span></span></div>
+</section>
+</main>
+<div class="toast" id="toast" hidden></div>
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function ls(k,v){try{if(v===undefined){var x=localStorage.getItem('s4_'+k);return x===null?null:JSON.parse(x)}localStorage.setItem('s4_'+k,JSON.stringify(v))}catch(e){return null}}
+var mem={};
+function toast(t){var e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},2200)}
+function copy(txt,ok){
+  function fb(){var ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(ok||'Copiado')}catch(e){toast('Seleccione y copie manualmente')}ta.remove()}
+  try{navigator.clipboard.writeText(txt).then(function(){toast(ok||'Copiado')},fb)}catch(e){fb()}
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+/* nav + stations */
+var names=['Ruta','Teoría','1 Ojo crítico','2 Cirugía','3 Gráficos','4 Copiloto IA','5 Chequeo','6 Excel Lab'];
+var nav=$('#nav');
+names.forEach(function(n,i){var b=document.createElement('button');b.textContent=n;b.dataset.i=i;nav.appendChild(b)});
+var stamps=ls('stamps')||{};
+function go(i){
+  $$('section.s').forEach(function(s,k){s.classList.toggle('on',k===i)});
+  $$('#nav button').forEach(function(b,k){b.setAttribute('aria-current',k===i?'true':'false')});
+  var cur=$('#nav button[aria-current="true"]');if(cur&&cur.scrollIntoView)try{cur.scrollIntoView({inline:'center',block:'nearest'})}catch(e){}
+  window.scrollTo(0,0);ls('st',i)
+}
+function renderStamps(){
+  var n=0;for(var i=1;i<=6;i++){var on=!!stamps[i];if(on)n++;var sb=$('#sb'+i);if(sb){sb.classList.toggle('on',on);$('button',sb).textContent=on?'Sellado ✓ (deshacer)':'Sellar estación'}
+    var b=$('#nav button[data-i="'+(i+1)+'"]');if(b)b.classList.toggle('sealed',on)}
+  $('#sellos').textContent='Sellos '+n+'/6';$('#pbar').style.width=(n/6*100)+'%';
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.dataset.i!==undefined&&t.parentNode.id==='nav')go(+t.dataset.i);
+  else if(t.dataset.go!==undefined)go(+t.dataset.go);
+  else if(t.dataset.stamp){var k=t.dataset.stamp;stamps[k]=!stamps[k];ls('stamps',stamps);renderStamps();if(stamps[k])toast('¡Sello '+k+' conseguido!')}
+  else if(t.dataset.rev){var v=$('#'+t.dataset.rev);v.hidden=!v.hidden;t.textContent=v.hidden?'Revelar veredicto':'Ocultar veredicto'}
+  else if(t.dataset.copy){copy(t.dataset.copy.replace(/\\t/g,'\t').replace(/\\n/g,'\n'),'Datos copiados')}
+  else if(t.dataset.cp){copy(t.dataset.cp)}
+});
+$('#thm').onclick=function(){var r=document.documentElement,d=r.getAttribute('data-theme');var dark=d?d==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.setAttribute('data-theme',dark?'light':'dark')};
+/* agenda */
+var ag=[['5:15','Apertura y objetivos','5 min'],['5:20','Micro clase de teoría','15 min'],['5:35','Estación 1 · Ojo crítico','15 min'],['5:50','Estación 2 · Cirugía de datos','40 min'],['6:30','Estación 3 · Gráficos paso a paso','45 min'],['7:15','Estación 4 · Copiloto IA','30 min'],['7:45','Estación 5 · Chequeo','10 min'],['7:55','Estación 6 · Excel Lab (cierre 8:30)','35 min']];
+$('#agenda').innerHTML=ag.map(function(r){return '<div class="row"><span class="hr">'+r[0]+'</span><span>'+r[1]+'</span><span class="ah">'+r[2]+'</span></div>'}).join('');
+/* pie B */
+(function(){var n=8,r=70,a0=-Math.PI/2,h='',cols=['var(--green)','var(--mag)','var(--green-ink)','var(--mag-ink)','var(--green-line)','var(--mag-soft)','var(--muted)','var(--line)'];
+for(var i=0;i<n;i++){var a1=a0+2*Math.PI/n;var x0=r*Math.cos(a0),y0=r*Math.sin(a0),x1=r*Math.cos(a1),y1=r*Math.sin(a1);h+='<path d="M0 0L'+x0.toFixed(1)+' '+y0.toFixed(1)+'A'+r+' '+r+' 0 0 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+'Z" fill="'+cols[i]+'" stroke="var(--card)"/>';a0=a1}
+$('#pieB').innerHTML=h})();
+/* step builder */
+function build(id,steps,key,barId,pctId,label){
+  var st=ls(key)||{},root=$('#'+id);
+  function upd(){var n=0;steps.forEach(function(_,i){if(st[i])n++});$('#'+barId).style.width=(n/steps.length*100)+'%';$('#'+pctId).textContent=n+' de '+steps.length+' '+label}
+  root.innerHTML=steps.map(function(s,i){
+    var h='<div class="step'+(st[i]?' done':'')+'" data-i="'+i+'"><input type="checkbox" aria-label="Paso '+(i+1)+' hecho"'+(st[i]?' checked':'')+'><div class="bd"><h3><span class="nb">'+(i+1)+'</span>'+s[0]+'</h3>';
+    if(s[1]&&s[1].length)h+='<ol>'+s[1].map(function(a){return '<li><span>'+a+'</span></li>'}).join('')+'</ol>';
+    if(s[2])h+='<div class="see"><b>Debes ver:</b> '+s[2]+'</div>';
+    if(s[3])h+='<div class="cur"><b>Pregunta para el equipo:</b> '+s[3]+'</div>';
+    if(s[4])h+='<div class="say"><b>Para explicar:</b> '+s[4]+'</div>';
+    return h+'</div></div>'}).join('');
+  root.addEventListener('change',function(e){if(e.target.type!=='checkbox')return;var d=e.target.closest('.step');var i=+d.dataset.i;st[i]=e.target.checked;d.classList.toggle('done',e.target.checked);ls(key,st);upd()});
+  upd();
+}
+/* station 2 data */
+var data=[['Café americano',12,3500],['Capuchino',9,5200],['Tinto',25,2000],['Empanada',18,3800],['Pandebono',20,2500],['Torta de zanahoria',6,7500],['Jugo natural',10,6000],['Chocolate caliente',8,4800]];
+var total=data.reduce(function(a,r){return a+r[1]*r[2]},0);
+$('#dt tbody').innerHTML=data.map(function(r,i){return '<tr><th>'+(i+2)+'</th><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num" style="color:var(--muted)">?</td></tr>'}).join('');
+$('#cpTsv').onclick=function(){copy('Producto\tUnidades\tPrecio\n'+data.map(function(r){return r.join('\t')}).join('\n'),'Datos copiados')};
+$('#vin').placeholder='Ej.: 123456';
+$('#vbtn').onclick=function(){var v=parseFloat($('#vin').value);var o=$('#vout');
+  if(isNaN(v)){o.textContent='Escriba un número.';return}
+  if(v===total)o.textContent='✓ Correcto. Su total coincide con la cuenta de control.';
+  else o.textContent='✗ No coincide. Revise que D2:D9 tenga =B2*C2 y que SUMA tome D2:D9.'};
+var S2=[
+['Pegue los datos',['Abra Excel y un libro en blanco.','Haga clic en la celda <b>A1</b>.','Pegue con <span class="kbd">Ctrl</span>+<span class="kbd">V</span> los datos copiados arriba.','En A1 escriba el título de la hoja si lo desea; deje los encabezados en la fila 1.'],'Producto, Unidades y Precio en A1:C9. Las cifras alineadas a la derecha.','¿Cuántos productos hay? ¿Qué columna falta para saber cuánto vendió cada uno?','Si los números quedan alineados a la izquierda, Excel los tomó como texto.'],
+['Calcule el total por producto',['En D1 escriba <b>Total</b>.','En <b>D2</b> escriba <span class="fx">=B2*C2</span> y presione Enter.','Seleccione D2 y haga doble clic en el cuadrito de la esquina inferior derecha (controlador de relleno).'],'D2 = 42000 y la fórmula copiada hasta D9. El Tinto debe dar 50000.','¿Por qué B2 y C2 cambian solas a B3 y C3 al arrastrar?','Referencia relativa: la fórmula se adapta a cada fila.'],
+['Totalice el día',['En A10 escriba <b>TOTAL</b>.','En <b>D10</b> escriba <span class="fx">=SUMA(D2:D9)</span> y presione Enter.'],'Un total de <b>'+total.toLocaleString('es-CO')+'</b> (sin formato aún).','¿Qué pasaría si agregan un producto en la fila 10?','El rango D2:D9 no incluye filas nuevas. Hay que ajustarlo.'],
+['Dé formato de moneda',['Seleccione <b>C2:D10</b>.','Presione <span class="kbd">Ctrl</span>+<span class="kbd">1</span>.','Categoría <b>Moneda</b>, decimales <b>0</b>, símbolo <b>$</b>. Aceptar.','Haga clic en D10 y mire la barra de fórmulas.'],'Valores como $ 3.500 y $ 400.600. En la barra de fórmulas D10 sigue siendo la fórmula.','¿El formato cambió el valor o solo la apariencia?','El formato maquilla; la fórmula y el valor no se tocan.'],
+['Calcule la participación (cambio de rol)',['<b>Cambien de rol:</b> ahora digita quien antes guiaba.','En E1 escriba <b>Participación</b>.','En <b>E2</b> escriba <span class="fx">=D2/$D$10</span> y Enter.','Arrastre E2 hasta E9.','Seleccione E2:E9 y presione <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">%</span>.'],'Porcentajes que se ven como 10,5 %. El Tinto debe estar cerca de 12,5 %.','¿Qué pasa si quitan los signos $ y arrastran?','$D$10 queda fijo; sin signos, el divisor se corre fila a fila y da error.'],
+['Valide los resultados',['En G1 escriba <b>Control</b>.','En <b>G2</b> escriba <span class="fx">=SUMA(E2:E9)</span>.','Seleccione D2:D9 y mire la <b>barra de estado</b> inferior: debe mostrar la misma suma que D10.','Haga una cuenta a mano de una fila: 25 × 2.000.'],'G2 = 100 %. La barra de estado coincide con D10. La cuenta a mano da $ 50.000.','Si G2 diera 98 %, ¿dónde buscarían el error?','Validar es comparar contra otra fuente: una suma distinta, la barra de estado o una cuenta a mano.'],
+['Bono: bloquee errores de digitación',['Seleccione B2:B9.','Pestaña <b>Datos</b> → <b>Validación de datos</b>.','Permitir: <b>Número entero</b>; entre <b>0</b> y <b>200</b>. Aceptar.','Pruebe escribir -5 en B2: Excel debe rechazarlo.'],'Un mensaje de error al digitar un valor fuera de rango.','','Mejor prevenir el error que corregirlo después.']];
+build('st2',S2,'p2','p2','t2n','pasos');
+/* chart type selector */
+var ct=[['Comparar categorías','Columnas agrupadas','Panadería frente a postres: se ve de inmediato cuál vende más.'],['Evolución en el tiempo','Líneas','Agosto a noviembre: la inclinación muestra si sube o baja.'],['Partes de un todo','Circular','Cada categoría frente al 100 % de las ventas. Máximo 5 porciones.'],['Real frente a meta','Combinado','Columnas para lo vendido y una línea para la meta.']];
+$('#ctype').innerHTML=ct.map(function(c,i){return '<button data-ct="'+i+'">'+c[0]+'</button>'}).join('');
+$('#ctype').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var c=ct[+b.dataset.ct];$$('#ctype button').forEach(function(x){x.classList.toggle('pick',x===b)});$('#cres').innerHTML='<b>'+c[1]+'.</b> '+c[2]});
+$('#cres').textContent='Toque una necesidad y vea qué gráfico le corresponde.';
+var S3=[
+['Prepare los datos A',['Hoja nueva: clic en el signo + junto a las pestañas y nómbrela <b>Gráficos</b>.','Clic en A1 y pegue los <b>Datos A</b> (botón de arriba).'],'Categoría y Ventas en A1:B6.','¿Qué tipo de gráfico responde «cuánto vendió cada categoría»?'],
+['Cree el gráfico de columnas',['Seleccione <b>A1:B6</b>.','Pestaña <b>Insertar</b> → Gráficos recomendados o <b>Columna agrupada</b>.'],'Cinco columnas; Panadería y Postres son las más altas.','','Eje vertical desde cero, como aprendieron en la estación 1.'],
+['Póngale título y etiquetas',['Clic en el gráfico → botón <b>+</b> (Elementos del gráfico).','Marque <b>Título del gráfico</b> y <b>Etiquetas de datos</b>.','Escriba el título: «Ventas por categoría, noviembre (COP)».'],'Título claro y cada columna con su valor.','¿El título dice qué, cuándo y en qué unidad?'],
+['Cree el circular',['Seleccione de nuevo A1:B6.','<b>Insertar</b> → <b>Circular</b>.','Botón + → Etiquetas de datos; en formato de etiquetas elija <b>Porcentaje</b>.'],'Cinco porciones; Panadería cerca de 26 % y Postres cerca de 25 %.','¿Qué dice este gráfico que el de columnas no dice tan fácil?','La participación de cada categoría en el total de $ 22.000.000.'],
+['Prepare los datos B',['Cuatro columnas a la derecha (por ejemplo desde D1), pegue los <b>Datos B</b>.','Seleccione D1:E5 (Mes y Ventas).'],'Cuatro meses con sus ventas en millones.'],
+['Cree el gráfico de líneas',['Con D1:E5 seleccionado: <b>Insertar</b> → <b>Línea con marcadores</b>.','Título: «Ventas mensuales (millones de COP)».'],'Una línea que sube de 18 a 22.','¿Por qué aquí sirve la línea y no las columnas?','La línea muestra tendencia en el tiempo.'],
+['Cree el gráfico combinado',['Seleccione D1:F5 (Mes, Ventas y Meta).','<b>Insertar</b> → <b>Gráfico combinado</b> → <b>Columna agrupada – Línea</b>.','Si pide elegir: Ventas = columna, Meta = línea.'],'Columnas para ventas y una línea horizontal en 20.','¿En qué mes superaron la meta por primera vez?','Octubre: 21 frente a una meta de 20.'],
+['Valide y redacte el mensaje',['Compare cada gráfico con su tabla: ¿coinciden los valores?','Debajo de cada gráfico escriba una frase con la conclusión (ej.: «Noviembre superó la meta en 2 millones»).'],'Tres gráficos, cada uno con título y una frase.','¿Cuál de los tres presentarían al dueño del negocio?']];
+build('st3',S3,'p3','p3','t3n','pasos');
+/* prompt builder */
+var P=['f1','f2','f3','f4','f5'],pn=['Rol','Contexto','Tarea','Formato','Restricciones'];
+P.forEach(function(id){var v=ls(id);if(v!==null)$('#'+id).value=v});
+function pb(){var parts=[],n=0;P.forEach(function(id,i){var v=$('#'+id).value.trim();ls(id,$('#'+id).value);if(v){n++;parts.push(v)}});
+  $$('#meter i').forEach(function(x,i){x.classList.toggle('on',i<n)});
+  $('#mtxt').textContent=n===5?'Prompt completo: tiene los 5 ingredientes.':'Faltan: '+P.filter(function(id,i){return !$('#'+id).value.trim()}).map(function(id){return pn[P.indexOf(id)]}).join(', ');
+  $('#pout').textContent=parts.length?parts.join(' '):'Su prompt aparecerá aquí.'}
+P.forEach(function(id){$('#'+id).addEventListener('input',pb)});pb();
+$('#cpP').onclick=function(){copy($('#pout').textContent,'Prompt copiado')};
+/* missions */
+var M=[
+['Misión 1 · Que le explique','Actúa como tutor de Excel para principiantes. En una cafetería de Medellín tengo en D10 el total de ventas y en E2 la fórmula =D2/$D$10. Explícame en máximo 5 líneas qué hace cada signo $ y qué pasaría si los quito. Usa un ejemplo con números.','La explicación debe coincidir con lo que vieron en la estación 2. Si no, pídale que lo aclare.'],
+['Misión 2 · Que le corrija un error','Actúa como tutor de Excel en español. Escribí =SUMAR(D2:D9) y Excel me muestra #¿NOMBRE?. No sé qué hice mal. Dime la causa en una frase y la fórmula corregida, sin explicaciones largas.','Pruebe la fórmula corregida en su hoja. ¿Dio el total esperado?'],
+['Misión 3 · Que le sugiera un gráfico','Actúa como asesor de datos para un emprendimiento colombiano. Tengo ventas mensuales de agosto a noviembre (18, 19, 21 y 22 millones) y una meta de 20 millones. ¿Qué gráfico me recomiendas para mostrar si cumplí la meta? Dame los pasos en Excel, numerados y cortos.','Compare su respuesta con el gráfico combinado que hicieron. ¿Coincide la IA?']];
+$('#st4').innerHTML=M.map(function(m,i){return '<div class="step" style="grid-template-columns:1fr"><div class="bd"><h3><span class="nb">'+(i+1)+'</span>'+m[0]+'</h3><pre class="pr">'+esc(m[1])+'</pre><div><button class="btn sm" data-cp="'+m[1].replace(/"/g,'&quot;')+'">Copiar prompt</button></div><div class="cur"><b>Verifique:</b> '+m[2]+'</div></div></div>'}).join('');
+['bit1','bit2'].forEach(function(id){var v=ls(id);if(v)$('#'+id).value=v;$('#'+id).addEventListener('input',function(){ls(id,$('#'+id).value)})});
+/* quiz */
+var Q=[
+['¿Qué cambia el formato de moneda en una celda?',['El valor guardado','Solo cómo se ve el número','La fórmula'],1,'El formato cambia la apariencia, no el valor.'],
+['¿Qué tecla abre «Formato de celdas»?',['Ctrl+1','Ctrl+P','F4'],0,'Ctrl+1 abre Formato de celdas.'],
+['En =D2/$D$10, ¿qué queda fijo al arrastrar?',['D2','$D$10','Ambos'],1,'Los signos $ fijan columna y fila de D10.'],
+['¿Cuál es una buena forma de validar un total?',['Confiar en Excel','Compararlo con la barra de estado o una cuenta a mano','Cambiar el formato'],1,'Validar es contrastar con otra fuente.'],
+['Para mostrar la evolución de ventas mes a mes, conviene:',['Líneas','Circular','Ningún gráfico'],0,'Las líneas muestran tendencia en el tiempo.'],
+['Un gráfico circular funciona mejor con:',['Muchas categorías','Pocas categorías que suman un todo','Datos negativos'],1,'Máximo 5 porciones que sumen 100 %.'],
+['En un prompt, ¿qué mejora más la respuesta de la IA?',['Preguntar más corto','Dar rol, contexto, tarea, formato y restricciones','Usar mayúsculas'],1,'La receta de 5 ingredientes.'],
+['Antes de pegar datos en una IA conviene:',['Quitar cédulas, cuentas y datos de clientes','Subir todo','Publicarlos en redes'],0,'Proteja la privacidad: use datos de ejemplo.']];
+var qs=ls('quiz')||{};
+function qrender(){var ok=0,done=0;
+  $('#quiz').innerHTML=Q.map(function(q,i){var a=qs[i];if(a!==undefined&&a!==null){done++;if(a===q[2])ok++}
+    return '<div class="pq"><b>'+(i+1)+'. '+q[0]+'</b><div class="o">'+q[1].map(function(o,j){var c='';if(a!==undefined&&a!==null){if(j===q[2])c='ok';else if(j===a)c='no'}return '<button data-q="'+i+'" data-o="'+j+'" class="'+c+'">'+o+'</button>'}).join('')+'</div>'+(a!==undefined&&a!==null?'<div class="fb">'+(a===q[2]?'✓ ':'✗ ')+q[3]+'</div>':'')+'</div>'}).join('');
+  $('#score').textContent=ok+' / 8';$('#sctxt').textContent=done<8?'Responda para ver su resultado.':(ok>=7?'Excelente: están listos para el Excel Lab.':ok>=5?'Buen avance: repasen las explicaciones marcadas.':'Repasen las estaciones 2 y 3 antes del lunes.')}
+$('#quiz').addEventListener('click',function(e){var b=e.target.closest('button[data-q]');if(!b)return;var i=+b.dataset.q;if(qs[i]!==undefined&&qs[i]!==null)return;qs[i]=+b.dataset.o;ls('quiz',qs);qrender()});
+qrender();
+/* excel lab */
+var C=[['Mi emprendimiento','Ventas de un producto real o imaginario: precios, unidades, ingresos y gráficos de comparación.'],['Presupuesto del hogar','Ingresos y gastos del mes por categoría, con porcentaje de cada gasto y gráfico de participación.'],['Evento o fiesta','Costos de organizar un evento: cantidades, precios, total, aporte por persona y gráfico de costos.']];
+var cs=ls('case');
+$('#cases').innerHTML=C.map(function(c,i){return '<button class="case'+(cs===i?' pick':'')+'" data-c="'+i+'"><b>'+c[0]+'</b><span class="muted">'+c[1]+'</span></button>'}).join('');
+$('#cases').addEventListener('click',function(e){var b=e.target.closest('.case');if(!b)return;cs=+b.dataset.c;ls('case',cs);$$('#cases .case').forEach(function(x){x.classList.toggle('pick',x===b)});toast('Caso elegido: '+C[cs][0])});
+var R=[['Datos organizados (8+ filas, 4+ columnas)',15],['Fórmulas correctas: producto y suma o promedio',20],['Referencia absoluta bien usada',10],['Formato numérico adecuado (moneda, %, fecha)',10],['Validación de resultados (control o cuenta a mano)',10],['Dos gráficos de tipo distinto, con título y ejes',20],['Uso de IA documentado',10],['Presentación clara de 3 minutos',5]];
+var rs=ls('rub')||{};
+$('#rub').innerHTML=R.map(function(r,i){return '<label><input type="checkbox" data-r="'+i+'"'+(rs[i]?' checked':'')+'><span>'+r[0]+'</span><span class="pt">'+r[1]+' pts</span></label>'}).join('');
+function rt(){var t=0;R.forEach(function(r,i){if(rs[i])t+=r[1]});$('#rtot').textContent=t+' / 100';$('#rbar').style.width=t+'%'}
+$('#rub').addEventListener('change',function(e){var i=e.target.dataset.r;if(i===undefined)return;rs[i]=e.target.checked;ls('rub',rs);rt()});rt();
+var pl=ls('plan');if(pl)$('#plan').value=pl;$('#plan').addEventListener('input',function(){ls('plan',$('#plan').value)});
+renderStamps();
+var s0=ls('st');if(typeof s0==='number'&&s0>=0&&s0<8)go(s0);else go(0);
+})();
+
+</script>
+
+</body></html>
